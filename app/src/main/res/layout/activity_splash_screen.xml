@@ -3,14 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/constraintLayout"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity">
-    
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"
-        tools:ignore="MissingConstraints" />
+    tools:context=".SplashScreenActivity"
+    android:background="@drawable/background">
+
 
 </android.support.constraint.ConstraintLayout>
