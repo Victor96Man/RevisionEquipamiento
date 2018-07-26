@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 import java.util.*
 import android.os.Build
 import android.annotation.TargetApi
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.Room
 import android.content.Context
 import android.net.ConnectivityManager
 import android.view.View

@@ -18,7 +18,7 @@
         <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/NoActionBarTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Principal" />
-        <activity android:name=".Login"></activity>
+        <activity android:theme="@style/NoActionBarTheme" android:name=".Login"></activity>
     </application>
 
 </manifest>
