@@ -11,13 +11,12 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 import java.util.*
 import android.os.Build
 import android.annotation.TargetApi
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
 import android.content.Context
 import android.net.ConnectivityManager
 import android.view.View
 import android.net.Uri
 import android.support.v7.app.AlertDialog
+import com.example.revisionequipamiento.DataBase.DatabaseR
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -25,6 +24,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+        DatabaseR.getInstance(this)
         var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var networkInfo = cm.activeNetworkInfo
         if (mayRequestStoragePermission()) {
@@ -43,6 +43,8 @@ class SplashScreenActivity : AppCompatActivity() {
 
         }
     }
+
+
 
     private fun mayRequestStoragePermission(): Boolean {
 

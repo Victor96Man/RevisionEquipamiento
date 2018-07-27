@@ -1,4 +1,4 @@
-package com.example.revisionequipamiento.DataBase
+package com.example.revisionequipamiento.DataBase.Entidades
 
 
 import android.arch.persistence.room.ColumnInfo
@@ -16,11 +16,6 @@ data class Usuarios (
         var username:String = "",
 
         @ColumnInfo(name="password")
-        var password:String = "",
+        var password:String = ""
 
-        @ColumnInfo(name="email")
-        var email:String ="",
-
-        @ColumnInfo(name="nombre")
-        var nombre:String = ""
 )
