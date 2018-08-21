@@ -12,21 +12,26 @@ import java.util.*
 import android.os.Build
 import android.annotation.TargetApi
 import android.content.Context
+import android.database.Cursor
 import android.net.ConnectivityManager
 import android.view.View
 import android.net.Uri
 import android.support.v7.app.AlertDialog
-import com.example.revisionequipamiento.DataBase.DatabaseR
 
 
 class SplashScreenActivity : AppCompatActivity() {
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        DatabaseR.getInstance(this)
         var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var networkInfo = cm.activeNetworkInfo
+        val bbddsqlite = BBDDSQLite(this)
+        val bd = bbddsqlite.writableDatabase
+        bd.close()
         if (mayRequestStoragePermission()) {
             Timer().schedule(object : TimerTask() {
                 override fun run() {
@@ -34,8 +39,13 @@ class SplashScreenActivity : AppCompatActivity() {
                         startActivity(Intent(applicationContext, Login::class.java))
                         finish()
                     }else{
-                        startActivity(Intent(applicationContext, Principal::class.java))
-                        finish()
+                        if(logeado()){
+                            startActivity(Intent(applicationContext, Principal::class.java))
+                            finish()
+                        }else{
+                            startActivity(Intent(applicationContext, Login::class.java))
+                            finish()
+                        }
                     }
                 }
             }, 3000)
@@ -72,12 +82,24 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode === 103) {
-            if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED && grantResults[1] === PackageManager.PERMISSION_GRANTED && grantResults[2] === PackageManager.PERMISSION_GRANTED && grantResults[3] === PackageManager.PERMISSION_GRANTED && grantResults[4] === PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED && grantResults[1] === PackageManager.PERMISSION_GRANTED && grantResults[2] === PackageManager.PERMISSION_GRANTED && grantResults[3] === PackageManager.PERMISSION_GRANTED) {
 
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
-                        startActivity(Intent(applicationContext, Principal::class.java))
-                        finish()
+                        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                        var networkInfo = cm.activeNetworkInfo
+                        if (networkInfo != null && networkInfo.isConnected) {
+                            startActivity(Intent(applicationContext, Login::class.java))
+                            finish()
+                        }else{
+                            if(logeado()){
+                                startActivity(Intent(applicationContext, Principal::class.java))
+                                finish()
+                            }else{
+                                startActivity(Intent(applicationContext, Login::class.java))
+                                finish()
+                            }
+                        }
                     }
                 }, 3000)
             } else {
@@ -105,5 +127,21 @@ class SplashScreenActivity : AppCompatActivity() {
         }
 
         builder.show()
+    }
+
+    private fun logeado():Boolean {
+        //consulta a la bbdd
+        var login= false
+        val bbddsqlite = BBDDSQLite(this)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                login= true
+            }
+        }
+        db.close()
+        return login
     }
 }

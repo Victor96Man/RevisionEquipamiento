@@ -1,0 +1,309 @@
+package com.example.revisionequipamiento
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
+import com.example.revisionequipamiento.Clases.*
+
+val VERSIONBBDD = 1
+val DATABASE_NAME = "revisiones"
+
+    class BBDDSQLite(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null, VERSIONBBDD) {
+        override fun onCreate(db: SQLiteDatabase?) {
+            val CreateTableUser = "CREATE TABLE usuarios (" +
+                    "id integer PRIMARY KEY autoincrement," +
+                    "username VARCHAR(40)," +
+                    "password VARCHAR(40)," +
+                    "nombre VARCHAR(40)," +
+                    "email VARCHAR(40))"
+
+            val CreateTableMarcas = "CREATE TABLE marcas (" +
+                    "id integer PRIMARY KEY autoincrement," +
+                    "nombremarca VARCHAR(40))"
+
+            val CreateTableZonas = "CREATE TABLE zonas (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "nombrezona VARCHAR(40))"
+
+            val CreateTableUsuariosZonas = "CREATE TABLE usuariosZonas (" +
+                    "id_usuario INTEGER PRIMARY KEY ," +
+                    "id_zona INTEGER )"
+
+            val CreateTableUbicaciones = "CREATE TABLE ubicaciones (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id_zona INTEGER,"+
+                    "nombreubicacion VARCHAR(40))"
+
+            val CreateTableTrabajadores = "CREATE TABLE trabajadores (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "nombretrabajador VARCHAR(40),"+
+                    "id_zona INTEGER,"+
+                    "id_ubicacion INTEGER)"
+
+            val CreateTableFamilias = "CREATE TABLE familias (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "nombrefamilia VARCHAR(20),"+
+                    "informacion TEXT,"+
+                    "diasrevisionperiodica INTEGER,"+
+                    "diasrevisionreparacion INTEGER,"+
+                    "pregunta1 TEXT,"+
+                    "pregunta2 TEXT,"+
+                    "pregunta3 TEXT,"+
+                    "pregunta4 TEXT,"+
+                    "pregunta5 TEXT,"+
+                    "pregunta6 TEXT,"+
+                    "pregunta7 TEXT,"+
+                    "pregunta8 TEXT,"+
+                    "pregunta9 TEXT,"+
+                    "pregunta10 TEXT)"
+
+            val CreateTableEquipamientos = "CREATE TABLE equipaliemtos (" +
+                    "n_serie VARCHAR(40) PRIMARY KEY ," +
+                    "id_familia INTEGER,"+
+                    "id_marca INTEGER,"+
+                    "id_ubicacion INTEGER,"+
+                    "id_zona INTEGER,"+
+                    "id_trabajador INTEGER,"+
+                    "modelo VARCHAR(40),"+
+                    "fecha_compra DATE,"+
+                    "fecha_puesta_funcionamiento DATE,"+
+                    "fecha_revision DATE,"+
+                    "fecha_caducidad DATE,"+
+                    "fecha_baja DATE,"+
+                    "referencia_normativa  VARCHAR(40),"+
+                    "estado  TINYINT(1),"+
+                    "id_serie_reemplaza  VARCHAR(40),"+
+                    "bitacora LONGTEXT,"+
+                    "situacion  VARCHAR(40))"
+
+            val CreateTableRevisiones = "CREATE TABLE revisiones (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                    "id_equipamiento VARCHAR(40),"+
+                    "id_usuario INTEGER,"+
+                    "fecharevision DATE,"+
+                    "estado  TINYINT(1),"+
+                    "enviado TINYINT(1),"+
+                    "vp1 TINYINT(1),"+
+                    "vp2 TINYINT(1),"+
+                    "vp3 TINYINT(1),"+
+                    "vp4 TINYINT(1),"+
+                    "vp5 TINYINT(1),"+
+                    "vp6 TINYINT(1),"+
+                    "vp7 TINYINT(1),"+
+                    "vp8 TINYINT(1),"+
+                    "vp9 TINYINT(1),"+
+                    "vp10 TINYINT(1),"+
+                    "obp1 VARCHAR(30),"+
+                    "obp2 VARCHAR(30),"+
+                    "obp3 VARCHAR(30),"+
+                    "obp4 VARCHAR(30),"+
+                    "obp5 VARCHAR(30),"+
+                    "obp6 VARCHAR(30),"+
+                    "obp7 VARCHAR(30),"+
+                    "obp8 VARCHAR(30),"+
+                    "obp9 VARCHAR(30),"+
+                    "obp10 VARCHAR(30),"+
+                    "firma LONGTEXT,"+
+                    "firma_trabajador LONGTEXT,"+
+                    "objeciones VARCHAR(150),"+
+                    "peticiones VARCHAR(150))"
+
+
+            db?.execSQL(CreateTableUser)
+            db?.execSQL(CreateTableMarcas)
+            db?.execSQL(CreateTableZonas)
+            db?.execSQL(CreateTableUsuariosZonas)
+            db?.execSQL(CreateTableUbicaciones)
+            db?.execSQL(CreateTableTrabajadores)
+            db?.execSQL(CreateTableFamilias)
+            db?.execSQL(CreateTableEquipamientos)
+            db?.execSQL(CreateTableRevisiones)
+
+        }
+
+        override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        fun insertUser(user : Usuario){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",user.id)
+            cv.put("username",user.username)
+            cv.put("password",user.password)
+            cv.put("nombre",user.nombre)
+            cv.put("email",user.email)
+            var result = db.insert("usuarios",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertMarca(marca : Marca){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",marca.id)
+            cv.put("nombremarca",marca.nombre)
+            var result = db.insert("marcas",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertZona(zona : Zona){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",zona.id)
+            cv.put("nombrezona",zona.nombre)
+            var result = db.insert("zonas",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertUsuariosZona(usuZona : UsuariosZonas){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",usuZona.id)
+            cv.put("id_usuario",usuZona.usuario)
+            cv.put("id_zona",usuZona.zona)
+            var result = db.insert("usuariosZonas",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertUbicacion(ubicacion : Ubicacion){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",ubicacion.id)
+            cv.put("nombreubicacion",ubicacion.nombre)
+            cv.put("id_zona",ubicacion.zona)
+            var result = db.insert("ubicaciones",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertTrabajador(trabajador : Trabajador){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",trabajador.id)
+            cv.put("nombretrabajador",trabajador.nombre)
+            cv.put("id_zona",trabajador.zona)
+            cv.put("id_ubicacion",trabajador.ubicacion)
+            var result = db.insert("trabajadores",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertFamilia(familia : Familia){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",familia.id)
+            cv.put("nombrefamilia",familia.nombre)
+            cv.put("informacion",familia.info)
+            cv.put("diasrevisioneperiodica",familia.diaP)
+            cv.put("diasrevisionereparacion",familia.diaR)
+            cv.put("pregunta1",familia.p1)
+            cv.put("pregunta2",familia.p2)
+            cv.put("pregunta3",familia.p3)
+            cv.put("pregunta4",familia.p4)
+            cv.put("pregunta5",familia.p5)
+            cv.put("pregunta6",familia.p6)
+            cv.put("pregunta7",familia.p7)
+            cv.put("pregunta8",familia.p8)
+            cv.put("pregunta9",familia.p9)
+            cv.put("pregunta10",familia.p10)
+            var result = db.insert("familias",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertEquipamiento(equipamiento : Equipamiento){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("n_serie",equipamiento.id)
+            cv.put("id_familia",equipamiento.familia)
+            cv.put("id_marca",equipamiento.marca)
+            cv.put("id_ubicacion",equipamiento.ubicacion)
+            cv.put("id_zona",equipamiento.zona)
+            cv.put("modelo",equipamiento.modelo)
+            cv.put("fecha_compra",equipamiento.fechaCo)
+            cv.put("fecha_puesta_funcionamiento",equipamiento.fechaP)
+            cv.put("fecha_revision",equipamiento.fechaR)
+            cv.put("fecha_caducidad",equipamiento.fechaCa)
+            cv.put("fecha_baja",equipamiento.fechaB)
+            cv.put("referencia_normativa",equipamiento.RN)
+            cv.put("estado",equipamiento.estado)
+            cv.put("id_serie_reemplaza",equipamiento.id_reemplaza)
+            cv.put("id_trabajador",equipamiento.trabajador)
+            cv.put("bitacora",equipamiento.bitacora)
+            cv.put("situacion",equipamiento.situacion)
+            var result = db.insert("equipamientos",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        fun insertRevision(revision : Revision){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",revision.id)
+            cv.put("id_equipamiento",revision.equipamieno)
+            cv.put("id_usuario",revision.usuario)
+            cv.put("fecharevision",revision.fR)
+            cv.put("estado",revision.estado)
+            cv.put("enviado",revision.enviado)
+            cv.put("vp1",revision.vp1)
+            cv.put("vp2",revision.vp2)
+            cv.put("vp3",revision.vp3)
+            cv.put("vp4",revision.vp4)
+            cv.put("vp5",revision.vp5)
+            cv.put("vp6",revision.vp6)
+            cv.put("vp7",revision.vp7)
+            cv.put("vp8",revision.vp8)
+            cv.put("vp9",revision.vp9)
+            cv.put("vp10",revision.vp10)
+            cv.put("obp1",revision.obp1)
+            cv.put("obp2",revision.obp2)
+            cv.put("obp3",revision.obp3)
+            cv.put("obp4",revision.obp4)
+            cv.put("obp5",revision.obp5)
+            cv.put("obp6",revision.obp6)
+            cv.put("obp7",revision.obp7)
+            cv.put("obp8",revision.obp8)
+            cv.put("obp9",revision.obp9)
+            cv.put("obp10",revision.obp10)
+            cv.put("firma",revision.firma)
+            cv.put("firma_trabajador",revision.firmaT)
+            cv.put("objecione",revision.objecione)
+            cv.put("peticiones",revision.peticiones)
+            var result = db.insert("revisiones",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+            }
+        }
+}
