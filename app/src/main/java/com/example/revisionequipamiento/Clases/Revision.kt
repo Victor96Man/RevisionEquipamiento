@@ -1,8 +1,8 @@
 package com.example.revisionequipamiento.Clases
 
 class Revision {
-    var id : String =""
-    var equipamieno : Int =0
+    var id : Int =0
+    var equipamieno : String =""
     var usuario : Int =0
     var fR :String =""
     var estado :Int =0
@@ -32,7 +32,7 @@ class Revision {
     var objecione :String =""
     var peticiones :String =""
 
-    constructor(id: String, equipamieno: Int, usuario: Int, fR: String, estado: Int, enviado: Int, vp1: Int, vp2: Int, vp3: Int, vp4: Int, vp5: Int, vp6: Int, vp7: Int, vp8: Int, vp9: Int, vp10: Int, obp1: String, obp2: String, obp3: String, obp4: String, obp5: String, obp6: String, obp7: String, obp8: String, obp9: String, obp10: String, firma: String, firmaT: String, objecione: String, peticiones: String) {
+    constructor(id: Int, equipamieno: String, usuario: Int, fR: String, estado: Int, enviado: Int, vp1: Int, vp2: Int, vp3: Int, vp4: Int, vp5: Int, vp6: Int, vp7: Int, vp8: Int, vp9: Int, vp10: Int, obp1: String, obp2: String, obp3: String, obp4: String, obp5: String, obp6: String, obp7: String, obp8: String, obp9: String, obp10: String, firma: String, firmaT: String, objecione: String, peticiones: String) {
         this.id = id
         this.equipamieno = equipamieno
         this.usuario = usuario

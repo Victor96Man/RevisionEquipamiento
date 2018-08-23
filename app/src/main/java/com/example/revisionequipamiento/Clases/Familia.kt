@@ -4,8 +4,8 @@ class Familia {
     var id : Int =0
     var nombre :String =""
     var info :String =""
-    var diaP :String =""
-    var diaR :String =""
+    var diaP :Int =0
+    var diaR :Int =0
     var p1 :String =""
     var p2:String =""
     var p3 :String =""
@@ -17,7 +17,7 @@ class Familia {
     var p9 :String =""
     var p10 :String =""
 
-    constructor(id: Int, nombre: String, info: String, diaP: String, diaR: String, p1: String, p2: String, p3: String, p4: String, p5: String, p6: String, p7: String, p8: String, p9: String, p10: String) {
+    constructor(id: Int, nombre: String, info: String, diaP: Int, diaR: Int, p1: String, p2: String, p3: String, p4: String, p5: String, p6: String, p7: String, p8: String, p9: String, p10: String) {
         this.id = id
         this.nombre = nombre
         this.info = info

@@ -13,37 +13,37 @@ val DATABASE_NAME = "revisiones"
     class BBDDSQLite(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null, VERSIONBBDD) {
         override fun onCreate(db: SQLiteDatabase?) {
             val CreateTableUser = "CREATE TABLE usuarios (" +
-                    "id integer PRIMARY KEY autoincrement," +
+                    "id integer PRIMARY KEY ," +
                     "username VARCHAR(40)," +
                     "password VARCHAR(40)," +
                     "nombre VARCHAR(40)," +
                     "email VARCHAR(40))"
 
             val CreateTableMarcas = "CREATE TABLE marcas (" +
-                    "id integer PRIMARY KEY autoincrement," +
+                    "id integer PRIMARY KEY ," +
                     "nombremarca VARCHAR(40))"
 
             val CreateTableZonas = "CREATE TABLE zonas (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY ," +
                     "nombrezona VARCHAR(40))"
 
             val CreateTableUsuariosZonas = "CREATE TABLE usuariosZonas (" +
-                    "id_usuario INTEGER PRIMARY KEY ," +
+                    "id_usuario INTEGER ," +
                     "id_zona INTEGER )"
 
             val CreateTableUbicaciones = "CREATE TABLE ubicaciones (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY ," +
                     "id_zona INTEGER,"+
                     "nombreubicacion VARCHAR(40))"
 
             val CreateTableTrabajadores = "CREATE TABLE trabajadores (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY ," +
                     "nombretrabajador VARCHAR(40),"+
                     "id_zona INTEGER,"+
                     "id_ubicacion INTEGER)"
 
             val CreateTableFamilias = "CREATE TABLE familias (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id INTEGER PRIMARY KEY," +
                     "nombrefamilia VARCHAR(20),"+
                     "informacion TEXT,"+
                     "diasrevisionperiodica INTEGER,"+
@@ -59,7 +59,7 @@ val DATABASE_NAME = "revisiones"
                     "pregunta9 TEXT,"+
                     "pregunta10 TEXT)"
 
-            val CreateTableEquipamientos = "CREATE TABLE equipaliemtos (" +
+            val CreateTableEquipamientos = "CREATE TABLE equipamientos (" +
                     "n_serie VARCHAR(40) PRIMARY KEY ," +
                     "id_familia INTEGER,"+
                     "id_marca INTEGER,"+
@@ -79,7 +79,7 @@ val DATABASE_NAME = "revisiones"
                     "situacion  VARCHAR(40))"
 
             val CreateTableRevisiones = "CREATE TABLE revisiones (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT ," +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "id_equipamiento VARCHAR(40),"+
                     "id_usuario INTEGER,"+
                     "fecharevision DATE,"+
@@ -137,7 +137,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("email",user.email)
             var result = db.insert("usuarios",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error usuario ${user.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -150,7 +150,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("nombremarca",marca.nombre)
             var result = db.insert("marcas",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error marca ${marca.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -163,7 +163,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("nombrezona",zona.nombre)
             var result = db.insert("zonas",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error zona ${zona.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -172,12 +172,11 @@ val DATABASE_NAME = "revisiones"
         fun insertUsuariosZona(usuZona : UsuariosZonas){
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put("id",usuZona.id)
             cv.put("id_usuario",usuZona.usuario)
             cv.put("id_zona",usuZona.zona)
             var result = db.insert("usuariosZonas",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error usuzona ${usuZona.usuario} ${usuZona.zona}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -191,7 +190,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("id_zona",ubicacion.zona)
             var result = db.insert("ubicaciones",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error ubicacion ${ubicacion.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -206,7 +205,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("id_ubicacion",trabajador.ubicacion)
             var result = db.insert("trabajadores",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error trabajador ${trabajador.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -232,7 +231,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("pregunta10",familia.p10)
             var result = db.insert("familias",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error familia ${familia.nombre}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -260,7 +259,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("situacion",equipamiento.situacion)
             var result = db.insert("equipamientos",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error Equipamiento ${equipamiento.id}", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }
@@ -301,7 +300,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("peticiones",revision.peticiones)
             var result = db.insert("revisiones",null,cv)
             if(result == -1.toLong()){
-                Toast.makeText(context,"Error en la insercion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
             }

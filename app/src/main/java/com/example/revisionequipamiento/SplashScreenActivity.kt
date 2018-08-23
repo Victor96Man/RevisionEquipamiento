@@ -36,8 +36,13 @@ class SplashScreenActivity : AppCompatActivity() {
             Timer().schedule(object : TimerTask() {
                 override fun run() {
                     if (networkInfo != null && networkInfo.isConnected) {
-                        startActivity(Intent(applicationContext, Login::class.java))
-                        finish()
+                        if(logeado()){
+                            startActivity(Intent(applicationContext, Principal::class.java))
+                            finish()
+                        }else{
+                            startActivity(Intent(applicationContext, Login::class.java))
+                            finish()
+                        }
                     }else{
                         if(logeado()){
                             startActivity(Intent(applicationContext, Principal::class.java))
@@ -89,8 +94,13 @@ class SplashScreenActivity : AppCompatActivity() {
                         var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                         var networkInfo = cm.activeNetworkInfo
                         if (networkInfo != null && networkInfo.isConnected) {
-                            startActivity(Intent(applicationContext, Login::class.java))
-                            finish()
+                            if(logeado()){
+                                startActivity(Intent(applicationContext, Principal::class.java))
+                                finish()
+                            }else{
+                                startActivity(Intent(applicationContext, Login::class.java))
+                                finish()
+                            }
                         }else{
                             if(logeado()){
                                 startActivity(Intent(applicationContext, Principal::class.java))
