@@ -15,7 +15,7 @@ val DATABASE_NAME = "revisiones"
             val CreateTableUser = "CREATE TABLE usuarios (" +
                     "id integer PRIMARY KEY ," +
                     "username VARCHAR(40)," +
-                    "password VARCHAR(40)," +
+                    "password VARCHAR(50)," +
                     "nombre VARCHAR(40)," +
                     "email VARCHAR(40))"
 
@@ -121,6 +121,7 @@ val DATABASE_NAME = "revisiones"
             db?.execSQL(CreateTableEquipamientos)
             db?.execSQL(CreateTableRevisiones)
 
+
         }
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -139,8 +140,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error usuario ${user.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertMarca(marca : Marca){
@@ -152,8 +154,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error marca ${marca.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertZona(zona : Zona){
@@ -165,8 +168,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error zona ${zona.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertUsuariosZona(usuZona : UsuariosZonas){
@@ -178,8 +182,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error usuzona ${usuZona.usuario} ${usuZona.zona}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertUbicacion(ubicacion : Ubicacion){
@@ -192,8 +197,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error ubicacion ${ubicacion.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertTrabajador(trabajador : Trabajador){
@@ -207,8 +213,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error trabajador ${trabajador.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertFamilia(familia : Familia){
@@ -233,8 +240,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error familia ${familia.nombre}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertEquipamiento(equipamiento : Equipamiento){
@@ -261,8 +269,9 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error Equipamiento ${equipamiento.id}", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 
         fun insertRevision(revision : Revision){
@@ -270,7 +279,7 @@ val DATABASE_NAME = "revisiones"
             var cv = ContentValues()
             cv.put("id",revision.id)
             cv.put("id_equipamiento",revision.equipamieno)
-            cv.put("id_usuario",revision.usuario)
+             cv.put("id_usuario",revision.usuario)
             cv.put("fecharevision",revision.fR)
             cv.put("estado",revision.estado)
             cv.put("enviado",revision.enviado)
@@ -302,7 +311,8 @@ val DATABASE_NAME = "revisiones"
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context,"Insercion Nice", Toast.LENGTH_SHORT).show()
+
             }
+            db.close()
         }
 }
