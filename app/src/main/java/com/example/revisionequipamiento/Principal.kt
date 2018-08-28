@@ -46,12 +46,6 @@ class Principal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
         setSupportActionBar(toolbar)
-        // OneSignal Initialization
-        OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init()
-        OneSignal.sendTag("user_id", devuelveId())
 
         //Animaciones
         show_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_show)
@@ -279,25 +273,6 @@ class Principal : AppCompatActivity() {
         db.close()
         AsyncTaskHandleJSON2().execute(url + "todo/$username/$contrasena")
         Toast.makeText(this,"Todo Actualizado", Toast.LENGTH_SHORT).show()
-    }
-
-    fun devuelveId():String {
-        //consulta a la bbdd
-        var id= ""
-        val bbddsqlite = BBDDSQLite(this@Principal)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor : Cursor
-        cusrsor = db.rawQuery("SELECT id FROM usuarios", null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                    id = cusrsor.getString(cusrsor.getColumnIndex("id"))
-
-                }
-            }
-        }
-        db.close()
-        return id
     }
 }
 

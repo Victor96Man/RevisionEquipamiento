@@ -1,11 +1,13 @@
 package com.example.revisionequipamiento
 
 import android.content.Intent
+import android.database.Cursor
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONArray
 import java.net.HttpURLConnection
@@ -13,6 +15,7 @@ import java.net.URL
 
 class Login : AppCompatActivity() {
     val url="http://emproacsa.mjhudesings.com/api/v1/"
+    var id=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -64,6 +67,7 @@ class Login : AppCompatActivity() {
             val jsonobject2 = usuarios.getJSONObject(0)
             val username = jsonobject2.getString("username")
             val contraseña = jsonobject2.getString("password")
+            id = jsonobject2.getString("id")
             val url2= url+"todo/$username/$contraseña"
             AsyncTaskHandleJSON2().execute(url2)
             startActivity(Intent(applicationContext, Principal::class.java))
@@ -86,6 +90,12 @@ class Login : AppCompatActivity() {
                 text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
             }finally {
                 connection.disconnect()
+                // OneSignal Initialization
+                OneSignal.startInit(this@Login)
+                        .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                        .unsubscribeWhenNotificationsAreDisabled(true)
+                        .init()
+                OneSignal.sendTag("user_id", id)
             }
             return text
         }
@@ -95,6 +105,25 @@ class Login : AppCompatActivity() {
             MyprogressBar.visibility = View.INVISIBLE
             ParseoFile(result, this@Login)
         }
+    }
+
+    fun devuelveId():String {
+        //consulta a la bbdd
+        var id= ""
+        val bbddsqlite = BBDDSQLite(this@Login)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor : Cursor
+        cusrsor = db.rawQuery("SELECT id FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    id = cusrsor.getString(cusrsor.getColumnIndex("id"))
+
+                }
+            }
+        }
+        db.close()
+        return id
     }
 
 }
