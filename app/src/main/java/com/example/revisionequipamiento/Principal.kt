@@ -46,6 +46,14 @@ class Principal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
         setSupportActionBar(toolbar)
+        // OneSignal Initialization
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init()
+        OneSignal.sendTag("user_id", devuelveId())
+
+        //Animaciones
         show_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_show)
         hide_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_hide)
         show_fab_2 = AnimationUtils.loadAnimation(application, R.anim.fab2_show)
@@ -63,11 +71,6 @@ class Principal : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        // OneSignal Initialization
-        OneSignal.startInit(this)
-                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                .unsubscribeWhenNotificationsAreDisabled(true)
-                .init()
         fab.setOnClickListener {
             if (FAB_Status == false) {
                 //Display FAB menu
@@ -133,7 +136,7 @@ class Principal : AppCompatActivity() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
+            rootView.section_label.text = ""
             return rootView
         }
 
@@ -245,6 +248,7 @@ class Principal : AppCompatActivity() {
                 db.delete(table, null, null)
             }
             db.close()
+            OneSignal.sendTag("user_id", "0")
             startActivity(Intent(applicationContext,SplashScreenActivity::class.java))
             finish()
         }
@@ -275,6 +279,25 @@ class Principal : AppCompatActivity() {
         db.close()
         AsyncTaskHandleJSON2().execute(url + "todo/$username/$contrasena")
         Toast.makeText(this,"Todo Actualizado", Toast.LENGTH_SHORT).show()
+    }
+
+    fun devuelveId():String {
+        //consulta a la bbdd
+        var id= ""
+        val bbddsqlite = BBDDSQLite(this@Principal)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor : Cursor
+        cusrsor = db.rawQuery("SELECT id FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    id = cusrsor.getString(cusrsor.getColumnIndex("id"))
+
+                }
+            }
+        }
+        db.close()
+        return id
     }
 }
 
