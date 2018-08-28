@@ -1,13 +1,11 @@
 package com.example.revisionequipamiento
 
-import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.example.revisionequipamiento.Clases.*
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONArray
 import java.net.HttpURLConnection
@@ -59,6 +57,7 @@ class Login : AppCompatActivity() {
         val codigo = jsonobject.getInt("codigo")
         if(codigo==2) {
             Toast.makeText(this@Login, "usuario o contraseña no validos", Toast.LENGTH_LONG).show()
+            MyprogressBar.visibility = View.INVISIBLE
         }
         if(codigo==1){
             val usuarios= jsonobject.getJSONArray("usuarios")
@@ -93,7 +92,7 @@ class Login : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            MyprogressBar.visibility = View.INVISIBLE;
+            MyprogressBar.visibility = View.INVISIBLE
             ParseoFile(result, this@Login)
         }
     }

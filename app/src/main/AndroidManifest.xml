@@ -25,8 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Principal" />
-        <activity android:theme="@style/NoActionBarTheme" android:name=".Login"></activity>
+        <activity
+            android:name=".Principal"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Login"
+            android:theme="@style/NoActionBarTheme" />
     </application>
 
 </manifest>
