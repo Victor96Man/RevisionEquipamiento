@@ -107,23 +107,4 @@ class Login : AppCompatActivity() {
         }
     }
 
-    fun devuelveId():String {
-        //consulta a la bbdd
-        var id= ""
-        val bbddsqlite = BBDDSQLite(this@Login)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor : Cursor
-        cusrsor = db.rawQuery("SELECT id FROM usuarios", null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                    id = cusrsor.getString(cusrsor.getColumnIndex("id"))
-
-                }
-            }
-        }
-        db.close()
-        return id
-    }
-
 }

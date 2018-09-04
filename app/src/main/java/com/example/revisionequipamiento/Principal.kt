@@ -1,29 +1,27 @@
 package com.example.revisionequipamiento
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.os.AsyncTask
-import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-
+import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.onesignal.OneSignal
-
 import kotlinx.android.synthetic.main.activity_principal.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.frame_fab.*
 import java.net.HttpURLConnection
 import java.net.URL
@@ -40,12 +38,20 @@ class Principal : AppCompatActivity() {
     var hide_fab_2 : Animation? = null
     var show_fab_3 : Animation? = null
     var hide_fab_3 : Animation? = null
-    private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
-        setSupportActionBar(toolbar)
+        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+
+        viewpager.adapter = pagerAdapter
+        tab_layout.setupWithViewPager(viewpager)
+
+        for (i in 0 until tab_layout.tabCount) {
+            val tab = tab_layout.getTabAt(i)
+            tab!!.customView = pagerAdapter.getTabView(i)
+        }
 
         //Animaciones
         show_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_show)
@@ -55,15 +61,6 @@ class Principal : AppCompatActivity() {
         show_fab_3 = AnimationUtils.loadAnimation(application, R.anim.fab3_show)
         hide_fab_3 = AnimationUtils.loadAnimation(application, R.anim.fab3_hide)
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-
-        // Set up the ViewPager with the sections adapter.
-        container.adapter = mSectionsPagerAdapter
-
-        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         fab.setOnClickListener {
             if (FAB_Status == false) {
@@ -90,70 +87,6 @@ class Principal : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-
-    /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        override fun getItem(position: Int): Fragment {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1)
-        }
-
-        override fun getCount(): Int {
-            // Show 3 total pages.
-            return 3
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    class PlaceholderFragment : Fragment() {
-
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-            rootView.section_label.text = ""
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
-            }
-        }
-    }
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
         override fun doInBackground(vararg url: String?): String {
             var text : String
@@ -273,6 +206,38 @@ class Principal : AppCompatActivity() {
         db.close()
         AsyncTaskHandleJSON2().execute(url + "todo/$username/$contrasena")
         Toast.makeText(this,"Todo Actualizado", Toast.LENGTH_SHORT).show()
+    }
+
+    internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {
+
+        var tabTitles = arrayOf("First Tab", "Second Tab", "Third Tab")
+
+        override fun getCount(): Int {
+            return tabTitles.size
+        }
+
+        override fun getItem(position: Int): Fragment? {
+
+            when (position) {
+                0 -> return BlankFragmentK()
+                1 -> return WhiteFragmentK()
+                2 -> return BlankFragmentK()
+            }
+
+            return null
+        }
+
+
+        override fun getPageTitle(position: Int): CharSequence {
+            return tabTitles[position]
+        }
+
+        fun getTabView(position: Int): View {
+            val tab = LayoutInflater.from(this@Principal).inflate(R.layout.custom_tab, null)
+            val tv = tab.findViewById(R.id.custom_text) as TextView
+            tv.text = tabTitles[position]
+            return tab
+        }
     }
 }
 
