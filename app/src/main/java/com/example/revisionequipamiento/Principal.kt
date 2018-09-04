@@ -6,11 +6,9 @@ import android.database.Cursor
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Menu
@@ -20,6 +18,9 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.example.revisionequipamiento.Fragments.NoEnviado
+import com.example.revisionequipamiento.Fragments.PmaRevisiones
+import com.example.revisionequipamiento.Fragments.Reparacion
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
@@ -210,7 +211,7 @@ class Principal : AppCompatActivity() {
 
     internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {
 
-        var tabTitles = arrayOf("First Tab", "Second Tab", "Third Tab")
+        var tabTitles = arrayOf("Pma. Revisiones", "Reparacion", "No Enviado")
 
         override fun getCount(): Int {
             return tabTitles.size
@@ -219,9 +220,9 @@ class Principal : AppCompatActivity() {
         override fun getItem(position: Int): Fragment? {
 
             when (position) {
-                0 -> return BlankFragmentK()
-                1 -> return WhiteFragmentK()
-                2 -> return BlankFragmentK()
+                0 -> return PmaRevisiones()
+                1 -> return Reparacion()
+                2 -> return NoEnviado()
             }
 
             return null
