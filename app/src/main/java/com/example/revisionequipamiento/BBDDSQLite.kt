@@ -4,11 +4,12 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Environment
 import android.widget.Toast
 import com.example.revisionequipamiento.Clases.*
-
+val directorioexterno = Environment.getExternalStorageDirectory()
+val DATABASE_NAME = "$directorioexterno/revisiones"
 val VERSIONBBDD = 1
-val DATABASE_NAME = "revisiones"
 
     class BBDDSQLite(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null, VERSIONBBDD) {
         override fun onCreate(db: SQLiteDatabase?) {
@@ -69,6 +70,7 @@ val DATABASE_NAME = "revisiones"
                     "modelo VARCHAR(40),"+
                     "fecha_compra DATE,"+
                     "fecha_puesta_funcionamiento DATE,"+
+                    "fecha_proxima_revision DATE,"+
                     "fecha_revision DATE,"+
                     "fecha_caducidad DATE,"+
                     "fecha_baja DATE,"+
@@ -125,7 +127,7 @@ val DATABASE_NAME = "revisiones"
         }
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         }
 
         fun insertUser(user : Usuario){
@@ -256,6 +258,7 @@ val DATABASE_NAME = "revisiones"
             cv.put("modelo",equipamiento.modelo)
             cv.put("fecha_compra",equipamiento.fechaCo)
             cv.put("fecha_puesta_funcionamiento",equipamiento.fechaP)
+            cv.put("fecha_proxima_revision",equipamiento.fechaPR)
             cv.put("fecha_revision",equipamiento.fechaR)
             cv.put("fecha_caducidad",equipamiento.fechaCa)
             cv.put("fecha_baja",equipamiento.fechaB)

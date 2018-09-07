@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.example.revisionequipamiento.Clases.EquipamientoItem
 import com.example.revisionequipamiento.R
 
-class MyAdapterK(private val mDataset: ArrayList<EquipamientoItem>) : RecyclerView.Adapter<MyAdapterK.MyViewHolder>() {
+class MyAdapterCards(private val mDataset: ArrayList<EquipamientoItem>) : RecyclerView.Adapter<MyAdapterCards.MyViewHolder>() {
 
     class MyViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var mCardView: CardView

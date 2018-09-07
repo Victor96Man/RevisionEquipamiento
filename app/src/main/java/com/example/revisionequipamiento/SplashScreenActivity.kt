@@ -29,25 +29,35 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var networkInfo = cm.activeNetworkInfo
-        val bbddsqlite = BBDDSQLite(this)
-        val bd = bbddsqlite.writableDatabase
-        bd.close()
+
         if (mayRequestStoragePermission()) {
             Timer().schedule(object : TimerTask() {
                 override fun run() {
                     if (networkInfo != null && networkInfo.isConnected) {
                         if(logeado()){
+                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                            val bd = bbddsqlite.writableDatabase
+                            bd.close()
                             startActivity(Intent(applicationContext, Principal::class.java))
                             finish()
                         }else{
+                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                            val bd = bbddsqlite.writableDatabase
+                            bd.close()
                             startActivity(Intent(applicationContext, Login::class.java))
                             finish()
                         }
                     }else{
                         if(logeado()){
+                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                            val bd = bbddsqlite.writableDatabase
+                            bd.close()
                             startActivity(Intent(applicationContext, Principal::class.java))
                             finish()
                         }else{
+                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                            val bd = bbddsqlite.writableDatabase
+                            bd.close()
                             startActivity(Intent(applicationContext, Login::class.java))
                             finish()
                         }
@@ -95,9 +105,15 @@ class SplashScreenActivity : AppCompatActivity() {
                         var networkInfo = cm.activeNetworkInfo
                         if (networkInfo != null && networkInfo.isConnected) {
                             if(logeado()){
+                                val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                                val bd = bbddsqlite.writableDatabase
+                                bd.close()
                                 startActivity(Intent(applicationContext, Principal::class.java))
                                 finish()
                             }else{
+                                val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
+                                val bd = bbddsqlite.writableDatabase
+                                bd.close()
                                 startActivity(Intent(applicationContext, Login::class.java))
                                 finish()
                             }

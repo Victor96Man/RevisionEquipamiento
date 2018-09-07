@@ -9,6 +9,7 @@ class Equipamiento {
     var modelo :String =""
     var fechaCo :String =""
     var fechaP :String =""
+    var fechaPR :String =""
     var fechaR :String =""
     var fechaCa :String =""
     var fechaB :String =""
@@ -19,7 +20,7 @@ class Equipamiento {
     var bitacora :String =""
     var situacion :String =""
 
-    constructor(id: String, familia: Int, marca: Int, ubicacion: Int, zona: Int, modelo: String, fechaCo: String, fechaP: String, fechaR: String, fechaCa: String, fechaB: String, RN: String, estado: Int, id_reemplaza: String, trabajador: Int, bitacora: String, situacion: String) {
+    constructor(id: String, familia: Int, marca: Int, ubicacion: Int, zona: Int, modelo: String, fechaCo: String, fechaP: String,fechaPR: String, fechaR: String, fechaCa: String, fechaB: String, RN: String, estado: Int, id_reemplaza: String, trabajador: Int, bitacora: String, situacion: String) {
         this.id = id
         this.familia = familia
         this.marca = marca
@@ -28,6 +29,7 @@ class Equipamiento {
         this.modelo = modelo
         this.fechaCo = fechaCo
         this.fechaP = fechaP
+        this.fechaPR = fechaPR
         this.fechaR = fechaR
         this.fechaCa = fechaCa
         this.fechaB = fechaB

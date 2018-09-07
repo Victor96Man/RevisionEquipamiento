@@ -8,7 +8,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.revisionequipamiento.Adapter.MyAdapterK
+import com.example.revisionequipamiento.Adapter.MyAdapterCards
+import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
 import com.example.revisionequipamiento.BBDDSQLite
 import com.example.revisionequipamiento.Clases.EquipamientoItem
 import com.example.revisionequipamiento.R
@@ -31,7 +32,7 @@ class PmaRevisiones : Fragment() {
         val bbddsqlite = BBDDSQLite(requireContext())
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=0", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=0  AND t1.fecha_proxima_revision <= date('now','+7 day') AND t1.n_serie not in (SELECT id_equipamiento FROM revisiones) AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -41,20 +42,31 @@ class PmaRevisiones : Fragment() {
                     val id_equipamiento = cusrsor.getString(cusrsor.getColumnIndex("n_serie"))
                     val familia = cusrsor.getString(cusrsor.getColumnIndex("nombrefamilia"))
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
-                    val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_revision"))
+                    val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
                     if (equipos != null) {
                         equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha))
                     }
                 }while (cusrsor.moveToNext())
+
+                db.close()
+
+                val adapter = MyAdapterCards(equipos!!)
+                rv.adapter = adapter
+
+                val llm = LinearLayoutManager(activity)
+                rv.layoutManager = llm
+            }else{
+
+                val adapter = MyAdapterEmpty("No hay próximas revisiones.")
+                rv.adapter = adapter
+
+                val llm = LinearLayoutManager(activity)
+                rv.layoutManager = llm
             }
+        }else{
+
         }
-        db.close()
 
-        val adapter = MyAdapterK(equipos!!)
-        rv.adapter = adapter
-
-        val llm = LinearLayoutManager(activity)
-        rv.layoutManager = llm
 
         return rootView
     }

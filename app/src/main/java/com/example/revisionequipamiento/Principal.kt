@@ -104,6 +104,14 @@ class Principal : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             ParseoFile(result, this@Principal)
+            val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+            viewpager.adapter = pagerAdapter
+            tab_layout.setupWithViewPager(viewpager)
+
+            for (i in 0 until tab_layout.tabCount) {
+                val tab = tab_layout.getTabAt(i)
+                tab!!.customView = pagerAdapter.getTabView(i)
+            }
         }
     }
 
@@ -211,7 +219,7 @@ class Principal : AppCompatActivity() {
 
     internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {
 
-        var tabTitles = arrayOf("Pma. Revisiones", "Reparacion", "No Enviado")
+        var tabTitles = arrayOf("Pma. Revisiones", "Reparación", "No Enviado")
 
         override fun getCount(): Int {
             return tabTitles.size

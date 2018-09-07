@@ -19,7 +19,6 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         entrar_login.setOnClickListener{
             var username = username_login.text.toString()
             var contrasena = contrasena_login.text.toString()
@@ -70,8 +69,7 @@ class Login : AppCompatActivity() {
             id = jsonobject2.getString("id")
             val url2= url+"todo/$username/$contraseña"
             AsyncTaskHandleJSON2().execute(url2)
-            startActivity(Intent(applicationContext, Principal::class.java))
-            finish()
+
         }
     }
 
@@ -104,6 +102,8 @@ class Login : AppCompatActivity() {
             super.onPostExecute(result)
             MyprogressBar.visibility = View.INVISIBLE
             ParseoFile(result, this@Login)
+            startActivity(Intent(applicationContext, Principal::class.java))
+            finish()
         }
     }
 

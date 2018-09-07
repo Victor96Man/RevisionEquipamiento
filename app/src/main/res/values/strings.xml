@@ -13,5 +13,6 @@
     <string name="tab_text_2">Reparación</string>
     <string name="action_settings">Settings</string>
     <string name="section_format"></string>
+    <string name="emptyDatas">No hay equipaminetos pendientes.</string>
 
 </resources>
