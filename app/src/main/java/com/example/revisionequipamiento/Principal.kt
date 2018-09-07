@@ -29,7 +29,6 @@ import java.net.URL
 
 class Principal : AppCompatActivity() {
 
-    var url="http://emproacsa.mjhudesings.com/api/v1/"
     var username=""
     var contrasena=""
     private var FAB_Status = false
@@ -112,6 +111,7 @@ class Principal : AppCompatActivity() {
                 val tab = tab_layout.getTabAt(i)
                 tab!!.customView = pagerAdapter.getTabView(i)
             }
+            Toast.makeText(this@Principal,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -173,9 +173,9 @@ class Principal : AppCompatActivity() {
     fun CerrarSesion(){
 
         val builder = AlertDialog.Builder(this@Principal)
-        builder.setTitle("¿Cerrar Sesión?")
-        builder.setMessage("Los datos almacenados en su teléfono se borraran.")
-        builder.setPositiveButton("Aceptar") {
+        builder.setTitle(getString(R.string.cerrarSesion))
+        builder.setMessage(getString(R.string.cerrarSesionInfo))
+        builder.setPositiveButton(getString(R.string.aceptar)) {
             dialog, which ->
             val bbddsqlite = BBDDSQLite(this)
             val db = bbddsqlite.writableDatabase
@@ -184,11 +184,11 @@ class Principal : AppCompatActivity() {
                 db.delete(table, null, null)
             }
             db.close()
-            OneSignal.sendTag("user_id", "0")
+            OneSignal.sendTag(getString(R.string.user_id), "0")
             startActivity(Intent(applicationContext,SplashScreenActivity::class.java))
             finish()
         }
-        builder.setNegativeButton("Cancelar") { dialog, which ->
+        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, which ->
             dialog.dismiss()
         }
         builder.show()
@@ -213,13 +213,13 @@ class Principal : AppCompatActivity() {
             db.delete(table, null, null)
         }
         db.close()
-        AsyncTaskHandleJSON2().execute(url + "todo/$username/$contrasena")
-        Toast.makeText(this,"Todo Actualizado", Toast.LENGTH_SHORT).show()
+        AsyncTaskHandleJSON2().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
+
     }
 
     internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {
 
-        var tabTitles = arrayOf("Pma. Revisiones", "Reparación", "No Enviado")
+        var tabTitles = arrayOf(getString(R.string.tab_text_1), getString(R.string.tab_text_2), getString(R.string.tab_text_3))
 
         override fun getCount(): Int {
             return tabTitles.size

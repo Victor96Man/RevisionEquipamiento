@@ -55,7 +55,7 @@ class Reparacion : Fragment() {
                 rv.layoutManager = llm
             }else{
 
-                val adapter = MyAdapterEmpty("Ningún equipamiento en reparación.")
+                val adapter = MyAdapterEmpty(getString(R.string.emptyReparacion))
                 rv.adapter = adapter
 
                 val llm = LinearLayoutManager(activity)

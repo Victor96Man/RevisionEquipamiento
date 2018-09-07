@@ -14,7 +14,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class Login : AppCompatActivity() {
-    val url="http://emproacsa.mjhudesings.com/api/v1/"
     var id=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +57,7 @@ class Login : AppCompatActivity() {
         val jsonobject = jsonarray.getJSONObject(0)
         val codigo = jsonobject.getInt("codigo")
         if(codigo==2) {
-            Toast.makeText(this@Login, "usuario o contraseña no validos", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@Login, getString(R.string.loginError), Toast.LENGTH_LONG).show()
             MyprogressBar.visibility = View.INVISIBLE
         }
         if(codigo==1){
@@ -67,16 +66,16 @@ class Login : AppCompatActivity() {
             val username = jsonobject2.getString("username")
             val contraseña = jsonobject2.getString("password")
             id = jsonobject2.getString("id")
-            val url2= url+"todo/$username/$contraseña"
-            AsyncTaskHandleJSON2().execute(url2)
+            val urlTodo= "${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contraseña"
+            AsyncTaskHandleJSON2().execute(urlTodo)
 
         }
     }
 
 
     fun soyUsuario(username :String, contrasena :String){
-        val url1= url+"inicio/$username/$contrasena"
-        AsyncTaskHandleJSON().execute(url1)
+        val urlInicio= "${getString(R.string.URL)}${getString(R.string.URLinicio)}$username/$contrasena"
+        AsyncTaskHandleJSON().execute(urlInicio)
     }
 
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
@@ -93,7 +92,7 @@ class Login : AppCompatActivity() {
                         .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                         .unsubscribeWhenNotificationsAreDisabled(true)
                         .init()
-                OneSignal.sendTag("user_id", id)
+                OneSignal.sendTag(getString(R.string.user_id), id)
             }
             return text
         }

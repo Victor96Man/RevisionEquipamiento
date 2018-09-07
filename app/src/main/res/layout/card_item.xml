@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Nº serie:" />
+                        android:text="@string/nserieCard" />
 
                     <TextView
                         android:id="@+id/n_serie_tx"
@@ -60,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Familia:" />
+                        android:text="@string/familiaCard" />
 
                     <TextView
                         android:id="@+id/familia_tx"
@@ -88,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Ubicación:" />
+                        android:text="@string/ubicacionCard" />
 
                     <TextView
                         android:id="@+id/ubicacion_tx"
@@ -108,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Fecha:" />
+                        android:text="@string/fechaCard" />
 
                     <TextView
                         android:id="@+id/fecha_tx"

@@ -54,8 +54,7 @@ class NoEnviado : Fragment() {
                 val llm = LinearLayoutManager(activity)
                 rv.layoutManager = llm
             }else{
-
-                val adapter = MyAdapterEmpty("Todas las revisiones están enviadas.")
+                val adapter = MyAdapterEmpty(getString(R.string.emptyEnviado))
                 rv.adapter = adapter
 
                 val llm = LinearLayoutManager(activity)

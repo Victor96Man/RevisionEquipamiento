@@ -33,7 +33,7 @@ class SplashScreenActivity : AppCompatActivity() {
         if (mayRequestStoragePermission()) {
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                    if (networkInfo != null && networkInfo.isConnected) {
+
                         if(logeado()){
                             val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                             val bd = bbddsqlite.writableDatabase
@@ -47,23 +47,9 @@ class SplashScreenActivity : AppCompatActivity() {
                             startActivity(Intent(applicationContext, Login::class.java))
                             finish()
                         }
-                    }else{
-                        if(logeado()){
-                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
-                            val bd = bbddsqlite.writableDatabase
-                            bd.close()
-                            startActivity(Intent(applicationContext, Principal::class.java))
-                            finish()
-                        }else{
-                            val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
-                            val bd = bbddsqlite.writableDatabase
-                            bd.close()
-                            startActivity(Intent(applicationContext, Login::class.java))
-                            finish()
-                        }
+
                     }
-                }
-            }, 2000)
+                }, 2000)
         }else{
 
         }
@@ -81,7 +67,7 @@ class SplashScreenActivity : AppCompatActivity() {
             return true
 
         if (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE) || shouldShowRequestPermissionRationale(INTERNET) || shouldShowRequestPermissionRationale(CAMERA) || shouldShowRequestPermissionRationale(ACCESS_NETWORK_STATE)) {
-            Snackbar.make(constraintLayout, "Los permisos son necesarios para poder usar la aplicación",
+            Snackbar.make(constraintLayout, R.string.permisoInfo,
                     Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, object : View.OnClickListener {
                 @TargetApi(Build.VERSION_CODES.M)
                 override fun onClick(v: View) {
@@ -103,7 +89,6 @@ class SplashScreenActivity : AppCompatActivity() {
                     override fun run() {
                         var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                         var networkInfo = cm.activeNetworkInfo
-                        if (networkInfo != null && networkInfo.isConnected) {
                             if(logeado()){
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
@@ -114,19 +99,10 @@ class SplashScreenActivity : AppCompatActivity() {
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
                                 bd.close()
-                                startActivity(Intent(applicationContext, Login::class.java))
-                                finish()
-                            }
-                        }else{
-                            if(logeado()){
-                                startActivity(Intent(applicationContext, Principal::class.java))
-                                finish()
-                            }else{
                                 startActivity(Intent(applicationContext, Login::class.java))
                                 finish()
                             }
                         }
-                    }
                 }, 3000)
             } else {
                 showExplanation()
@@ -136,9 +112,9 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun showExplanation() {
         val builder = AlertDialog.Builder(this@SplashScreenActivity)
-        builder.setTitle("Permisos denegados")
-        builder.setMessage("Para usar las funciones de la app necesitas aceptar los permisos")
-        builder.setPositiveButton("Aceptar") {
+        builder.setTitle(getString(R.string.permisoD))
+        builder.setMessage(getString(R.string.permisoInfo))
+        builder.setPositiveButton(getString(R.string.aceptar)) {
             dialog, which ->
             val intent = Intent()
             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -147,7 +123,7 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        builder.setNegativeButton("Cancelar") { dialog, which ->
+        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, which ->
             dialog.dismiss()
             finish()
         }

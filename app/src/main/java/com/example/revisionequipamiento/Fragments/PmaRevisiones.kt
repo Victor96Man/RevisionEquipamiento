@@ -57,7 +57,7 @@ class PmaRevisiones : Fragment() {
                 rv.layoutManager = llm
             }else{
 
-                val adapter = MyAdapterEmpty("No hay próximas revisiones.")
+                val adapter = MyAdapterEmpty(getString(R.string.emptyPma))
                 rv.adapter = adapter
 
                 val llm = LinearLayoutManager(activity)
