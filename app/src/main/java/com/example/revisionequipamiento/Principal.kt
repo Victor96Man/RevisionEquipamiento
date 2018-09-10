@@ -43,6 +43,7 @@ class Principal : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
+        getSupportActionBar()!!.setElevation(0F)
         val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
 
         viewpager.adapter = pagerAdapter

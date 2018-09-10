@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento.Fragments
 
+import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,7 +18,6 @@ import com.example.revisionequipamiento.R
 class NoEnviado : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +48,7 @@ class NoEnviado : Fragment() {
                 }while (cusrsor.moveToNext())
                 db.close()
 
-                val adapter = MyAdapterCards(equipos!!)
+                val adapter = MyAdapterCards(requireContext(),equipos!!)
                 rv.adapter = adapter
 
                 val llm = LinearLayoutManager(activity)

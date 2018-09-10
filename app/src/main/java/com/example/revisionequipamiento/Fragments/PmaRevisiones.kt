@@ -50,7 +50,7 @@ class PmaRevisiones : Fragment() {
 
                 db.close()
 
-                val adapter = MyAdapterCards(equipos!!)
+                val adapter = MyAdapterCards(requireContext(),equipos!!)
                 rv.adapter = adapter
 
                 val llm = LinearLayoutManager(activity)
