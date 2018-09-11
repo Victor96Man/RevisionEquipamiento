@@ -6,6 +6,7 @@ import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_login.*
@@ -31,7 +32,9 @@ class Login : AppCompatActivity() {
 
         override fun onPreExecute() {
             super.onPreExecute()
-            MyprogressBar.visibility = View.VISIBLE;
+            MyprogressBar.visibility = View.VISIBLE
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
 
         override fun doInBackground(vararg url: String?): String {
@@ -59,6 +62,7 @@ class Login : AppCompatActivity() {
         if(codigo==2) {
             Toast.makeText(this@Login, getString(R.string.loginError), Toast.LENGTH_LONG).show()
             MyprogressBar.visibility = View.INVISIBLE
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
         if(codigo==1){
             val usuarios= jsonobject.getJSONArray("usuarios")

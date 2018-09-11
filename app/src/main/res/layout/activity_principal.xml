@@ -35,8 +35,18 @@
         app:fabSize="normal" />
 
     <include
+        android:id="@+id/include"
         layout="@layout/frame_fab"
         tools:ignore="MissingConstraints" />
+
+    <ProgressBar
+        android:id="@+id/MyprogressBar2"
+        style="?android:attr/progressBarStyle"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="right|center" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -27,8 +27,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var networkInfo = cm.activeNetworkInfo
+
 
         if (mayRequestStoragePermission()) {
             Timer().schedule(object : TimerTask() {
@@ -87,8 +86,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
-                        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                        var networkInfo = cm.activeNetworkInfo
                             if(logeado()){
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
@@ -115,7 +112,7 @@ class SplashScreenActivity : AppCompatActivity() {
         builder.setTitle(getString(R.string.permisoD))
         builder.setMessage(getString(R.string.permisoInfo))
         builder.setPositiveButton(getString(R.string.aceptar)) {
-            dialog, which ->
+            _, _ ->
             val intent = Intent()
             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             val uri = Uri.fromParts("package", packageName, null)
@@ -123,12 +120,13 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, which ->
+        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
             dialog.dismiss()
             finish()
         }
 
-        builder.show()
+        val dialog =builder.create()
+        dialog.show()
     }
 
     private fun logeado():Boolean {

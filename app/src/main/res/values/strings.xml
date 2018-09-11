@@ -2,6 +2,8 @@
     <string name="app_name">Revision Equipamiento</string>
     <string name="permisoD">Permisos denegados</string>
     <string name="permisoInfo">Para usar las funciones de la app necesitas aceptar los permisos.</string>
+    <string name="noInternet">No tienes Internet</string>
+    <string name="noInternetInfo">No puedes enviar o recibir datos si no tienes internet en tu dispositivo.</string>
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="URL">http://emproacsa.mjhudesings.com/</string>
@@ -14,9 +16,9 @@
     <string name="entrar">Entrar</string>
     <string name="loginError">Usuario o contraseña no válidos</string>
     <string name="title_activity_main">Revisiones</string>
-    <string name="tab_text_1">Pmas. Revisiones</string>
+    <string name="tab_text_1">Próximas</string>
     <string name="tab_text_2">Reparación</string>
-    <string name="tab_text_3">No Enviados</string>
+    <string name="tab_text_3">No Enviadas</string>
     <string name="cerrarSesion">¿Cerrar Sesion?</string>
     <string name="cerrarSesionInfo">Los datos almacenados en su teléfono se borrarán.</string>
     <string name="action_settings">Ajustes</string>

@@ -3,6 +3,7 @@ package com.example.revisionequipamiento
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
@@ -75,7 +77,7 @@ class Principal : AppCompatActivity() {
             }
         }
 
-        fab_1.setOnClickListener(View.OnClickListener {  })
+        fab_1.setOnClickListener(View.OnClickListener { BuscarEquipa() })
         fab_2.setOnClickListener(View.OnClickListener {ActualizarBD()})
         fab_3.setOnClickListener(View.OnClickListener {CerrarSesion()})
 
@@ -89,6 +91,12 @@ class Principal : AppCompatActivity() {
     }
 
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            MyprogressBar2.visibility = View.VISIBLE
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
         override fun doInBackground(vararg url: String?): String {
             var text : String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
@@ -112,6 +120,8 @@ class Principal : AppCompatActivity() {
                 val tab = tab_layout.getTabAt(i)
                 tab!!.customView = pagerAdapter.getTabView(i)
             }
+            MyprogressBar2.visibility = View.INVISIBLE
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             Toast.makeText(this@Principal,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
         }
     }
@@ -172,12 +182,11 @@ class Principal : AppCompatActivity() {
     }
 
     fun CerrarSesion(){
-
         val builder = AlertDialog.Builder(this@Principal)
         builder.setTitle(getString(R.string.cerrarSesion))
         builder.setMessage(getString(R.string.cerrarSesionInfo))
         builder.setPositiveButton(getString(R.string.aceptar)) {
-            dialog, which ->
+            _, _ ->
             val bbddsqlite = BBDDSQLite(this)
             val db = bbddsqlite.writableDatabase
             val tables = arrayOf<String>("usuarios","marcas","zonas","trabajadores","usuariosZonas","familias","equipamientos","revisiones","ubicaciones")
@@ -189,33 +198,50 @@ class Principal : AppCompatActivity() {
             startActivity(Intent(applicationContext,SplashScreenActivity::class.java))
             finish()
         }
-        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, which ->
-            dialog.dismiss()
+        builder.setNegativeButton(getString(R.string.cancelar)) { _,_ ->
         }
-        builder.show()
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     fun ActualizarBD() {
-        val bbddsqlite = BBDDSQLite(this)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                    username = cusrsor.getString(cusrsor.getColumnIndex("username"))
-                    contrasena = cusrsor.getString(cusrsor.getColumnIndex("password"))
+        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var networkInfo = cm.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected) {
+            val bbddsqlite = BBDDSQLite(this)
+            val db = bbddsqlite.writableDatabase
+            val cusrsor: Cursor
+            cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                        username = cusrsor.getString(cusrsor.getColumnIndex("username"))
+                        contrasena = cusrsor.getString(cusrsor.getColumnIndex("password"))
+                    }
                 }
+                cusrsor.close()
             }
-            cusrsor.close()
-        }
-        val tables = arrayOf<String>("usuarios", "marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "revisiones", "ubicaciones")
-        for (table in tables) {
-            db.delete(table, null, null)
-        }
-        db.close()
-        AsyncTaskHandleJSON2().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
+            val tables = arrayOf<String>("usuarios", "marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "revisiones", "ubicaciones")
+            for (table in tables) {
+                db.delete(table, null, null)
+            }
+            db.close()
+            AsyncTaskHandleJSON2().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
+        }else{
+            val builder = AlertDialog.Builder(this@Principal)
+            builder.setTitle(getString(R.string.noInternet))
+            builder.setMessage(getString(R.string.noInternetInfo))
+            builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
 
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+    }
+
+    fun  BuscarEquipa(){
+        val intent = Intent(this@Principal,BusquedaActivity::class.java)
+        startActivity(intent)
     }
 
     internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {
@@ -247,6 +273,18 @@ class Principal : AppCompatActivity() {
             val tv = tab.findViewById(R.id.custom_text) as TextView
             tv.text = tabTitles[position]
             return tab
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+        viewpager.adapter = pagerAdapter
+        tab_layout.setupWithViewPager(viewpager)
+
+        for (i in 0 until tab_layout.tabCount) {
+            val tab = tab_layout.getTabAt(i)
+            tab!!.customView = pagerAdapter.getTabView(i)
         }
     }
 }
