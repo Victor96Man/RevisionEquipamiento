@@ -24,6 +24,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.example.revisionequipamiento"
         manifestPlaceholders = [onesignal_app_id               : 'a9b09b71-7f5b-4cf4-a378-cdc50a0f314d',

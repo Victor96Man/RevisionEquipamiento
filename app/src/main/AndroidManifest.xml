@@ -33,9 +33,10 @@
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".EquipaminetoActivity"
-            android:label="@string/title_activity_equipamineto"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusquedaActivity"></activity>
+        <activity android:name=".BusquedaActivity"
+            android:label="@string/title_activity_Busqueda"
+            />
     </application>
 
 </manifest>
