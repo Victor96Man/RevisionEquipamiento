@@ -30,14 +30,9 @@ class BusquedaActivity : AppCompatActivity() {
 
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(inflater.inflate(R.layout.filtro_dialog, null))
-                    // Add action buttons
 
-                    .setPositiveButton(R.string.aceptar, DialogInterface.OnClickListener { _, _ ->
-                            Toast.makeText(this@BusquedaActivity, flt_nserie_edt?.text, Toast.LENGTH_LONG).show()
-                    })
-                    .setNegativeButton(R.string.cancelar, DialogInterface.OnClickListener { _, _ ->
 
-                    })
+
             val dialog =builder.create()
             dialog.show()
         }

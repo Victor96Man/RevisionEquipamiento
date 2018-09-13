@@ -9,6 +9,7 @@
     <string name="URL">http://emproacsa.mjhudesings.com/</string>
     <string name="URLinicio">slim/login</string>
     <string name="URLtodo">slim/todo/</string>
+    <string name="URLinsert">slim/insertrevision</string>
     <string name="user_id">user_id</string>
     <string name="login">Log In</string>
     <string name="usuario">Usuario</string>
