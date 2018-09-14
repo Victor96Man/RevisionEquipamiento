@@ -40,5 +40,13 @@ Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices
     <string name="familia">Familia:</string>
     <string name="filtro">Filtros</string>
     <string name="nofiltros">No se han encontrado equipamientos que concuerden.</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="nserieHint">Nºserie</string>
+    <string name="n_serie">Nºserie</string>
+    <string name="spnr_familia">----Familia----</string>
+    <string name="spnr_zona">----Zona----</string>
+    <string name="spnr_ubicacion">----Ubicacion----</string>
+    <string name="spnr_trabajador">----Trabajador----</string>
+    <string name="spnr_marca">----Marca----</string>
 
 </resources>

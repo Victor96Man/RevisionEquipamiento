@@ -10,34 +10,210 @@ import com.example.revisionequipamiento.Clases.EquipamientoItem
 import kotlinx.android.synthetic.main.activity_busqueda.*
 import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
 import kotlinx.android.synthetic.main.filtro_dialog.*
+import java.lang.reflect.Array
 
 
 class BusquedaActivity : AppCompatActivity() {
 
+    var nserie :String?= null
+    var familia :String?= null
+    var zona :String?= null
+    var ubicacion :String?= null
+    var trabajador :String?= null
+    var marca :String?= null
+    var whereNserie :String=""
+    var whereFamilia :String=""
+    var whereZona :String=""
+    var whereUbicacion :String=""
+    var whereTrabajador :String=""
+    var whereMarca :String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
         BuscarEquipamiento()
-        fab_2.setOnClickListener { view ->
-            val builder = AlertDialog.Builder(this@BusquedaActivity)
-            // Get the layout inflater
-            val inflater = this@BusquedaActivity.getLayoutInflater()
-            builder.setTitle(getString(R.string.filtro))
-            // Inflate and set the layout for the dialog
 
-            // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.filtro_dialog, null))
+        fab_2.setOnClickListener { _ ->
 
 
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.filtro_dialog, null)
+            //AlertDialogBuilder
+            val mBuilder = AlertDialog.Builder(this)
+                    .setView(mDialogView)
+                    .setTitle("Filtros")
+            //show dialog
+            val  mAlertDialog = mBuilder.show()
+            //---------------------------------------SPINNER--FAMILIA----------------------------------------------------
+            mAlertDialog.flt_familia_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarFamilias())
 
-            val dialog =builder.create()
-            dialog.show()
+            //---------------------------------------SPINNER--ZONA----------------------------------------------------
+            mAlertDialog.flt_zona_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarZonas())
+            mAlertDialog.flt_zona_spnr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    mAlertDialog.flt_ubicacion_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+                }
+            }
+            //---------------------------------------SPINNER--UBICACION----------------------------------------------------
+            mAlertDialog.flt_ubicacion_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+            mAlertDialog.flt_ubicacion_spnr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+            }
+            }
+            //---------------------------------------SPINNER--TRABAJADOR----------------------------------------------------
+            mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+            //---------------------------------------SPINNER--MARCA----------------------------------------------------
+            mAlertDialog.flt_marca_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarMarcas())
+            //--------------------------------------------APLICAR--------------------------------------------------
+            mAlertDialog.flt_aplicar_bt.setOnClickListener{
+                nserie= mAlertDialog.flt_nserie_edit.text.toString()
+                familia = mAlertDialog.flt_familia_spnr.selectedItem.toString()
+                zona = mAlertDialog.flt_zona_spnr.selectedItem.toString()
+                ubicacion = mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()
+                trabajador = mAlertDialog.flt_trabajador_spnr.selectedItem.toString()
+                marca = mAlertDialog.flt_marca_spnr.selectedItem.toString()
+                BuscarEquipamiento()
+                mAlertDialog.dismiss()
+            }
+            mAlertDialog.flt_cancelar_bt.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
         }
+
         rv_recycler_view2.layoutManager=LinearLayoutManager(this@BusquedaActivity,LinearLayout.VERTICAL,false)
 
+    }
+
+    private fun BuscarMarcas():ArrayList<String> {
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        val list: ArrayList<String> = ArrayList()
+        cusrsor = db.rawQuery("SELECT *  FROM  marcas ", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    list.add(getString(R.string.spnr_marca))
+                }
+                do {
+                    list.add(cusrsor.getString(cusrsor.getColumnIndex("nombremarca")))
+                } while (cusrsor.moveToNext())
+
+                db.close()
+            }
+        }
+
+        return  list
+    }
+
+    private fun BuscarTrabajadores(ubicacion: String):ArrayList<String> {
+        var filtroUbicacion :String=""
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        val list: ArrayList<String> = ArrayList()
+        if(ubicacion!=getString(R.string.spnr_ubicacion)){
+            filtroUbicacion= ", ubicaciones as t2 WHERE t1.id_ubicacion=t2.id AND t2.nombreubicacion='$ubicacion' "
+        }
+        cusrsor = db.rawQuery("SELECT t1.nombretrabajador as nombretrabajador FROM trabajadores as t1 $filtroUbicacion", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    list.add(getString(R.string.spnr_trabajador))
+                }
+                do {
+                    list.add(cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador")))
+                } while (cusrsor.moveToNext())
+
+                db.close()
+            }
+        }
+
+        return  list
+    }
+
+    private fun BuscarUbicaciones(zona :String):ArrayList<String> {
+        var filtroZonas :String=""
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        val list: ArrayList<String> = ArrayList()
+        if(zona!=getString(R.string.spnr_zona)){
+            filtroZonas= ", zonas as t2 WHERE t1.id_zona=t2.id AND t2.nombrezona='$zona'"
+        }
+        cusrsor = db.rawQuery("SELECT t1.nombreubicacion as nombreubicacion FROM ubicaciones as t1 $filtroZonas", null)
+        if (cusrsor != null) {
+
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    list.add(getString(R.string.spnr_ubicacion))
+                }
+                do {
+                    list.add(cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion")))
+                } while (cusrsor.moveToNext())
+
+                db.close()
+            }
+        }
+        return  list
+    }
+
+    private fun BuscarZonas():ArrayList<String> {
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+
+        val list: ArrayList<String> = ArrayList()
+        cusrsor = db.rawQuery("SELECT *  FROM  zonas", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    list.add(getString(R.string.spnr_zona))
+                }
+                do {
+                    list.add(cusrsor.getString(cusrsor.getColumnIndex("nombrezona")))
+                } while (cusrsor.moveToNext())
+
+                db.close()
+            }
+        }
+
+        return  list
+    }
+
+    private fun BuscarFamilias() :ArrayList<String> {
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+
+        val list: ArrayList<String> = ArrayList()
+        cusrsor = db.rawQuery("SELECT *  FROM  familias", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    list.add(getString(R.string.spnr_familia))
+                }
+                do {
+                    list.add(cusrsor.getString(cusrsor.getColumnIndex("nombrefamilia")))
+                } while (cusrsor.moveToNext())
+
+                db.close()
+            }
+        }
+
+        return  list
     }
 
     private fun BuscarEquipamiento() {
@@ -46,7 +222,30 @@ class BusquedaActivity : AppCompatActivity() {
         val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id", null)
+        if(nserie!=null && nserie!=""){
+            whereNserie = "AND t1.n_serie LIKE '%$nserie%'"
+        }
+
+        if(familia!=null && familia!=getString(R.string.spnr_familia)){
+            whereFamilia = "AND t2.nombrefamilia = '$familia'"
+        }
+
+        if(zona!=null && zona!=getString(R.string.spnr_zona)){
+            whereZona = "AND t3.nombrezona = '$zona'"
+        }
+
+        if(ubicacion!=null && ubicacion!=getString(R.string.spnr_ubicacion)){
+            whereUbicacion = "AND t4.nombreubicacion = '$ubicacion'"
+        }
+
+        if(trabajador!=null && trabajador!=getString(R.string.spnr_trabajador)){
+            whereTrabajador = "AND t5.nombretrabajador = '$trabajador'"
+        }
+
+        if(marca!=null && marca!=getString(R.string.spnr_marca)){
+            whereMarca = "AND t6.nombremarca = '$marca'"
+        }
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, trabajadores as t5, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_trabajador = t5.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -64,6 +263,12 @@ class BusquedaActivity : AppCompatActivity() {
             }else{
                 rv_recycler_view2.adapter=MyAdapterEmpty(getString(R.string.nofiltros))
             }
+            whereNserie=""
+            whereFamilia=""
+            whereZona=""
+            whereUbicacion=""
+            whereTrabajador=""
+            whereMarca=""
         }
     }
 
