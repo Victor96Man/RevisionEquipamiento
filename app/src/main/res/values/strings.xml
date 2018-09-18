@@ -48,5 +48,7 @@ Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices
     <string name="spnr_ubicacion">----Ubicacion----</string>
     <string name="spnr_trabajador">----Trabajador----</string>
     <string name="spnr_marca">----Marca----</string>
+    <string name="descarga_revi_bt">Descargar Revisión</string>
+    <string name="enviarRV_bt">Enviar Revisión</string>
 
 </resources>

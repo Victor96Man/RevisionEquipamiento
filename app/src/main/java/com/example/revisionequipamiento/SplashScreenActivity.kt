@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 import java.util.*
 import android.os.Build
 import android.annotation.TargetApi
-import android.content.Context
 import android.database.Cursor
-import android.net.ConnectivityManager
 import android.view.View
 import android.net.Uri
 import android.support.v7.app.AlertDialog

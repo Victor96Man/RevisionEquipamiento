@@ -1,19 +1,12 @@
 package com.example.revisionequipamiento
 
 import android.database.Cursor
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
-import com.example.revisionequipamiento.Clases.Revision
 import kotlinx.android.synthetic.main.activity_equipamineto.*
+import kotlinx.android.synthetic.main.buttons_equipamineto.*
 import kotlinx.android.synthetic.main.content_equipamineto.*
-import org.apache.http.client.methods.HttpPost
-import org.apache.http.entity.StringEntity
-import org.apache.http.impl.client.DefaultHttpClient
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
 
 class EquipaminetoActivity : AppCompatActivity() {
 
@@ -44,11 +37,36 @@ class EquipaminetoActivity : AppCompatActivity() {
         supportActionBar?.title= n_serie
         buscarEquipamineto(n_serie)
         eq_familia_tx.text = familia
-        fab.setOnClickListener { view ->
+        enviarRV_bt.isEnabled=false
+        if(buscarRevision(n_serie)){
+            enviarRV_bt.isEnabled=true
+            fab.setImageResource(R.drawable.navigation_empty_icon)
+        }
+        fab.setOnClickListener {
+            }
+        enviarRV_bt.setOnClickListener{
+            val urlInsert=  "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+            EnviarRevi(n_serie,urlInsert,this@EquipaminetoActivity)
         }
     }
 
-    fun buscarEquipamineto(n_serie: String?) {
+    private fun buscarRevision(n_serie: String?): Boolean {
+        val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        var revision :Boolean = false
+        cusrsor = db.rawQuery("Select * FROM revisiones WHERE revisiones.id_equipamiento= '${n_serie}'", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                }
+                revision = true
+            }
+        }
+        return revision
+    }
+
+    private fun buscarEquipamineto(n_serie: String?) {
         val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
@@ -87,102 +105,9 @@ class EquipaminetoActivity : AppCompatActivity() {
             finish()
         }
     }
-    inner class AsyncTaskHandleJSON(revision: Revision): AsyncTask<String, String, String>() {
-        var rev = revision
-        override fun onPreExecute() {
-            super.onPreExecute()
 
-            /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)*/
-        }
-
-        override fun doInBackground(vararg url: String): String {
-            println(rev.toString().replace("'", "\""))
-            return POST(url[0], rev )
-
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            Toast.makeText(this@EquipaminetoActivity, result.toString(), Toast.LENGTH_LONG).show()
-
-            //handleJson(result)
-        }
+    override fun onBackPressed() {
+        finish()
     }
 
-    private fun handleJson(jsonString: String?) {
-
-        /*val jsonarray = JSONArray(jsonString)
-        val jsonobject = jsonarray.getJSONObject(0)
-        val codigo = jsonobject.getInt("codigo")
-        if(codigo==2) {
-            Toast.makeText(this@EquipaminetoActivity, getString(R.string.loginError), Toast.LENGTH_LONG).show()
-            MyprogressBar.visibility = View.INVISIBLE
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-        }*/
-
-    }
-
-    fun POST(url: String, revision: Revision): String {
-        var inputStream: InputStream? = null
-        var result = ""
-        try {
-            // 1. create HttpClient
-            val httpclient = DefaultHttpClient()
-            // 2. make POST request to the given URL
-            val httpPost = HttpPost(url)
-            var json = revision.toString().replace("'","\"")
-            // 3. build jsonObject
-            /*val jsonObject = JSONObject()
-            jsonObject.accumulate("usuario", usuario)
-            jsonObject.accumulate("contrasena", contrasena)*/
-            //jsonObject.accumulate("twitter", person.getTwitter());
-            // 4. convert JSONObject to JSON to String
-            //json = jsonObject.toString()
-            // ** Alternative way to convert Person object to JSON string usin Jackson Lib
-            // ObjectMapper mapper = new ObjectMapper();
-            // json = mapper.writeValueAsString(person);
-            // 5. set json to StringEntity
-            val se = StringEntity(json)
-            // 6. set httpPost Entity
-            httpPost.entity = se
-            // 7. Set some headers to inform server about the type of the content
-            httpPost.setHeader("Accept", "application/json")
-            httpPost.setHeader("Content-type", "application/json")
-            // 8. Execute POST request to the given URL
-            val httpResponse = httpclient.execute(httpPost)
-            // 9. receive response as inputStream
-            inputStream = httpResponse.entity.content
-            // 10. convert inputstream to string
-            if (inputStream != null)
-                result = convertInputStreamToString(inputStream)
-            else
-                result = "Algo salió mal."
-
-        } catch (e: Exception) {
-
-        }
-        return result
-    }
-
-    fun convertInputStreamToString(inputStream: InputStream): String {
-
-        val bufferReader = BufferedReader(InputStreamReader(inputStream))
-        var line: String
-        var result = ""
-
-        try {
-            do {
-                line = bufferReader.readLine()
-                if (line != null) {
-                    result += line
-                }
-            } while (line != null)
-            inputStream.close()
-        } catch (ex: Exception) {
-
-        }
-
-        return result
-    }
 }

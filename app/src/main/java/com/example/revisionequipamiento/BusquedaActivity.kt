@@ -8,16 +8,13 @@ import android.widget.LinearLayout
 import com.example.revisionequipamiento.Adapter.MyAdapterCards
 import com.example.revisionequipamiento.Clases.EquipamientoItem
 import kotlinx.android.synthetic.main.activity_busqueda.*
-import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
 import kotlinx.android.synthetic.main.filtro_dialog.*
-import java.lang.reflect.Array
 
 
 class BusquedaActivity : AppCompatActivity() {

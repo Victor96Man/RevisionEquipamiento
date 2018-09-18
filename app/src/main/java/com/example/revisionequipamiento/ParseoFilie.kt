@@ -1,7 +1,6 @@
 package com.example.revisionequipamiento
 
 import android.content.Context
-import android.widget.Toast
 import com.example.revisionequipamiento.Clases.*
 import org.json.JSONArray
 
