@@ -26,17 +26,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Principal"
+            android:name=".PrincipalActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".Login"
+            android:name=".LoginActivity"
             android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".EquipaminetoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusquedaActivity"
-            android:label="@string/title_activity_Busqueda"
-            />
+        <activity
+            android:name=".BusquedaActivity"
+            android:label="@string/title_activity_Busqueda" />
+        <activity android:name=".PreguntasActivity"
+            android:label="@string/title_activity_Pregunta" />
     </application>
 
 </manifest>

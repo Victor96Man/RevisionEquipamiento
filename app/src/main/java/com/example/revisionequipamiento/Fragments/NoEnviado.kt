@@ -10,14 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.revisionequipamiento.Adapter.MyAdapterCards
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
-import com.example.revisionequipamiento.BBDDSQLite
+import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Clases.EquipamientoItem
 import com.example.revisionequipamiento.R
 
 class NoEnviado : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

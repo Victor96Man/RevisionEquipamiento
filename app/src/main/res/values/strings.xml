@@ -10,6 +10,7 @@
     <string name="URLinicio">slim/login</string>
     <string name="URLtodo">slim/todo/</string>
     <string name="URLinsert">slim/insertrevision</string>
+    <string name="URLDescargaPDF">slim/descargarpdf/</string>
     <string name="user_id">user_id</string>
     <string name="login">Log In</string>
     <string name="usuario">Usuario</string>
@@ -17,6 +18,8 @@
     <string name="entrar">Entrar</string>
     <string name="loginError">Usuario o contraseña no válidos</string>
     <string name="title_activity_main">Revisiones</string>
+    <string name="title_activity_Pregunta">Preguntas</string>
+    <string name="title_activity_Busqueda">Buscar Equipamineto</string>
     <string name="tab_text_1">Próximas</string>
     <string name="tab_text_2">Reparación</string>
     <string name="tab_text_3">No Enviadas</string>
@@ -30,10 +33,9 @@
     <string name="emptyEnviado">Todas las revisiones están enviadas.</string>
     <string name="nserie">Nº serie:</string>
     <string name="familiaCard">Familia:</string>
-    <string name="nserieCard">Nº serie:</string>
+    <string name="nserieCard">Nº Serie:</string>
     <string name="ubicacionCard">Ubicación:</string>
     <string name="fechaCard">Fecha:</string>
-    <string name="title_activity_Busqueda">Buscar Equipamineto</string>
     <string name="errorBD">Error en la Base de Datos</string>
     <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
 Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>
@@ -50,5 +52,13 @@ Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices
     <string name="spnr_marca">----Marca----</string>
     <string name="descarga_revi_bt">Descargar Revisión</string>
     <string name="enviarRV_bt">Enviar Revisión</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="no_aplica">N.a.</string>
+    <string name="obs">Observaciones</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="informacion">Información</string>
+    <string name="salirNoGuardar">¿Seguro que quiere salir?</string>
+    <string name="salirNoGuardarInfo">Se perderan los datos si no han sido guardados guardados.</string>
 
 </resources>

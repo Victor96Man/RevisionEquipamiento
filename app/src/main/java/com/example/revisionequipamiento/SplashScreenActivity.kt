@@ -15,6 +15,7 @@ import android.database.Cursor
 import android.view.View
 import android.net.Uri
 import android.support.v7.app.AlertDialog
+import com.example.revisionequipamiento.Files.BBDDSQLite
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -35,13 +36,13 @@ class SplashScreenActivity : AppCompatActivity() {
                             val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                             val bd = bbddsqlite.writableDatabase
                             bd.close()
-                            startActivity(Intent(applicationContext, Principal::class.java))
+                            startActivity(Intent(applicationContext, PrincipalActivity::class.java))
                             finish()
                         }else{
                             val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                             val bd = bbddsqlite.writableDatabase
                             bd.close()
-                            startActivity(Intent(applicationContext, Login::class.java))
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
                             finish()
                         }
 
@@ -88,13 +89,13 @@ class SplashScreenActivity : AppCompatActivity() {
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
                                 bd.close()
-                                startActivity(Intent(applicationContext, Principal::class.java))
+                                startActivity(Intent(applicationContext, PrincipalActivity::class.java))
                                 finish()
                             }else{
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
                                 bd.close()
-                                startActivity(Intent(applicationContext, Login::class.java))
+                                startActivity(Intent(applicationContext, LoginActivity::class.java))
                                 finish()
                             }
                         }

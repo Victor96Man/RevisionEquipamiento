@@ -20,6 +20,8 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.example.revisionequipamiento.Files.BBDDSQLite
+import com.example.revisionequipamiento.Files.ParseoFile
 import com.example.revisionequipamiento.Fragments.NoEnviado
 import com.example.revisionequipamiento.Fragments.PmaRevisiones
 import com.example.revisionequipamiento.Fragments.Reparacion
@@ -29,7 +31,7 @@ import kotlinx.android.synthetic.main.frame_fab.*
 import java.net.HttpURLConnection
 import java.net.URL
 
-class Principal : AppCompatActivity() {
+class PrincipalActivity : AppCompatActivity() {
 
     var username=""
     var contrasena=""
@@ -46,7 +48,7 @@ class Principal : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
         getSupportActionBar()!!.setElevation(0F)
-        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@PrincipalActivity)
 
         viewpager.adapter = pagerAdapter
         tab_layout.setupWithViewPager(viewpager)
@@ -111,8 +113,8 @@ class Principal : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            ParseoFile(result, this@Principal)
-            val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+            ParseoFile(result, this@PrincipalActivity)
+            val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@PrincipalActivity)
             viewpager.adapter = pagerAdapter
             tab_layout.setupWithViewPager(viewpager)
 
@@ -122,7 +124,7 @@ class Principal : AppCompatActivity() {
             }
             MyprogressBar2.visibility = View.INVISIBLE
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            Toast.makeText(this@Principal,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@PrincipalActivity,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -182,7 +184,7 @@ class Principal : AppCompatActivity() {
     }
 
     fun CerrarSesion(){
-        val builder = AlertDialog.Builder(this@Principal)
+        val builder = AlertDialog.Builder(this@PrincipalActivity)
         builder.setTitle(getString(R.string.cerrarSesion))
         builder.setMessage(getString(R.string.cerrarSesionInfo))
         builder.setPositiveButton(getString(R.string.aceptar)) {
@@ -228,7 +230,7 @@ class Principal : AppCompatActivity() {
             db.close()
             AsyncTaskHandleJSON2().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
         }else{
-            val builder = AlertDialog.Builder(this@Principal)
+            val builder = AlertDialog.Builder(this@PrincipalActivity)
             builder.setTitle(getString(R.string.noInternet))
             builder.setMessage(getString(R.string.noInternetInfo))
             builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
@@ -240,7 +242,7 @@ class Principal : AppCompatActivity() {
     }
 
     fun  BuscarEquipa(){
-        val intent = Intent(this@Principal,BusquedaActivity::class.java)
+        val intent = Intent(this@PrincipalActivity,BusquedaActivity::class.java)
         startActivity(intent)
     }
 
@@ -269,7 +271,7 @@ class Principal : AppCompatActivity() {
         }
 
         fun getTabView(position: Int): View {
-            val tab = LayoutInflater.from(this@Principal).inflate(R.layout.custom_tab, null)
+            val tab = LayoutInflater.from(this@PrincipalActivity).inflate(R.layout.custom_tab, null)
             val tv = tab.findViewById(R.id.custom_text) as TextView
             tv.text = tabTitles[position]
             return tab
@@ -278,7 +280,7 @@ class Principal : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@Principal)
+        val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@PrincipalActivity)
         viewpager.adapter = pagerAdapter
         tab_layout.setupWithViewPager(viewpager)
 

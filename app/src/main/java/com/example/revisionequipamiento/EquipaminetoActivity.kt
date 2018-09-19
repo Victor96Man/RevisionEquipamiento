@@ -1,12 +1,18 @@
 package com.example.revisionequipamiento
 
+import android.content.Intent
 import android.database.Cursor
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.example.revisionequipamiento.Files.BBDDSQLite
+import com.example.revisionequipamiento.Files.EnviarRevi
 import kotlinx.android.synthetic.main.activity_equipamineto.*
 import kotlinx.android.synthetic.main.buttons_equipamineto.*
 import kotlinx.android.synthetic.main.content_equipamineto.*
+import java.net.HttpURLConnection
+import java.net.URL
 
 class EquipaminetoActivity : AppCompatActivity() {
 
@@ -34,21 +40,32 @@ class EquipaminetoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_equipamineto)
         setSupportActionBar(toolbar)
         val n_serie = intent.getStringExtra("n_serie")
-        supportActionBar?.title= n_serie
+        supportActionBar?.title = n_serie
+
         buscarEquipamineto(n_serie)
         eq_familia_tx.text = familia
-        enviarRV_bt.isEnabled=false
-        if(buscarRevision(n_serie)){
-            enviarRV_bt.isEnabled=true
-            fab.setImageResource(R.drawable.navigation_empty_icon)
-        }
+        enviarRV_bt.isEnabled = false
+
         fab.setOnClickListener {
-            }
-        enviarRV_bt.setOnClickListener{
-            val urlInsert=  "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-            EnviarRevi(n_serie,urlInsert,this@EquipaminetoActivity)
+            val int = Intent(this@EquipaminetoActivity, PreguntasActivity::class.java)
+            int.putExtra("familia", familia)
+            startActivity(int)
         }
+
+        if (buscarRevision(n_serie)) {
+            enviarRV_bt.isEnabled = true
+            fab.setImageResource(R.drawable.navigation_empty_icon)
+            fab.setOnClickListener {
+
+            }
+        }
+        enviarRV_bt.setOnClickListener {
+            val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+            EnviarRevi(n_serie, urlInsert, this@EquipaminetoActivity)
+        }
+
     }
+
 
     private fun buscarRevision(n_serie: String?): Boolean {
         val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
@@ -109,5 +126,6 @@ class EquipaminetoActivity : AppCompatActivity() {
     override fun onBackPressed() {
         finish()
     }
+
 
 }

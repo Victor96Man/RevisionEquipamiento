@@ -1,13 +1,13 @@
 package com.example.revisionequipamiento
 
 import android.content.Intent
-import android.database.Cursor
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import com.example.revisionequipamiento.Files.ParseoFile
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_login.*
 import org.apache.http.client.methods.HttpPost
@@ -21,7 +21,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     var id=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +61,7 @@ class Login : AppCompatActivity() {
         val jsonobject = jsonarray.getJSONObject(0)
         val codigo = jsonobject.getInt("codigo")
         if(codigo==2) {
-            Toast.makeText(this@Login, getString(R.string.loginError), Toast.LENGTH_LONG).show()
+            Toast.makeText(this@LoginActivity, getString(R.string.loginError), Toast.LENGTH_LONG).show()
             MyprogressBar.visibility = View.INVISIBLE
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         }
@@ -93,7 +93,7 @@ class Login : AppCompatActivity() {
             }finally {
                 connection.disconnect()
                 // OneSignal Initialization
-                OneSignal.startInit(this@Login)
+                OneSignal.startInit(this@LoginActivity)
                         .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                         .unsubscribeWhenNotificationsAreDisabled(true)
                         .init()
@@ -105,8 +105,8 @@ class Login : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             MyprogressBar.visibility = View.INVISIBLE
-            ParseoFile(result, this@Login)
-            startActivity(Intent(applicationContext, Principal::class.java))
+            ParseoFile(result, this@LoginActivity)
+            startActivity(Intent(applicationContext, PrincipalActivity::class.java))
             finish()
         }
     }

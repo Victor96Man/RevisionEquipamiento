@@ -1,4 +1,4 @@
-package com.example.revisionequipamiento
+package com.example.revisionequipamiento.Files
 
 import android.content.ContentValues
 import android.content.Context

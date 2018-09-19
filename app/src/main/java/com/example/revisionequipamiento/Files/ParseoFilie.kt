@@ -1,4 +1,4 @@
-package com.example.revisionequipamiento
+package com.example.revisionequipamiento.Files
 
 import android.content.Context
 import com.example.revisionequipamiento.Clases.*
@@ -129,45 +129,6 @@ fun ParseoFile(jsonString: String?, context: Context){
         val equipamiento = Equipamiento(n_serieequipamiento,id_familiae,id_marcae,id_ubicacione,id_zonae,modelo,fecha_compra,fecha_puesta_funcionamiento,fecha_proxima_revision,fecha_revision,fecha_caducidad,fecha_baja,referencia_normativa,estadoe,id_serie_reemplaza,id_trabajadore,bitacora,situacion)
         val bbddsqlite = BBDDSQLite(context)
         bbddsqlite.insertEquipamiento(equipamiento)
-        bbddsqlite.close()
-    }
-    val jsonobject8 = jsonarray.getJSONObject(8)
-    val revisiones= jsonobject8.getJSONArray("revisiones")
-    for (i in 0 until revisiones.length()) {
-        val revisionesjsonobject = revisiones.getJSONObject(i)
-        val idrevision = revisionesjsonobject.getInt("id")
-        val id_equipamiento = revisionesjsonobject.getString("id_equipamiento")
-        val idusuarior = revisionesjsonobject.getInt("id_usuario")
-        val fecharevision = revisionesjsonobject.getString("fecharevision")
-        val estador = revisionesjsonobject.getInt("estado")
-        val enviado = revisionesjsonobject.getInt("enviado")
-        val vp1 = revisionesjsonobject.getInt("vp1")
-        val vp2 = revisionesjsonobject.getInt("vp2")
-        val vp3 = revisionesjsonobject.getInt("vp3")
-        val vp4 = revisionesjsonobject.getInt("vp4")
-        val vp5 = revisionesjsonobject.getInt("vp5")
-        val vp6 = revisionesjsonobject.getInt("vp6")
-        val vp7 = revisionesjsonobject.getInt("vp7")
-        val vp8 = revisionesjsonobject.getInt("vp8")
-        val vp9 = revisionesjsonobject.getInt("vp9")
-        val vp10 = revisionesjsonobject.getInt("vp10")
-        val obp1 = revisionesjsonobject.getString("obp1")
-        val obp2 = revisionesjsonobject.getString("obp2")
-        val obp3 = revisionesjsonobject.getString("obp3")
-        val obp4 = revisionesjsonobject.getString("obp4")
-        val obp5 = revisionesjsonobject.getString("obp5")
-        val obp6 = revisionesjsonobject.getString("obp6")
-        val obp7 = revisionesjsonobject.getString("obp7")
-        val obp8 = revisionesjsonobject.getString("obp8")
-        val obp9 = revisionesjsonobject.getString("obp9")
-        val obp10 = revisionesjsonobject.getString("obp10")
-        val firma = revisionesjsonobject.getString("firma")
-        val firma_trabajador = revisionesjsonobject.getString("firma_trabajador")
-        val objeciones = revisionesjsonobject.getString("objeciones")
-        val peticiones = revisionesjsonobject.getString("peticiones")
-        val revision = Revision(idrevision,id_equipamiento,idusuarior,fecharevision,estador,enviado,vp1,vp2,vp3,vp4,vp5,vp6,vp7,vp8,vp9,vp10,obp1,obp2,obp3,obp4,obp5,obp6,obp7,obp8,obp9,obp10,firma,firma_trabajador,objeciones,peticiones)
-        val bbddsqlite = BBDDSQLite(context)
-        bbddsqlite.insertRevision(revision)
         bbddsqlite.close()
     }
 }

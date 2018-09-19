@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
+import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.filtro_dialog.*
 
 

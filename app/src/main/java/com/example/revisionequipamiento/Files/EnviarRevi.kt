@@ -1,4 +1,4 @@
-package com.example.revisionequipamiento
+package com.example.revisionequipamiento.Files
 
 import android.content.Context
 import android.database.Cursor
@@ -15,7 +15,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 fun EnviarRevi(n_serie :String,url:String, context: Context){
-    CogerRevision(n_serie,url,context)
+    CogerRevision(n_serie, url, context)
 }
 
 private fun CogerRevision(n_serie :String,url:String,context: Context) {
@@ -58,7 +58,7 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
                         cusrsor.getString(cusrsor.getColumnIndex("peticiones")))
                 db.close()
 
-                AsyncTaskHandleJSON(newRevision,n_serie,context).execute(url)
+                AsyncTaskHandleJSON(newRevision, n_serie, context).execute(url)
             }else{
 
             }
@@ -80,13 +80,13 @@ private  class AsyncTaskHandleJSON(revision: Revision,n_serie: String,context :C
     }
 
     override fun doInBackground(vararg url: String): String {
-        return POST(url[0], rev )
+        return POST(url[0], rev)
 
     }
 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
-        handleJson(result,n_serie,context)
+        handleJson(result, n_serie, context)
     }
 }
 

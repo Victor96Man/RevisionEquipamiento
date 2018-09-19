@@ -49,9 +49,6 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
             val intent =Intent(mContext,EquipaminetoActivity::class.java)
             intent.putExtra("n_serie",holder.n_serie.text.toString())
             startActivity(mContext,intent,null)
-
-
-
         }
     }
 
