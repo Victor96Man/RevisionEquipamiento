@@ -10,6 +10,7 @@ import android.view.View
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.activity_preguntas.*
 
+
 class PreguntasActivity : AppCompatActivity() {
     var infoFamilia : String? = null
     override fun onCreate(savedInstanceState: Bundle?) {

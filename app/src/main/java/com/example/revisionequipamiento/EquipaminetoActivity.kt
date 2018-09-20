@@ -10,7 +10,6 @@ import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import kotlinx.android.synthetic.main.activity_equipamineto.*
 import kotlinx.android.synthetic.main.buttons_equipamineto.*
-import kotlinx.android.synthetic.main.content_equipamineto.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -54,7 +53,7 @@ class EquipaminetoActivity : AppCompatActivity() {
 
         if (buscarRevision(n_serie)) {
             enviarRV_bt.isEnabled = true
-            fab.setImageResource(R.drawable.navigation_empty_icon)
+            fab.setImageResource(R.drawable.ic_mode_edit)
             fab.setOnClickListener {
 
             }
@@ -64,6 +63,29 @@ class EquipaminetoActivity : AppCompatActivity() {
             EnviarRevi(n_serie, urlInsert, this@EquipaminetoActivity)
         }
 
+        descarga_revi_bt.setOnClickListener{
+            val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLDescargaPDF)}$n_serie"
+            AsyncTaskHandleJSON2().execute(urlDescarga)
+        }
+    }
+
+    inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
+        override fun doInBackground(vararg url: String?): String {
+            var text: String
+            val connection = URL(url[0]).openConnection() as HttpURLConnection
+            try {
+                connection.connect()
+                text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
+            } finally {
+                connection.disconnect()
+            }
+            return text
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            Toast.makeText(this@EquipaminetoActivity,"PDF descargado", Toast.LENGTH_SHORT).show()
+        }
     }
 
 

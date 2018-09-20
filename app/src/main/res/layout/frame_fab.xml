@@ -10,9 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        android:src="@android:drawable/ic_menu_search"
+        android:scaleType="center"
+        android:src="@drawable/buscar"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@android:color/transparent"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
@@ -21,9 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        android:src="@android:drawable/ic_popup_sync"
+        android:scaleType="center"
+        android:src="@drawable/actualizar"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@android:color/transparent"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
@@ -32,8 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="18dp"
-        android:src="@android:drawable/ic_menu_revert"
+        android:scaleType="center"
+        android:src="@drawable/salir"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@android:color/transparent"
         app:fabSize="mini" />
 </FrameLayout>

@@ -5,6 +5,7 @@
     android:id="@+id/scrollPreguntas"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
     tools:context=".PreguntasActivity">
 <LinearLayout
     android:layout_width="match_parent"
