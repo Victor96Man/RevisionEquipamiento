@@ -32,4 +32,37 @@
         <item name="android:textSize">18dp</item>
     </style>
 
+    <style name="textBlancoNegrita">
+        <item name="android:textColor">@color/colorBlanco</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textNegro">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="textNegroNegrita">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textNegroNegritaPlus">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonNew">
+        <item name="android:layout_margin">7dp</item>
+        <item name="android:maxHeight">45dp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.Button.Colored</item>
+    </style>
+
+
 </resources>

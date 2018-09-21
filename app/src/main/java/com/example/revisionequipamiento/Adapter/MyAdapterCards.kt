@@ -23,6 +23,7 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
         var familia: TextView
         var ubicacion: TextView
         var fecha: TextView
+        var trabajador: TextView
 
         init {
 
@@ -31,6 +32,7 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
             familia = v.findViewById<View>(R.id.familia_tx) as TextView
             ubicacion = v.findViewById<View>(R.id.ubicacion_tx) as TextView
             fecha = v.findViewById<View>(R.id.fecha_tx) as TextView
+            trabajador = v.findViewById<View>(R.id.trabajador_tx) as TextView
 
         }
     }
@@ -45,6 +47,11 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
         holder.familia.text = mDataset.get(position).familia
         holder.ubicacion.text = mDataset.get(position).ubicacion
         holder.fecha.text = mDataset.get(position).fecha
+        if(mDataset.get(position).trabajador!=null){
+            holder.trabajador.text = mDataset.get(position).trabajador
+        }else{
+            holder.trabajador.text = "No asiganado"
+        }
         holder.itemView.setOnClickListener {
             val intent =Intent(mContext,EquipaminetoActivity::class.java)
             intent.putExtra("n_serie",holder.n_serie.text.toString())

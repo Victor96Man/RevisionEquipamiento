@@ -237,13 +237,13 @@ class BusquedaActivity : AppCompatActivity() {
         }
 
         if(trabajador!=null && trabajador!=getString(R.string.spnr_trabajador)){
-            whereTrabajador = "AND t5.nombretrabajador = '$trabajador'"
+            whereTrabajador = "AND (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) = '$trabajador'"
         }
 
         if(marca!=null && marca!=getString(R.string.spnr_marca)){
             whereMarca = "AND t6.nombremarca = '$marca'"
         }
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, trabajadores as t5, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_trabajador = t5.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -253,7 +253,8 @@ class BusquedaActivity : AppCompatActivity() {
                     val familia = cusrsor.getString(cusrsor.getColumnIndex("nombrefamilia"))
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
                     val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
-                    equipos.add(EquipamientoItem(id_equipamiento, familia, ubicacion, fecha))
+                    val trabajador  = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
+                    equipos.add(EquipamientoItem(id_equipamiento, familia, ubicacion, fecha, trabajador))
                 } while (cusrsor.moveToNext())
 
                 db.close()

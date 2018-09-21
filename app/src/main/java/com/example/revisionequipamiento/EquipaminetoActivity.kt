@@ -10,6 +10,7 @@ import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import kotlinx.android.synthetic.main.activity_equipamineto.*
 import kotlinx.android.synthetic.main.buttons_equipamineto.*
+import kotlinx.android.synthetic.main.content_equipamineto.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -29,7 +30,7 @@ class EquipaminetoActivity : AppCompatActivity() {
     var referencia_normativa :String=""
     var estado :Int= 0
     var id_remplaza :String=""
-    var trabajador :String=""
+    var trabajador : String? =null
     var bitacora :String=""
     var situacion :String= ""
 
@@ -43,6 +44,25 @@ class EquipaminetoActivity : AppCompatActivity() {
 
         buscarEquipamineto(n_serie)
         eq_familia_tx.text = familia
+        if(trabajador!=null) {
+            eq_trabajador_tx.text = trabajador
+        }else{
+            eq_trabajador_tx.text = getString(R.string.noTrabajador)
+        }
+        eq_marca_modelo_tx.text = "$marca / $modelo"
+        eq_zona_tx.text = zona
+        eq_ubicacion_tx.text = ubicacion
+        eq_situacion_tx.text = situacion
+        eq_referenciaN_tx.text = referencia_normativa
+        eq_bitacora_tx.text = bitacora
+
+        when(estado){
+            0 -> eq_estado_tx.text = getString(R.string.estadoBien)
+            1 -> eq_estado_tx.text = getString(R.string.estadoReparacion)
+            2 -> eq_estado_tx.text = getString(R.string.estadoBaja)
+        }
+        eq_idremplaza_tx.text = id_remplaza
+
         enviarRV_bt.isEnabled = false
 
         fab.setOnClickListener {
@@ -109,7 +129,7 @@ class EquipaminetoActivity : AppCompatActivity() {
         val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t3.nombremarca as nombremarca, t4.nombreubicacion as nombreubicacion, t5.nombrezona as nombrezona, t6.nombretrabajador as nombretrabajador FROM equipamientos as t1, familias as t2, marcas as t3, ubicaciones as t4, zonas as t5, trabajadores as t6 WHERE t1.id_familia = t2.id AND t1.id_marca = t3.id AND t1.id_ubicacion = t4.id AND t1.id_zona = t5.id AND t1.id_trabajador = t6.id AND t1.n_serie= '${n_serie}'", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t3.nombremarca as nombremarca, t4.nombreubicacion as nombreubicacion, t5.nombrezona as nombrezona, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, marcas as t3, ubicaciones as t4, zonas as t5 WHERE t1.id_familia = t2.id AND t1.id_marca = t3.id AND t1.id_ubicacion = t4.id AND t1.id_zona = t5.id AND t1.n_serie= '${n_serie}'", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {

@@ -5,6 +5,7 @@
     <color name="colorAccent">#005a8c</color>
     <color name="colorError">#b40404</color>
     <color name="black_overlay">#66000000</color>
+    <color name="colorNegro">#000000</color>
     <color name="colorBlanco">#ffffff</color>
     <color name="transparente">#00ffffff</color>
 </resources>

@@ -27,7 +27,7 @@ class Reparacion : Fragment() {
         val bbddsqlite = BBDDSQLite(requireContext())
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=1 AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=1 AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -38,8 +38,9 @@ class Reparacion : Fragment() {
                     val familia = cusrsor.getString(cusrsor.getColumnIndex("nombrefamilia"))
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
                     val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
+                    val trabajador = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
                     if (equipos != null) {
-                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha))
+                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha, trabajador))
                     }
                 }while (cusrsor.moveToNext())
                 db.close()

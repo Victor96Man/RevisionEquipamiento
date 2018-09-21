@@ -4,23 +4,238 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="30dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".EquipaminetoActivity"
     tools:showIn="@layout/activity_equipamineto">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:background="#00000000"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="85dp">
 
-        <TextView
-            android:id="@+id/textView"
-            style="@style/textBlanco"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text"
+                style="@style/textBlanco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/eqpTrabajador" />
+
+            <TextView
+                android:id="@+id/eq_trabajador_tx"
+                style="@style/textBlancoNegrita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/eqpTrabajador" />
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text2"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_marca_modelo_tx" />
+
+                <TextView
+                    android:id="@+id/eq_marca_modelo_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text4"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_zona_tx" />
+
+                <TextView
+                    android:id="@+id/eq_zona_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text8"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_ubicacion_tx" />
+
+                <TextView
+                    android:id="@+id/eq_ubicacion_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text7"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_situacion_tx" />
+
+                <TextView
+                    android:id="@+id/eq_situacion_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text3"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_estado_tx" />
+
+                <TextView
+                    android:id="@+id/eq_estado_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text5"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_idreemplaza_tx" />
+
+                <TextView
+                    android:id="@+id/eq_idremplaza_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text9"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_referenciaN_tx" />
+
+                <TextView
+                    android:id="@+id/eq_referenciaN_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text10"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/eq_bitacora_tx" />
+
+                <TextView
+                    android:id="@+id/eq_bitacora_tx"
+                    style="@style/textNegroNegrita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
 

@@ -1,9 +1,12 @@
 package com.example.revisionequipamiento
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -23,16 +26,36 @@ import java.net.URL
 
 class LoginActivity : AppCompatActivity() {
     var id=""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         entrar_login.setOnClickListener{
             var username = username_login.text.toString()
             var contrasena = contrasena_login.text.toString()
+            if (comprobarInternet()) {
+                soyUsuario(username, contrasena)
+            }else{
+                val builder = AlertDialog.Builder(this@LoginActivity)
+                builder.setTitle(getString(R.string.noInternet))
+                builder.setMessage(getString(R.string.noInternetInfo))
+                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
 
-            soyUsuario(username,contrasena)
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
         }
+    }
 
+    private fun comprobarInternet():Boolean {
+       var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+       var networkInfo = cm.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected){
+            return true
+        }
+        return false
     }
 
     inner class AsyncTaskHandleJSON(username: String, contrasena:String): AsyncTask<String, String, String>() {
@@ -40,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
         var contrasena = contrasena
         override fun onPreExecute() {
             super.onPreExecute()
+
             MyprogressBar.visibility = View.VISIBLE
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

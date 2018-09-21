@@ -37,6 +37,7 @@
     <string name="nserieCard">Nº Serie:</string>
     <string name="ubicacionCard">Ubicación:</string>
     <string name="fechaCard">Fecha:</string>
+    <string name="trabajadorCard">Trabajador:</string>
 
     <!-- Pantalla Login -->
     <string name="login">Log In</string>
@@ -53,6 +54,21 @@
     <string name="emptyPma">No hay próximas revisiones.</string>
     <string name="emptyReparacion">Ningún equipamiento en reparación.</string>
     <string name="emptyEnviado">Todas las revisiones están enviadas.</string>
+
+    <!-- Pantalla Equipamineto -->
+    <string name="eqpTrabajador">Trabajador:</string>
+    <string name="eq_marca_modelo_tx">Marca/Modelo:</string>
+    <string name="eq_zona_tx">Zona:</string>
+    <string name="eq_ubicacion_tx">Ubicación:</string>
+    <string name="eq_estado_tx">Estado:</string>
+    <string name="eq_idreemplaza_tx">Id reemplaza:</string>
+    <string name="eq_situacion_tx">Situación:</string>
+    <string name="eq_referenciaN_tx">Referencia Normativa:</string>
+    <string name="eq_bitacora_tx">Histórico:</string>
+    <string name="estadoBien">Aceptable</string>
+    <string name="estadoReparacion">En reparación</string>
+    <string name="estadoBaja">De baja</string>
+    <string name="noTrabajador">No asiganado</string>
 
     <!-- Pantalla Busqueda -->
     <string name="filtro">Filtros</string>
@@ -83,7 +99,6 @@
 
     <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
 Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>
-    <string name="eqpTrabajador">Trabajador:</string>
 
 
 </resources>
