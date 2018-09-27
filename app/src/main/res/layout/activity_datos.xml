@@ -1,10 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/fondo"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo"
     tools:context=".DatosActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_fotos1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/fotos_ddd"
+                style="@style/textAzul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/dt_fotos_tx" />
+            <include
+                android:id="@+id/include"
+                layout="@layout/horizontal_scroll_card"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text9"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dt_objecione_tx" />
+
+                <EditText
+                    android:id="@+id/dt_objeciones_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+                <Button
+                    android:id="@+id/dt_objecionesFirma_bt"
+                    style="@style/ButtonNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="@string/firmar" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@color/colorBlanco"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text955"
+                    style="@style/textNegro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dt_peticiones_tx" />
+
+                <EditText
+                    android:id="@+id/dt_peticiones_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="20"
+                    android:inputType="textMultiLine"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:autofillHints="" />
+                <Button
+                    android:id="@+id/dt_UsuarioFirma_bt"
+                    style="@style/ButtonNew"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/firmar" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <Button
+                android:id="@+id/Guardar_bt"
+                style="@style/ButtonNew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Guardar" />
+
+            <Button
+                android:id="@+id/enviarRV2_bt"
+                style="@style/ButtonNew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/enviarRV_bt" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

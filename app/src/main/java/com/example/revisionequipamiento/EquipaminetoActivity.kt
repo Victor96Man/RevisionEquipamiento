@@ -5,6 +5,10 @@ import android.database.Cursor
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
@@ -33,6 +37,9 @@ class EquipaminetoActivity : AppCompatActivity() {
     var trabajador : String? =null
     var bitacora :String=""
     var situacion :String= ""
+    private var fechas_Status = false
+    var down_fechas : Animation? = null
+    var up_fechas : Animation? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +48,10 @@ class EquipaminetoActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val n_serie = intent.getStringExtra("n_serie")
         supportActionBar?.title = n_serie
+
+        //Animaciones
+        down_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_down)
+        up_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_up)
 
         buscarEquipamineto(n_serie)
         eq_familia_tx.text = familia
@@ -53,6 +64,12 @@ class EquipaminetoActivity : AppCompatActivity() {
         eq_zona_tx.text = zona
         eq_ubicacion_tx.text = ubicacion
         eq_situacion_tx.text = situacion
+        eq_fechaPR_tx.text = fecha_proxima_revision
+        eq_fechaR_tx.text = fecha_revision
+        eq_fechaC_tx.text = fecha_compra
+        eq_fechaPF_tx.text = fecha_puesta_funcionamiento
+        eq_fechaCaducidad_tx.text = fecha_caducidad
+        eq_fechaBaja_tx.text = fecha_baja
         eq_referenciaN_tx.text = referencia_normativa
         eq_bitacora_tx.text = bitacora
 
@@ -66,9 +83,22 @@ class EquipaminetoActivity : AppCompatActivity() {
         enviarRV_bt.isEnabled = false
 
         fab.setOnClickListener {
+            fab.isEnabled=false
             val int = Intent(this@EquipaminetoActivity, PreguntasActivity::class.java)
             int.putExtra("familia", familia)
             startActivity(int)
+        }
+
+        layout_fechas1.setOnClickListener{
+            if (fechas_Status == false) {
+                //Display FAB menu
+                expandFECHA()
+                fechas_Status = true
+            } else {
+                //Close FAB menu
+                hideFECHA()
+                fechas_Status = false
+            }
         }
 
         if (buscarRevision(n_serie)) {
@@ -87,6 +117,17 @@ class EquipaminetoActivity : AppCompatActivity() {
             val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLDescargaPDF)}$n_serie"
             AsyncTaskHandleJSON2().execute(urlDescarga)
         }
+    }
+
+
+    private fun hideFECHA() {
+       // layout_fechas2.startAnimation(down_fechas)
+        layout_fechas2.visibility = View.VISIBLE
+    }
+
+    private fun expandFECHA() {
+        //layout_fechas2.startAnimation(up_fechas)
+        layout_fechas2.visibility = View.GONE
     }
 
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
@@ -167,6 +208,11 @@ class EquipaminetoActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        fab.isEnabled=true
     }
 
 

@@ -14,6 +14,7 @@
         android:src="@drawable/buscar"
         android:visibility="invisible"
         app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
@@ -26,6 +27,7 @@
         android:src="@drawable/actualizar"
         android:visibility="invisible"
         app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
         app:fabSize="mini" />
 
     <android.support.design.widget.FloatingActionButton
@@ -38,5 +40,6 @@
         android:src="@drawable/salir"
         android:visibility="invisible"
         app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
         app:fabSize="mini" />
 </FrameLayout>

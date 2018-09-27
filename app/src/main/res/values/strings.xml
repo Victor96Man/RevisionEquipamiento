@@ -19,6 +19,9 @@
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="aplicar">Aplicar</string>
+    <string name="seleccionFoto">Selecciona</string>
+    <string name="seleccionFotoGaleria">Galeria</string>
+    <string name="seleccionFotoCamara">Camara</string>
 
     <!-- URLS-->
     <string name="URL">http://emproacsa.mjhudesings.com/</string>
@@ -65,6 +68,13 @@
     <string name="eq_situacion_tx">Situación:</string>
     <string name="eq_referenciaN_tx">Referencia Normativa:</string>
     <string name="eq_bitacora_tx">Histórico:</string>
+    <string name="eq_fecha_tx">Fechas</string>
+    <string name="eq_fechaPR_tx">Próxima revisión:</string>
+    <string name="eq_fechaR_tx">Última revisión:</string>
+    <string name="eq_fechaC_tx">Adquisición:</string>
+    <string name="eq_fechaPF_tx">Funcionamíneto:</string>
+    <string name="eq_fechaCaducidad_tx">Caducidad:</string>
+    <string name="eq_fechaBaja_tx">Baja:</string>
     <string name="estadoBien">Aceptable</string>
     <string name="estadoReparacion">En reparación</string>
     <string name="estadoBaja">De baja</string>
@@ -93,12 +103,19 @@
     <string name="descarga_revi_bt">Descargar Revisión</string>
     <string name="enviarRV_bt">Enviar Revisión</string>
     <string name="siguiente">Siguiente</string>
+    <string name="firmar">Firmar</string>
+    <string name="Guardar">Guardar</string>
 
-
+    <!-- Pantalla Datos -->
+    <string name="dt_fotos_tx">Fotos</string>
+    <string name="dt_objecione_tx">Objeciones del Trabajador:</string>
+    <string name="dt_peticiones_tx">Peticiones/Observaciones:</string>
 
 
     <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
 Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>
+    <string name="firmeaqui">Firme aqui:</string>
+    <string name="borrar">Borrar</string>
 
 
 </resources>

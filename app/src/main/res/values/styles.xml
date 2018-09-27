@@ -27,6 +27,14 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
+    <style name="textBlancoNegritaMini">
+        <item name="android:textColor">@color/colorBlanco</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="textBlanco">
         <item name="android:textColor">@color/colorBlanco</item>
         <item name="android:textSize">18dp</item>
@@ -38,9 +46,24 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="textBlancoNegritaPlus">
+        <item name="android:textColor">@color/colorBlanco</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
     <style name="textNegro">
         <item name="android:textColor">@color/colorNegro</item>
         <item name="android:textSize">18dp</item>
+    </style>
+
+    <style name="textNegroNegritaMini">
+        <item name="android:textColor">@color/colorNegro</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textNegroNegrita">
@@ -52,7 +75,13 @@
     <style name="textNegroNegritaPlus">
         <item name="android:textColor">@color/colorNegro</item>
         <item name="android:textSize">20dp</item>
+
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textAzul">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="ButtonNew">

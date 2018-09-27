@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="165dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
@@ -16,111 +16,126 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="5dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView4"
-                    style="@style/textNegro"
+                    style="@style/textBlancoNegrita"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:text="@string/nserieCard" />
 
                 <TextView
                     android:id="@+id/n_serie_tx"
-                    style="@style/textNegroNegritaPlus"
+                    style="@style/textBlancoNegritaPlus"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/colorBlanco"
+                android:orientation="vertical"
+                android:paddingStart="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
-                <TextView
-                    android:id="@+id/textView6"
-                    style="@style/textNegro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/familiaCard" />
-
-                <TextView
-                    android:id="@+id/familia_tx"
-                    style="@style/textNegroNegrita"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView7"
-                    style="@style/textNegro"
-                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/ubicacionCard" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/ubicacion_tx"
-                    style="@style/textNegroNegrita"
+                    <TextView
+                        android:id="@+id/textView6"
+                        style="@style/textNegro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/familiaCard" />
+
+                    <TextView
+                        android:id="@+id/familia_tx"
+                        style="@style/textNegroNegrita"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView9"
-                    style="@style/textNegro"
-                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/fechaCard" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/fecha_tx"
-                    style="@style/textNegroNegrita"
+                    <TextView
+                        android:id="@+id/textView7"
+                        style="@style/textNegro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/ubicacionCard" />
+
+                    <TextView
+                        android:id="@+id/ubicacion_tx"
+                        style="@style/textNegroNegrita"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView10"
-                    style="@style/textNegro"
-                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/trabajadorCard" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/trabajador_tx"
-                    style="@style/textNegroNegrita"
+                    <TextView
+                        android:id="@+id/textView9"
+                        style="@style/textNegro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/fechaCard" />
+
+                    <TextView
+                        android:id="@+id/fecha_tx"
+                        style="@style/textNegroNegrita"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        style="@style/textNegro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/trabajadorCard" />
+
+                    <TextView
+                        android:id="@+id/trabajador_tx"
+                        style="@style/textNegroNegritaMini"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

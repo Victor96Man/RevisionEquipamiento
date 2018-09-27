@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento
 
+import android.content.Intent
 import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -13,11 +14,17 @@ import kotlinx.android.synthetic.main.activity_preguntas.*
 
 class PreguntasActivity : AppCompatActivity() {
     var infoFamilia : String? = null
+    var familia : String= ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preguntas)
-        val familia = intent.getStringExtra("familia")
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        familia = intent.getStringExtra("familia")
         Nfamilias(familia,View(this@PreguntasActivity))
+        siguienteP_bt.setOnClickListener{
+            val int = Intent(this@PreguntasActivity, DatosActivity::class.java)
+            startActivity(int)
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -30,12 +37,17 @@ class PreguntasActivity : AppCompatActivity() {
         when (item.getItemId()) {
             R.id.action_info -> {
                 val builder = AlertDialog.Builder(this@PreguntasActivity)
-                builder.setTitle(getString(R.string.informacion))
+                val info = getString(R.string.informacion)
+                builder.setTitle("$info $familia")
                 builder.setMessage("$infoFamilia")
 
                 val dialog =builder.create()
                 dialog.show()
 
+            }
+
+            android.R.id.home -> {
+                onBackPressed()
             }
         }
         return true
@@ -176,6 +188,5 @@ class PreguntasActivity : AppCompatActivity() {
 
         val dialog =builder.create()
         dialog.show()
-
     }
 }

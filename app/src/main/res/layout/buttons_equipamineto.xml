@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.984">
+        app:layout_constraintVertical_bias="0.98">
 
         <Button
             android:id="@+id/descarga_revi_bt"
