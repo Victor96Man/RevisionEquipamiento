@@ -6,6 +6,6 @@
         android:id="@+id/action_settings"
         android:icon="@android:drawable/ic_menu_manage"
         android:orderInCategory="100"
-        android:title="info"
+        android:title="ajustes"
         app:showAsAction="ifRoom" />
 </menu>

@@ -6,6 +6,8 @@
     <string name="title_activity_Pregunta">Preguntas</string>
     <string name="title_activity_Busqueda">Buscar Equipamineto</string>
     <string name="title_activity_Datos">Datos</string>
+    <string name="title_activity_Firma">Firma</string>
+    <string name="title_activity_Ajustes">Ajustes</string>
 
     <!-- Dialogs-->
     <string name="permisoD">Permisos denegados</string>

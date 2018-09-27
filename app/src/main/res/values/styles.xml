@@ -93,5 +93,9 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.Button.Colored</item>
     </style>
 
+    <style name="MySpinnerLook" parent="@android:style/Widget.TextView.SpinnerItem">
+        <item name="android:textSize">30dp</item>
+    </style>
+
 
 </resources>

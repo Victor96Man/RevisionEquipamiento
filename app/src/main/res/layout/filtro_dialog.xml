@@ -29,8 +29,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/n_serie"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName"
-                android:importantForAutofill="no" tools:targetApi="o" />
+                tools:targetApi="o" />
 
             <Spinner
                 android:id="@+id/flt_familia_spnr"
@@ -66,6 +67,7 @@
 
             <Button
                 android:id="@+id/flt_cancelar_bt"
+                style="@style/ButtonNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -73,6 +75,7 @@
 
             <Button
                 android:id="@+id/flt_aplicar_bt"
+                style="@style/ButtonNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

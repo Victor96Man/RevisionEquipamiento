@@ -8,8 +8,8 @@ import android.os.Environment
 import android.widget.Toast
 import com.example.revisionequipamiento.Clases.*
 val directorioexterno = Environment.getExternalStorageDirectory()
-val DATABASE_NAME = "$directorioexterno/revisiones"
-val VERSIONBBDD = 1
+val DATABASE_NAME = "revisiones"
+val VERSIONBBDD = 3
 
     class BBDDSQLite(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null, VERSIONBBDD) {
         override fun onCreate(db: SQLiteDatabase?) {
@@ -127,7 +127,8 @@ val VERSIONBBDD = 1
         }
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+            context.deleteDatabase(DATABASE_NAME)
+            BBDDSQLite(context)
         }
 
         fun insertUser(user : Usuario){
