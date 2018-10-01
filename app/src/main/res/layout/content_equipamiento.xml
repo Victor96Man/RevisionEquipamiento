@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:paddingBottom="30dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".EquipaminetoActivity"
-    tools:showIn="@layout/activity_equipamineto">
+    tools:context=".EquipamientoActivity"
+    tools:showIn="@layout/activity_equipamiento">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -148,6 +148,14 @@ val VERSIONBBDD = 3
             db.close()
         }
 
+        fun updateContrasena(contrasena : String){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("password",contrasena)
+            db.update("usuarios", cv, null, null)
+            db.close()
+        }
+
         fun insertMarca(marca : Marca){
             val db = this.writableDatabase
             var cv = ContentValues()

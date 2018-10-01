@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/fondo"
     android:fitsSystemWindows="true"
-    tools:context=".EquipaminetoActivity">
+    tools:context=".EquipamientoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -46,8 +46,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_equipamineto" />
-    <include layout="@layout/buttons_equipamineto" />
+    <include layout="@layout/content_equipamiento" />
+    <include layout="@layout/buttons_equipamiento" />
 
 
     <android.support.design.widget.FloatingActionButton
@@ -60,6 +60,6 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_action_document" />
+        app:srcCompat="@drawable/ic_mode_edit" />
 
 </android.support.design.widget.CoordinatorLayout>

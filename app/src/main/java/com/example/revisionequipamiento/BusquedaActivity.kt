@@ -10,9 +10,11 @@ import com.example.revisionequipamiento.Clases.EquipamientoItem
 import kotlinx.android.synthetic.main.activity_busqueda.*
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.filtro_dialog.*
@@ -32,9 +34,11 @@ class BusquedaActivity : AppCompatActivity() {
     var whereUbicacion :String=""
     var whereTrabajador :String=""
     var whereMarca :String=""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         BuscarEquipamiento()
 
         fab_2.setOnClickListener { _ ->
@@ -44,7 +48,7 @@ class BusquedaActivity : AppCompatActivity() {
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
-                    .setTitle("Filtros")
+                    .setTitle(getString(R.string.filtro))
             //show dialog
             val  mAlertDialog = mBuilder.show()
             //---------------------------------------SPINNER--FAMILIA----------------------------------------------------
@@ -92,6 +96,16 @@ class BusquedaActivity : AppCompatActivity() {
 
         rv_recycler_view2.layoutManager=LinearLayoutManager(this@BusquedaActivity,LinearLayout.VERTICAL,false)
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun BuscarMarcas():ArrayList<String> {

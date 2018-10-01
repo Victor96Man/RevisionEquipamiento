@@ -4,7 +4,7 @@
     <!-- Titulos de Pantallas-->
     <string name="title_activity_main">Revisiones</string>
     <string name="title_activity_Pregunta">Preguntas</string>
-    <string name="title_activity_Busqueda">Buscar Equipamineto</string>
+    <string name="title_activity_Busqueda">Buscar Equipamiento</string>
     <string name="title_activity_Datos">Datos</string>
     <string name="title_activity_Firma">Firma</string>
     <string name="title_activity_Ajustes">Ajustes</string>
@@ -29,6 +29,7 @@
     <string name="URL">http://emproacsa.mjhudesings.com/</string>
     <string name="URLinicio">slim/login</string>
     <string name="URLtodo">slim/todo/</string>
+    <string name="URLcontraseña">slim/cambiocontrasena</string>
     <string name="URLinsert">slim/insertrevision</string>
     <string name="URLDescargaPDF">slim/descargarpdf/</string>
 
@@ -36,6 +37,7 @@
     <string name="loginError">Usuario o contraseña no válidos</string>
     <string name="actualizar">Actualización Correcta</string>
     <string name="errorBD">Error en la Base de Datos</string>
+    <string name="contraseñaOK">Contraseña Actualizada</string>
 
     <!-- CardView -->
     <string name="familiaCard">Familia:</string>
@@ -60,7 +62,7 @@
     <string name="emptyReparacion">Ningún equipamiento en reparación.</string>
     <string name="emptyEnviado">Todas las revisiones están enviadas.</string>
 
-    <!-- Pantalla Equipamineto -->
+    <!-- Pantalla Equipamiento -->
     <string name="eqpTrabajador">Trabajador:</string>
     <string name="eq_marca_modelo_tx">Marca/Modelo:</string>
     <string name="eq_zona_tx">Zona:</string>
@@ -107,17 +109,34 @@
     <string name="siguiente">Siguiente</string>
     <string name="firmar">Firmar</string>
     <string name="Guardar">Guardar</string>
+    <string name="borrar">Borrar</string>
 
     <!-- Pantalla Datos -->
     <string name="dt_fotos_tx">Fotos</string>
     <string name="dt_objecione_tx">Objeciones del Trabajador:</string>
     <string name="dt_peticiones_tx">Peticiones/Observaciones:</string>
+    <string name="dt_estado_tx">Estado:</string>
 
+    <!-- Pantalla Firma -->
+    <string name="firmeaqui">Firme aqui:</string>
+
+    <string-array name="estados_sp">
+        <item>-----------</item>
+        <item>Aceptable</item>
+        <item>Reparación</item>
+        <item>Baja</item>
+    </string-array>
+
+    <!-- Pantalla Ajustes -->
+    <string name="aj_cambiarContra_bt">Cambiar Contraseña</string>
+    <string name="aj_cambiarContra_tx">Cambiar de contraseña</string>
+    <string name="aj_infoContraseña_tx">Introduce tú actual contraseña y la nueva.</string>
+    <string name="aj_contraActual_edt">Contraseña Actual</string>
+    <string name="aj_contraNueva_edt">Contraseña Nueva</string>
 
     <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
 Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>
-    <string name="firmeaqui">Firme aqui:</string>
-    <string name="borrar">Borrar</string>
+
 
 
 </resources>

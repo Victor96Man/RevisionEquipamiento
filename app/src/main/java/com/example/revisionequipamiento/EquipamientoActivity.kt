@@ -5,20 +5,19 @@ import android.database.Cursor
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
-import kotlinx.android.synthetic.main.activity_equipamineto.*
-import kotlinx.android.synthetic.main.buttons_equipamineto.*
-import kotlinx.android.synthetic.main.content_equipamineto.*
+import kotlinx.android.synthetic.main.activity_equipamiento.*
+import kotlinx.android.synthetic.main.buttons_equipamiento.*
+import kotlinx.android.synthetic.main.content_equipamiento.*
 import java.net.HttpURLConnection
 import java.net.URL
 
-class EquipaminetoActivity : AppCompatActivity() {
+class EquipamientoActivity : AppCompatActivity() {
 
     var familia :String=""
     var marca :String=""
@@ -44,7 +43,7 @@ class EquipaminetoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_equipamineto)
+        setContentView(R.layout.activity_equipamiento)
         setSupportActionBar(toolbar)
         val n_serie = intent.getStringExtra("n_serie")
         supportActionBar?.title = n_serie
@@ -53,7 +52,7 @@ class EquipaminetoActivity : AppCompatActivity() {
         down_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_down)
         up_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_up)
 
-        buscarEquipamineto(n_serie)
+        buscarEquipamiento(n_serie)
         eq_familia_tx.text = familia
         if(trabajador!=null) {
             eq_trabajador_tx.text = trabajador
@@ -84,7 +83,7 @@ class EquipaminetoActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             fab.isEnabled=false
-            val int = Intent(this@EquipaminetoActivity, PreguntasActivity::class.java)
+            val int = Intent(this@EquipamientoActivity, PreguntasActivity::class.java)
             int.putExtra("familia", familia)
             startActivity(int)
         }
@@ -110,7 +109,7 @@ class EquipaminetoActivity : AppCompatActivity() {
         }
         enviarRV_bt.setOnClickListener {
             val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-            EnviarRevi(n_serie, urlInsert, this@EquipaminetoActivity)
+            EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
         }
 
         descarga_revi_bt.setOnClickListener{
@@ -145,13 +144,13 @@ class EquipaminetoActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            Toast.makeText(this@EquipaminetoActivity,"PDF descargado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@EquipamientoActivity,"PDF descargado", Toast.LENGTH_SHORT).show()
         }
     }
 
 
     private fun buscarRevision(n_serie: String?): Boolean {
-        val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
+        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
         var revision :Boolean = false
@@ -166,8 +165,8 @@ class EquipaminetoActivity : AppCompatActivity() {
         return revision
     }
 
-    private fun buscarEquipamineto(n_serie: String?) {
-        val bbddsqlite = BBDDSQLite(this@EquipaminetoActivity)
+    private fun buscarEquipamiento(n_serie: String?) {
+        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
         cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t3.nombremarca as nombremarca, t4.nombreubicacion as nombreubicacion, t5.nombrezona as nombrezona, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, marcas as t3, ubicaciones as t4, zonas as t5 WHERE t1.id_familia = t2.id AND t1.id_marca = t3.id AND t1.id_ubicacion = t4.id AND t1.id_zona = t5.id AND t1.n_serie= '${n_serie}'", null)
@@ -193,15 +192,15 @@ class EquipaminetoActivity : AppCompatActivity() {
                     situacion = cusrsor.getString(cusrsor.getColumnIndex("situacion"))
                     db.close()
                 }else{
-                    Toast.makeText(this@EquipaminetoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }else{
-                Toast.makeText(this@EquipaminetoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
                 finish()
             }
         }else{
-            Toast.makeText(this@EquipaminetoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
             finish()
         }
     }

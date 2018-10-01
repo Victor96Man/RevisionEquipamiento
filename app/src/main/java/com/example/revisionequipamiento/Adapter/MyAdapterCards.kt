@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.revisionequipamiento.Clases.EquipamientoItem
-import com.example.revisionequipamiento.EquipaminetoActivity
+import com.example.revisionequipamiento.EquipamientoActivity
 import com.example.revisionequipamiento.R
 
 class MyAdapterCards(context: Context,private val mDataset: ArrayList<EquipamientoItem>) : RecyclerView.Adapter<MyAdapterCards.MyViewHolder>() {
@@ -53,7 +53,7 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
             holder.trabajador.text = "No asiganado"
         }
         holder.itemView.setOnClickListener {
-            val intent =Intent(mContext,EquipaminetoActivity::class.java)
+            val intent =Intent(mContext,EquipamientoActivity::class.java)
             intent.putExtra("n_serie",holder.n_serie.text.toString())
             startActivity(mContext,intent,null)
         }

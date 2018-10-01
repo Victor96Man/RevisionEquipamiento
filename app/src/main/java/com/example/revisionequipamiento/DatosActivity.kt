@@ -3,6 +3,7 @@ package com.example.revisionequipamiento
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
 import android.support.v7.app.AppCompatActivity
@@ -15,9 +16,7 @@ import android.support.v7.widget.SnapHelper
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
 import kotlinx.android.synthetic.main.activity_datos.*
 import kotlinx.android.synthetic.main.horizontal_scroll_card.*
@@ -38,6 +37,24 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_datos)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        //SPINNER
+        val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        dt_estado_sp.adapter = spinnerArrayAdapter
+        dt_estado_sp?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            }
+
+        }
+
+
+
 
         var dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
         val posts: ArrayList<String> = ArrayList()
