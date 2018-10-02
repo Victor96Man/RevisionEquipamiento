@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.os.AsyncTask
 import android.widget.Toast
-import com.example.revisionequipamiento.Clases.Revision
+import com.example.revisionequipamiento.Clases.RevisionObjeto
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
@@ -26,7 +26,7 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
     if (cusrsor != null) {
         if (cusrsor.count > 0) {
             if (cusrsor.moveToFirst()) {
-                val newRevision = Revision(cusrsor.getInt(cusrsor.getColumnIndex("id")),
+                val newRevision = RevisionObjeto(cusrsor.getInt(cusrsor.getColumnIndex("id")),
                         cusrsor.getString(cusrsor.getColumnIndex("id_equipamiento")),
                         cusrsor.getInt(cusrsor.getColumnIndex("id_usuario")),
                         cusrsor.getString(cusrsor.getColumnIndex("fecharevision")),
@@ -70,7 +70,7 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
     }
 }
 
-private  class AsyncTaskHandleJSON(revision: Revision,n_serie: String,context :Context): AsyncTask<String, String, String>() {
+private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,context :Context): AsyncTask<String, String, String>() {
     var rev = revision
     val context = context
     val n_serie = n_serie
@@ -98,16 +98,18 @@ private fun handleJson(jsonString: String? ,n_serie: String,context: Context) {
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
     }else{
+        println(jsonobject.getString("message"))
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
     }
 }
 
-private fun POST(url: String, revision: Revision): String {
+private fun POST(url: String, revision: RevisionObjeto): String {
     var inputStream: InputStream? = null
     var result = ""
     val httpclient = DefaultHttpClient()
     val httpPost = HttpPost(url)
     var json = revision.toString().replace("'","\"")
+    println(revision.toString().replace("'","\""))
     val se = StringEntity(json)
     httpPost.entity = se as HttpEntity?
     httpPost.setHeader("Accept", "application/json")
