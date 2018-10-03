@@ -19,7 +19,6 @@ import android.support.v7.widget.SnapHelper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
@@ -28,7 +27,6 @@ import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_datos.*
-import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.horizontal_scroll_card.*
 import java.io.*
 import java.net.HttpURLConnection
