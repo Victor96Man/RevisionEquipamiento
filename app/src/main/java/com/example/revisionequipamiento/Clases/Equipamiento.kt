@@ -40,4 +40,5 @@ class Equipamiento {
         this.bitacora = bitacora
         this.situacion = situacion
     }
+
 }

@@ -36,6 +36,7 @@
                 style="@style/textNegro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
                 android:text="@string/dt_estado_tx" />
 
             <Spinner
@@ -166,7 +167,7 @@
             android:paddingBottom="8dp">
 
             <Button
-                android:id="@+id/Guardar_bt"
+                android:id="@+id/dt_guardar_bt"
                 style="@style/ButtonNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -174,7 +175,7 @@
                 android:text="@string/Guardar" />
 
             <Button
-                android:id="@+id/enviarRV2_bt"
+                android:id="@+id/dt_enviarRV2_bt"
                 style="@style/ButtonNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

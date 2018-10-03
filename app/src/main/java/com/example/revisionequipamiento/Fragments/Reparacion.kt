@@ -27,7 +27,7 @@ class Reparacion : Fragment() {
         val bbddsqlite = BBDDSQLite(requireContext())
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=1 AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=1 AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) AND t1.n_serie not in (SELECT id_equipamiento FROM revisiones) ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {

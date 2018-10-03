@@ -286,13 +286,12 @@ val VERSIONBBDD = 3
             db.close()
         }
 
-        fun insertRevision(revision : Revision){
+        fun insertRevision(revision : RevisionObjeto){
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put("id",revision.id)
-            cv.put("id_equipamiento",revision.equipamieno)
+            cv.put("id_equipamiento",revision.equipamiento)
             cv.put("id_usuario",revision.usuario)
-            cv.put("fecharevision",revision.fR)
+            cv.put("fecharevision",revision.getfR())
             cv.put("estado",revision.estado)
             cv.put("enviado",revision.enviado)
             cv.put("vp1",revision.vp1)
@@ -323,7 +322,7 @@ val VERSIONBBDD = 3
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
             }else{
-
+                Toast.makeText(context,"Revision Guardada ", Toast.LENGTH_SHORT).show()
             }
             db.close()
         }

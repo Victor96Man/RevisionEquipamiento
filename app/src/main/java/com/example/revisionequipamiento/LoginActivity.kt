@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
         if(codigo==2) {
             Toast.makeText(this@LoginActivity, getString(R.string.loginError), Toast.LENGTH_LONG).show()
             MyprogressBar.visibility = View.INVISIBLE
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
         if(codigo==1){
             val usuarios= jsonobject.getJSONArray("usuarios")
@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
             MyprogressBar.visibility = View.INVISIBLE
-            ParseoFile(result, this@LoginActivity)
+            ParseoFile(result, this@LoginActivity,1)
             startActivity(Intent(applicationContext, PrincipalActivity::class.java))
             finish()
         }

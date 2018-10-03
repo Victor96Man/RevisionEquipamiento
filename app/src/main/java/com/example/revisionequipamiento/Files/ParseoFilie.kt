@@ -4,22 +4,27 @@ import android.content.Context
 import com.example.revisionequipamiento.Clases.*
 import org.json.JSONArray
 
-fun ParseoFile(jsonString: String?, context: Context){
+fun ParseoFile(jsonString: String?, context: Context, code :Int){
+
+
     val jsonarray = JSONArray(jsonString)
     val jsonobject = jsonarray.getJSONObject(0)
 
-    val usuarios= jsonobject.getJSONArray("usuarios")
-    val usuariosjsonobject = usuarios.getJSONObject(0)
-    val idusuario = usuariosjsonobject.getInt("id")
-    val username = usuariosjsonobject.getString("username")
-    val contraseña = usuariosjsonobject.getString("password")
-    val nombreusuario = usuariosjsonobject.getString("nombre")
-    val email = usuariosjsonobject.getString("email")
+    if(code ==1){
+        val usuarios= jsonobject.getJSONArray("usuarios")
+        val usuariosjsonobject = usuarios.getJSONObject(0)
+        val idusuario = usuariosjsonobject.getInt("id")
+        val username = usuariosjsonobject.getString("username")
+        val contraseña = usuariosjsonobject.getString("password")
+        val nombreusuario = usuariosjsonobject.getString("nombre")
+        val email = usuariosjsonobject.getString("email")
 
-    val usuario = Usuario(idusuario,username,contraseña,nombreusuario,email)
-    val bbddsqlite = BBDDSQLite(context)
-    bbddsqlite.insertUser(usuario)
-    bbddsqlite.close()
+        val usuario = Usuario(idusuario,username,contraseña,nombreusuario,email)
+        val bbddsqlite = BBDDSQLite(context)
+        bbddsqlite.insertUser(usuario)
+        bbddsqlite.close()
+    }
+
 
     val jsonobject1 = jsonarray.getJSONObject(1)
     val marcas= jsonobject1.getJSONArray("marcas")

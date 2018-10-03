@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import kotlinx.android.synthetic.main.activity_equipamiento.*
@@ -26,20 +27,20 @@ class EquipamientoActivity : AppCompatActivity() {
     var modelo :String=""
     var fecha_compra :String=""
     var fecha_puesta_funcionamiento :String=""
-    var fecha_proxima_revision :String=""
-    var fecha_revision :String=""
-    var fecha_caducidad :String=""
-    var fecha_baja :String=""
-    var referencia_normativa :String=""
+    var fecha_proxima_revision :String= ""
+    var fecha_revision :String= ""
+    var fecha_caducidad :String= ""
+    var fecha_baja :String= ""
+    var referencia_normativa :String= ""
     var estado :Int= 0
-    var id_remplaza :String=""
+    var id_remplaza :String= ""
     var trabajador : String? =null
-    var bitacora :String=""
+    var bitacora :String= ""
     var situacion :String= ""
-    private var fechas_Status = false
+    var fechas_Status = false
     var down_fechas : Animation? = null
     var up_fechas : Animation? = null
-
+    val id : Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +86,8 @@ class EquipamientoActivity : AppCompatActivity() {
             fab.isEnabled=false
             val int = Intent(this@EquipamientoActivity, PreguntasActivity::class.java)
             int.putExtra("familia", familia)
+            int.putExtra("MODO", "1")
+            int.putExtra("n_serie", n_serie )
             startActivity(int)
         }
 
@@ -104,12 +107,20 @@ class EquipamientoActivity : AppCompatActivity() {
             enviarRV_bt.isEnabled = true
             fab.setImageResource(R.drawable.ic_mode_edit)
             fab.setOnClickListener {
-
+                val int = Intent(this@EquipamientoActivity, PreguntasActivity::class.java)
+                int.putExtra("familia", familia)
+                int.putExtra("n_serie", n_serie)
+                int.putExtra("MODO", "2")
+                startActivity(int)
+                finish()
             }
         }
         enviarRV_bt.setOnClickListener {
-            val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-            EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
+            val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
+            val db = bbddsqlite.writableDatabase
+            db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
+            /*val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+            EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)*/
         }
 
         descarga_revi_bt.setOnClickListener{

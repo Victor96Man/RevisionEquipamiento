@@ -23,7 +23,7 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_dialer"
+        app:srcCompat="@drawable/ic_action_filter"
         tools:ignore="MissingConstraints" />
 
 

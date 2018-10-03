@@ -133,6 +133,17 @@
     <string name="aj_infoContraseña_tx">Introduce tú actual contraseña y la nueva.</string>
     <string name="aj_contraActual_edt">Contraseña Actual</string>
     <string name="aj_contraNueva_edt">Contraseña Nueva</string>
+    <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
+
+    <!-- Errores -->
+    <string name="err_campoVacio">Campo vacio</string>
+    <string name="err_campoNoIgual">Los campo no concuerdan</string>
+    <string name="err_campoPSW">La contraseña debe contener entre 8-16 caracteres con una minuscula, una mayuscula, un numero y un caracter especial</string>
+    <string name="err_NoEstado">Debes elegir un estado</string>
+
+    <!-- Regex -->
+    <string name="regex_password"></string>
+
 
     <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
 Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>

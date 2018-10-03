@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
@@ -23,8 +24,10 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.util.regex.Pattern
 
 class AjustesActivity : AppCompatActivity() {
+    val Password_patter :Pattern = Pattern.compile("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\$@\$!#%*?&])([A-Za-z\\d\$@\$!%*?&]|[^ ]){8,16}\$/")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ajustes)
@@ -34,26 +37,48 @@ class AjustesActivity : AppCompatActivity() {
         pInfo = packageManager.getPackageInfo(packageName, 0)
         val versionS = pInfo!!.versionName
         version_tx.text="Versión: $versionS"
-
+        val username = SelectUsuario()
         aj_cambioContra_bt.setOnClickListener { _ ->
+            aj_cambioContra_bt.isEnabled=false
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.contrasena_dialog, null)
             //AlertDialogBuilder
+
             val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
                     .setTitle(getString(R.string.aj_cambiarContra_tx))
             //show dialog
             val mAlertDialog = mBuilder.show()
+            mAlertDialog.setCancelable(false)
+            mAlertDialog.setCanceledOnTouchOutside(false)
 
             mAlertDialog.aj_aceptar_bt.setOnClickListener{
                 val contraseñaA = mAlertDialog.aj_contraActual_edt.text.toString()
                 val contraseñaN = mAlertDialog.aj_contraNueva_edt.text.toString()
+                val contraseñaNR = mAlertDialog.aj_contraNuevaR_edt.text.toString()
                 if (comprobarInternet()) {
                     if (contraseñaA != "") {
                         if (contraseñaN != "") {
-                            val urlInicio= "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
-                            AsyncTaskHandleJSON(SelectUsuario(),contraseñaA,contraseñaN).execute(urlInicio)
-                            mAlertDialog.dismiss()
+                            if (contraseñaNR != "") {
+                                if (contraseñaNR ==contraseñaN) {
+                                    if(Password_patter.matcher(contraseñaN).matches()){
+                                        val urlInicio = "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
+                                        AsyncTaskHandleJSON(username, contraseñaA, contraseñaN).execute(urlInicio)
+                                        mAlertDialog.dismiss()
+                                        aj_cambioContra_bt.isEnabled=true
+                                    }else{
+                                        mAlertDialog.aj_contraNueva_edt.setError(getString(R.string.err_campoPSW))
+                                    }
+                                }else{
+                                    mAlertDialog.aj_contraNuevaR_edt.setError(getString(R.string.err_campoNoIgual))
+                                }
+                            }else{
+                                mAlertDialog.aj_contraNuevaR_edt.setError(getString(R.string.err_campoVacio))
+                            }
+                        }else{
+                            mAlertDialog.aj_contraNueva_edt.setError(getString(R.string.err_campoVacio))
                         }
+                    }else{
+                        mAlertDialog.aj_contraActual_edt.setError(getString(R.string.err_campoVacio))
                     }
                 }else{
                     Toast.makeText(this@AjustesActivity,getString(R.string.noInternetInfo),Toast.LENGTH_SHORT).show()
@@ -62,6 +87,7 @@ class AjustesActivity : AppCompatActivity() {
 
             mAlertDialog.aj_cancelar_bt.setOnClickListener{
                 mAlertDialog.dismiss()
+                aj_cambioContra_bt.isEnabled=true
             }
         }
     }
@@ -85,7 +111,7 @@ class AjustesActivity : AppCompatActivity() {
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
-                    var username = cusrsor.getString(cusrsor.getColumnIndex("username"))
+                     username = cusrsor.getString(cusrsor.getColumnIndex("username"))
                 }
             }
         }
@@ -101,6 +127,7 @@ class AjustesActivity : AppCompatActivity() {
             super.onPreExecute()
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            aj_MyProgressBar3.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg url: String): String {
@@ -110,8 +137,9 @@ class AjustesActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            println(result)
             handleJson(result)
+            aj_MyProgressBar3.visibility = View.INVISIBLE
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
 
@@ -121,7 +149,6 @@ class AjustesActivity : AppCompatActivity() {
         val codigo = jsonobject.getInt("codigo")
         if(codigo==1){
             val contrasena = jsonobject.getString("contrasena")
-            Toast.makeText(this@AjustesActivity,codigo,Toast.LENGTH_SHORT).show()
             val bbddsqlite = BBDDSQLite(this@AjustesActivity)
             bbddsqlite.updateContrasena(contrasena)
             Toast.makeText(this@AjustesActivity,getString(R.string.contraseñaOK),Toast.LENGTH_SHORT).show()

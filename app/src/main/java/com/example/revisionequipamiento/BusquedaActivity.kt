@@ -14,10 +14,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.filtro_dialog.*
+import android.content.DialogInterface
+
+
 
 
 class BusquedaActivity : AppCompatActivity() {
@@ -42,8 +44,7 @@ class BusquedaActivity : AppCompatActivity() {
         BuscarEquipamiento()
 
         fab_2.setOnClickListener { _ ->
-
-
+            fab_2.isEnabled=false
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.filtro_dialog, null)
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
@@ -51,6 +52,9 @@ class BusquedaActivity : AppCompatActivity() {
                     .setTitle(getString(R.string.filtro))
             //show dialog
             val  mAlertDialog = mBuilder.show()
+            mAlertDialog.setOnCancelListener{
+                fab_2.isEnabled=true
+            }
             //---------------------------------------SPINNER--FAMILIA----------------------------------------------------
             mAlertDialog.flt_familia_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarFamilias())
 
@@ -72,7 +76,7 @@ class BusquedaActivity : AppCompatActivity() {
 
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
-            }
+                }
             }
             //---------------------------------------SPINNER--TRABAJADOR----------------------------------------------------
             mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
@@ -91,6 +95,7 @@ class BusquedaActivity : AppCompatActivity() {
             }
             mAlertDialog.flt_cancelar_bt.setOnClickListener{
                 mAlertDialog.dismiss()
+                fab_2.isEnabled=true
             }
         }
 

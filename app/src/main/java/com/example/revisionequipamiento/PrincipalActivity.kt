@@ -29,9 +29,6 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class PrincipalActivity : AppCompatActivity() {
-
-    var username=""
-    var contrasena=""
     private var FAB_Status = false
     var show_fab_1 : Animation? = null
     var hide_fab_1 : Animation? = null
@@ -39,7 +36,8 @@ class PrincipalActivity : AppCompatActivity() {
     var hide_fab_2 : Animation? = null
     var show_fab_3 : Animation? = null
     var hide_fab_3 : Animation? = null
-
+    var username :String=""
+    var contrasena :String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,9 +74,17 @@ class PrincipalActivity : AppCompatActivity() {
             }
         }
 
-        fab_1.setOnClickListener(View.OnClickListener { BuscarEquipa() })
-        fab_2.setOnClickListener(View.OnClickListener {ActualizarBD()})
-        fab_3.setOnClickListener(View.OnClickListener {CerrarSesion()})
+        fab_1.setOnClickListener{
+            fab_1.isEnabled=false
+            BuscarEquipa()
+        }
+        fab_2.setOnClickListener{
+            ActualizarBD()
+        }
+        fab_3.setOnClickListener{
+            fab_3.isEnabled=false
+            CerrarSesion()
+        }
 
     }
 
@@ -120,7 +126,7 @@ class PrincipalActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            ParseoFile(result, this@PrincipalActivity)
+            ParseoFile(result, this@PrincipalActivity,1)
             val pagerAdapter = PagerAdapter(getSupportFragmentManager(), this@PrincipalActivity)
             viewpager.adapter = pagerAdapter
             tab_layout.setupWithViewPager(viewpager)
@@ -130,7 +136,7 @@ class PrincipalActivity : AppCompatActivity() {
                 tab!!.customView = pagerAdapter.getTabView(i)
             }
             MyprogressBar2.visibility = View.INVISIBLE
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             Toast.makeText(this@PrincipalActivity,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
         }
     }
@@ -208,9 +214,14 @@ class PrincipalActivity : AppCompatActivity() {
             finish()
         }
         builder.setNegativeButton(getString(R.string.cancelar)) { _,_ ->
+            fab_3.isEnabled=true
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
+        dialog.setOnCancelListener{
+
+            fab_3.isEnabled=true
+        }
     }
 
     fun ActualizarBD() {
@@ -230,7 +241,7 @@ class PrincipalActivity : AppCompatActivity() {
                 }
                 cusrsor.close()
             }
-            val tables = arrayOf<String>("usuarios", "marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "revisiones", "ubicaciones")
+            val tables = arrayOf<String>("usuarios", "marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "ubicaciones")
             for (table in tables) {
                 db.delete(table, null, null)
             }
@@ -251,6 +262,7 @@ class PrincipalActivity : AppCompatActivity() {
     fun  BuscarEquipa(){
         val intent = Intent(this@PrincipalActivity,BusquedaActivity::class.java)
         startActivity(intent)
+        fab_1.isEnabled=true
     }
 
     internal inner class PagerAdapter(fm: FragmentManager, var context: Context) : FragmentPagerAdapter(fm) {

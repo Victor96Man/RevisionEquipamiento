@@ -60,6 +60,6 @@
         app:backgroundTint="@color/colorPrimaryDark"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_mode_edit" />
+        app:srcCompat="@drawable/ic_action_document" />
 
 </android.support.design.widget.CoordinatorLayout>
