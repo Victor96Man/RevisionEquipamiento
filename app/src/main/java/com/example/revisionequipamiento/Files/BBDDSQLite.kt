@@ -2,6 +2,7 @@ package com.example.revisionequipamiento.Files
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
@@ -287,13 +288,55 @@ val VERSIONBBDD = 3
         }
 
         fun insertRevision(revision : RevisionObjeto){
+            if (buscarRevision(revision.equipamiento)){
+                updateRevision(revision)
+            }else{
+                val db = this.writableDatabase
+                var cv = ContentValues()
+                cv.put("id_equipamiento",revision.equipamiento)
+                cv.put("id_usuario",revision.usuario)
+                cv.put("fecharevision",revision.getfR())
+                cv.put("estado",revision.estado)
+                cv.put("enviado",revision.enviado)
+                cv.put("vp1",revision.vp1)
+                cv.put("vp2",revision.vp2)
+                cv.put("vp3",revision.vp3)
+                cv.put("vp4",revision.vp4)
+                cv.put("vp5",revision.vp5)
+                cv.put("vp6",revision.vp6)
+                cv.put("vp7",revision.vp7)
+                cv.put("vp8",revision.vp8)
+                cv.put("vp9",revision.vp9)
+                cv.put("vp10",revision.vp10)
+                cv.put("obp1",revision.obp1)
+                cv.put("obp2",revision.obp2)
+                cv.put("obp3",revision.obp3)
+                cv.put("obp4",revision.obp4)
+                cv.put("obp5",revision.obp5)
+                cv.put("obp6",revision.obp6)
+                cv.put("obp7",revision.obp7)
+                cv.put("obp8",revision.obp8)
+                cv.put("obp9",revision.obp9)
+                cv.put("obp10",revision.obp10)
+                cv.put("firma",revision.firma)
+                cv.put("firma_trabajador",revision.firmaT)
+                cv.put("objeciones",revision.objecione)
+                cv.put("peticiones",revision.peticiones)
+                var result = db.insert("revisiones",null,cv)
+                if(result == -1.toLong()){
+                    Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(context,"Revision Guardada ", Toast.LENGTH_SHORT).show()
+                }
+                db.close()
+            }
+        }
+
+        fun updateRevision(revision : RevisionObjeto){
             val db = this.writableDatabase
             var cv = ContentValues()
-            cv.put("id_equipamiento",revision.equipamiento)
-            cv.put("id_usuario",revision.usuario)
             cv.put("fecharevision",revision.getfR())
             cv.put("estado",revision.estado)
-            cv.put("enviado",revision.enviado)
             cv.put("vp1",revision.vp1)
             cv.put("vp2",revision.vp2)
             cv.put("vp3",revision.vp3)
@@ -318,12 +361,23 @@ val VERSIONBBDD = 3
             cv.put("firma_trabajador",revision.firmaT)
             cv.put("objeciones",revision.objecione)
             cv.put("peticiones",revision.peticiones)
-            var result = db.insert("revisiones",null,cv)
-            if(result == -1.toLong()){
-                Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(context,"Revision Guardada ", Toast.LENGTH_SHORT).show()
-            }
+            db.update("revisiones", cv, "id_equipamiento = '${revision.equipamiento}'", null)
             db.close()
+            Toast.makeText(context,"Revision Actualizada ", Toast.LENGTH_SHORT).show()
+        }
+
+        fun buscarRevision(n_serie: String?): Boolean {
+            val db = this.writableDatabase
+            val cusrsor: Cursor
+            var revision :Boolean = false
+            cusrsor = db.rawQuery("Select * FROM revisiones WHERE revisiones.id_equipamiento= '${n_serie}'", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                    }
+                    revision = true
+                }
+            }
+            return revision
         }
 }

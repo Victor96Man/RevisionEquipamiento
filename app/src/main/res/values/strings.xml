@@ -24,6 +24,8 @@
     <string name="seleccionFoto">Selecciona</string>
     <string name="seleccionFotoGaleria">Galeria</string>
     <string name="seleccionFotoCamara">Camara</string>
+    <string name="enviarTitulo">Enviar Revisión</string>
+    <string name="enviarInfo">¿Quieres enviar la revisión directamente?</string>
 
     <!-- URLS-->
     <string name="URL">http://emproacsa.mjhudesings.com/</string>

@@ -109,8 +109,9 @@ class EquipamientoActivity : AppCompatActivity() {
                 fechas_Status = false
             }
         }
-
-        if (buscarRevision(n_serie)) {
+        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
+        if (bbddsqlite.buscarRevision(n_serie)) {
+            bbddsqlite.close()
             enviarRV_bt.isEnabled = true
             fab.setImageResource(R.drawable.ic_mode_edit)
             fab.setOnClickListener {
@@ -121,7 +122,9 @@ class EquipamientoActivity : AppCompatActivity() {
                 startActivity(int)
                 finish()
             }
+            bbddsqlite.close()
         }
+
         enviarRV_bt.setOnClickListener {
             var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             var networkInfo = cm.activeNetworkInfo
@@ -129,6 +132,15 @@ class EquipamientoActivity : AppCompatActivity() {
                 val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
                 EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
                 actualizarBD()
+            }else{
+                val builder = android.support.v7.app.AlertDialog.Builder(this@EquipamientoActivity)
+                builder.setTitle(getString(R.string.noInternet))
+                builder.setMessage(getString(R.string.noInternetInfo))
+                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
+
+                }
+                val dialog: android.support.v7.app.AlertDialog = builder.create()
+                dialog.show()
             }
         }
 
@@ -214,21 +226,7 @@ class EquipamientoActivity : AppCompatActivity() {
     }
 
 
-    private fun buscarRevision(n_serie: String?): Boolean {
-        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor: Cursor
-        var revision :Boolean = false
-        cusrsor = db.rawQuery("Select * FROM revisiones WHERE revisiones.id_equipamiento= '${n_serie}'", null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                }
-                revision = true
-            }
-        }
-        return revision
-    }
+
 
     private fun buscarEquipamiento(n_serie: String?) {
         val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)

@@ -58,28 +58,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.adapter = spinnerArrayAdapter
 
 
-        dt_enviarRV2_bt.setOnClickListener{
-            var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            var networkInfo = cm.activeNetworkInfo
-            if (networkInfo != null && networkInfo.isConnected) {
-                val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                guardar()
-                EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
-                or.volveranull()
-                actualizarBD()
-
-            }else{
-                val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                builder.setTitle(getString(R.string.noInternet))
-                builder.setMessage(getString(R.string.noInternetInfo))
-                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
-
-                }
-                val dialog: android.support.v7.app.AlertDialog = builder.create()
-                dialog.show()
-            }
-        }
-
         var dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
 
         if(MODO == "2"){
@@ -100,6 +78,39 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
         dt_guardar_bt.setOnClickListener{
             guardar()
+
+            val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+            builder.setTitle(getString(R.string.enviarTitulo))
+            builder.setMessage(getString(R.string.enviarInfo))
+            builder.setPositiveButton(getString(R.string.aceptar)) {
+                _, _ ->
+                var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                var networkInfo = cm.activeNetworkInfo
+                if (networkInfo != null && networkInfo.isConnected) {
+                    val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                    EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
+                    or.volveranull()
+                    actualizarBD()
+
+
+                }else{
+                    val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                    builder.setTitle(getString(R.string.noInternet))
+                    builder.setMessage(getString(R.string.noInternetInfo))
+                    builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
+
+                    }
+                    val dialog: android.support.v7.app.AlertDialog = builder.create()
+                    dialog.show()
+                }
+
+            }
+            builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog =builder.create()
+            dialog.show()
+
         }
 
         dt_UsuarioFirma_bt.setOnClickListener {
@@ -335,6 +346,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             super.onPostExecute(result)
             ParseoFile(result, this@DatosActivity,2)
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            or.volveranull()
             finish()
         }
     }
