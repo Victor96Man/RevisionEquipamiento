@@ -59,6 +59,7 @@ class PreguntasActivity : AppCompatActivity() {
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
+                    or.id= cusrsor.getInt(cusrsor.getColumnIndex("id"))
                     or.equipamiento = n_serie
                     or.enviado= cusrsor.getInt(cusrsor.getColumnIndex("enviado"))
                     or.vp1 = cusrsor.getInt(cusrsor.getColumnIndex("vp1"))
@@ -85,8 +86,6 @@ class PreguntasActivity : AppCompatActivity() {
                     or.firmaT = cusrsor.getString(cusrsor.getColumnIndex("firma_trabajador"))
                     or.objecione = cusrsor.getString(cusrsor.getColumnIndex("objeciones"))
                     or.peticiones = cusrsor.getString(cusrsor.getColumnIndex("peticiones"))
-
-
                 }
             }
         }

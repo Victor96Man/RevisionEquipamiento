@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -56,14 +57,12 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     val id : Int=0
     var or : RevisionObjeto = RevisionObjeto.getObjetoRevision(id)
 
-    var tv1: EditText?=null
-    var tv2: EditText?=null
-    var tv3: EditText?=null
-    var tv4: EditText?=null
+    var tv1: String = ""
+    var tv2: String = ""
+    var tv3: String = ""
+    var tv4: String = ""
 
-
-
-    var fotos: ArrayList<Foto>? = null
+    var fotos: ArrayList<Foto> = ArrayList(4)
 
     var mCurrentPhotoPath:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,8 +74,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
-
-
 
         //SPINNER
         val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
@@ -104,19 +101,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             }
         })
 
-        if(MODO=="2"){
-
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
-        }else{
-
-            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-            recyclerView.adapter = PostsAdapter(this@DatosActivity,selectFotos())
-        }
-
-
-
-
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.adapter = PostsAdapter(this@DatosActivity,selectFotos())
 
         val snapHelper: SnapHelper = LinearSnapHelper() as SnapHelper
         snapHelper.attachToRecyclerView(recyclerView)
@@ -185,36 +171,34 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     fun selectFotos():ArrayList<fotoItem> {
-        var posts : ArrayList<fotoItem>? = null
+        val posts : ArrayList<fotoItem> = ArrayList<fotoItem>()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("Select * from fotos where id_revision= '$'",null)
+        cusrsor = db.rawQuery("Select * from fotos where id_revision = ${or.id}",null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
-                    posts = ArrayList<fotoItem>()
                 }
                 do {
-                    val ruta = cusrsor.getString(cusrsor.getColumnIndex("ruta")) as Uri
+                    val ruta :Uri = Uri.parse(cusrsor.getString(cusrsor.getColumnIndex("ruta")))
                     val observacion = cusrsor.getString(cusrsor.getColumnIndex("observacion"))
-                    if (posts != null) {
-                        var imagen = MediaStore.Images.Media.getBitmap(this.contentResolver, ruta)
-                        posts.add(fotoItem(imagen,observacion))
-                    }
+                    val imagen = MediaStore.Images.Media.getBitmap(contentResolver,Uri.fromFile(File(ruta.path)))
+                    posts.add(fotoItem(imagen,observacion))
+
                 }while (cusrsor.moveToNext())
-
-                db.close()
-
             }
         }
-        if (posts!!.size!=4){
+        db.close()
+        if (posts.size!=4){
             do {
-                posts.add(fotoItem(null,""))
-            }while (posts!!.size!=4)
+                val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_action_camera)
+                posts.add(fotoItem(icon,""))
+            }while (posts.size!=4)
         }
-        return posts!!
+        return posts
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_exit, menu)
@@ -248,18 +232,15 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.setSelection(or.estado+1)
         dt_peticiones_edit.setText(or.peticiones)
         dt_objeciones_edit.setText(or.objecione)
-
-
     }
 
     fun guardar(){
-
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
-        bbddsqlite.insertRevision(or)
-        var fotos = or.fotos
+        val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
+        val fotos = or.fotos
         for (foto in fotos){
-            bbddsqlite.insertFoto(foto)
+            bbddsqlite.insertFoto(foto,id_revision)
         }
         bbddsqlite.close()
     }
@@ -277,6 +258,10 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
+        fotos[0].observacion=tv1
+        fotos[1].observacion=tv2
+        fotos[2].observacion=tv3
+        fotos[3].observacion=tv4
         or.fotos = fotos
         println(or)
     }
@@ -296,29 +281,26 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
         db.close()
         return id
-
     }
 
     override fun onHandleSelectionImage(imagen2: ImageButton,position:Int) {
         imagen=imagen2
-
         showPictureDialog(position)
-
     }
 
     override fun onHandleSelectionEditext(obs: EditText, position: Int) {
         when(position){
             0->{
-                tv1 = obs
+                tv1 = obs.text.toString()
             }
             1->{
-                tv2 = obs
+                tv2 = obs.text.toString()
             }
             2->{
-                tv3 = obs
+                tv3 = obs.text.toString()
             }
             3->{
-                tv4 = obs
+                tv4 = obs.text.toString()
             }
         }
     }
@@ -336,6 +318,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         pictureDialog.show()
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Throws(IOException::class)
     private fun createImageFile(): File? {
         // Create an image file name
@@ -357,11 +340,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         return image
     }
     fun choosePhotoFromGallary(position:Int) {
-        val galleryIntent = Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        val galleryIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryIntent.putExtra("position", position)
-        //Toast.makeText(this@DatosActivity, "gallery"+position, Toast.LENGTH_SHORT).show()
-
         startActivityForResult(galleryIntent, GALLERY)
     }
 
@@ -383,149 +363,133 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        fotos = ArrayList()
         if (requestCode == GALLERY) {
             if (data != null) {
-                val contentURI = data!!.data
+                val contentURI = data.data
                 try {
-                    var position = data!!.extras!!.getInt("position")
+                    val position = data.extras!!.getInt("position")
+
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
 
-
-
-
-                        when (position) {
-                            0 -> {
-                                try{
-                                    fotos.get(position).nomDes = "-1.jpg"
-                                    fotos.get(position).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = position+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
-                                }
-
-
+                    when (position) {
+                        0 -> {
+                            try {
+                                fotos.get(position).nomDes = "-1.jpg"
+                                fotos.get(position).ruta = path
+                            } catch (aoobe: IndexOutOfBoundsException) {
+                                val pos = position + 1
+                                fotos.add(Foto(or.id, path, "-$pos.jpg", tv1))
                             }
-
-
-                            1 -> {
-                                try{
-                                    fotos.get(position).nomDes = "-2.jpg"
-                                    fotos.get(position).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = position+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
-                                }
-
-                        
-                            }
-
-
-                            2 -> {
-                                try{
-                                    fotos.get(position).nomDes = "-3.jpg"
-                                    fotos.get(position).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = position+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
-                                }
-                            }
-
-                            3 -> {
-                                try{
-                                    fotos.get(position).nomDes = "-4.jpg"
-                                    fotos.get(position).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = position+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
-                                }
-
                         }
 
+                        1 -> {
+                            try {
+                                fotos.get(position).nomDes = "-2.jpg"
+                                fotos.get(position).ruta = path
+                            } catch (aoobe: IndexOutOfBoundsException) {
+                                val pos = position + 1
+                                fotos.add(Foto(or.id, path, "-$pos.jpg", tv2))
+                            }
+                        }
+                        2 -> {
+                            try {
+                                fotos.get(position).nomDes = "-3.jpg"
+                                fotos.get(position).ruta = path
+                            } catch (aoobe: IndexOutOfBoundsException) {
+                                val pos = position + 1
+                                fotos.add(Foto(or.id, path, "-$pos.jpg", tv3))
+                            }
+                        }
 
-                    imagen!!.setImageBitmap(bitmap)
+                        3 -> {
+                            try {
+                                fotos.get(position).nomDes = "-4.jpg"
+                                fotos.get(position).ruta = path
+                            } catch (aoobe: IndexOutOfBoundsException) {
+                                val pos = position + 1
+                                fotos.add(Foto(or.id, path, "-$pos.jpg", tv4))
+                            }
+                        }
+                    }
+                        imagen!!.setImageBitmap(bitmap)
 
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    Toast.makeText(this@DatosActivity, "Algo a Fallado!", Toast.LENGTH_SHORT).show()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(this@DatosActivity, "Algo a Fallado!", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
 
-            }
+            } else if (requestCode == CAMERA) {
 
-        } else if (requestCode == CAMERA) {
+                val bmp: Bitmap
+                val resizeBitmap: Bitmap
+                try {
+                    if (mCurrentPhotoPath != null) {
 
-            val bmp: Bitmap
-            val resizeBitmap: Bitmap
-            try{
-                if(mCurrentPhotoPath !=null){
-
-                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                    resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
-                    val path = saveImage(resizeBitmap)
+                        bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                        resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
+                        val path = saveImage(resizeBitmap)
 
                         when (positionCameraElement) {
                             0 -> {
 
-                                try{
+                                try {
                                     fotos.get(positionCameraElement).nomDes = "-1.jpg"
                                     fotos.get(positionCameraElement).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = positionCameraElement+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                } catch (aoobe: IndexOutOfBoundsException) {
+                                    val pos = positionCameraElement + 1
+                                    fotos.add(Foto(or.id, path, "-$pos.jpg", tv1))
 
                                 }
                             }
 
                             1 -> {
 
-                                try{
+                                try {
                                     fotos.get(positionCameraElement).nomDes = "-2.jpg"
                                     fotos.get(positionCameraElement).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = positionCameraElement+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                } catch (aoobe: IndexOutOfBoundsException) {
+                                    val pos = positionCameraElement + 1
+                                    fotos.add(Foto(or.id, path, "-$pos.jpg", tv2))
 
                                 }
                             }
 
                             2 -> {
 
-                                try{
+                                try {
                                     fotos.get(positionCameraElement).nomDes = "-3.jpg"
                                     fotos.get(positionCameraElement).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = positionCameraElement+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                } catch (aoobe: IndexOutOfBoundsException) {
+                                    val pos = positionCameraElement + 1
+                                    fotos.add(Foto(or.id, path, "-$pos.jpg", tv3))
 
                                 }
                             }
 
                             3 -> {
 
-                                try{
+                                try {
                                     fotos.get(positionCameraElement).nomDes = "-4.jpg"
                                     fotos.get(positionCameraElement).ruta = path
-                                }catch (aoobe:IndexOutOfBoundsException){
-                                    var pos = positionCameraElement+1
-                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                } catch (aoobe: IndexOutOfBoundsException) {
+                                    val pos = positionCameraElement + 1
+                                    fotos.add(Foto(or.id, path, "-$pos.jpg", tv4))
 
                                 }
                             }
                         }
+                        imagen!!.setImageBitmap(resizeBitmap)
 
-
-                    imagen!!.setImageBitmap(resizeBitmap)
-
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            }catch(e:Exception){
-                e.printStackTrace()
             }
-
-
-
         }
-    }
+
 
 
     fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
@@ -659,7 +623,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     fun cambiarStyle(button :Button){
-        button.text = "Firmado"
+        button.text = getString(R.string.firmado)
         button.setBackgroundColor(resources.getColor(R.color.GrisTransparente))
         button.setTextColor(resources.getColor(R.color.colorPrimary))
         button.isEnabled=false

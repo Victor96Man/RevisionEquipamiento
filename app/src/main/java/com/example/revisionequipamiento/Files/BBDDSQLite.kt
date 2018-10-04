@@ -12,7 +12,7 @@ import java.util.*
 
 val directorioexterno = Environment.getExternalStorageDirectory()
 val DATABASE_NAME = "revisiones"
-val VERSIONBBDD = 3
+val VERSIONBBDD = 4
 
     class BBDDSQLite(var context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null, VERSIONBBDD) {
         override fun onCreate(db: SQLiteDatabase?) {
@@ -183,10 +183,10 @@ val VERSIONBBDD = 3
 
         fun insertZona(zona : Zona){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",zona.id)
             cv.put("nombrezona",zona.nombre)
-            var result = db.insert("zonas",null,cv)
+            val result = db.insert("zonas",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error zona ${zona.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -197,10 +197,10 @@ val VERSIONBBDD = 3
 
         fun insertUsuariosZona(usuZona : UsuariosZonas){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id_usuario",usuZona.usuario)
             cv.put("id_zona",usuZona.zona)
-            var result = db.insert("usuariosZonas",null,cv)
+            val result = db.insert("usuariosZonas",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error usuzona ${usuZona.usuario} ${usuZona.zona}", Toast.LENGTH_SHORT).show()
             }else{
@@ -209,34 +209,34 @@ val VERSIONBBDD = 3
             db.close()
         }
 
-        fun insertFoto(foto : Foto){
-            if (buscarFoto(foto.idRevision)){
+        fun insertFoto(foto : Foto, idRevi: Int){
+            /*if (buscarFoto(foto.idRevision)){
                 updateFoto(foto)
-            }else{
+            }else{*/
                 val db = this.writableDatabase
-                var cv = ContentValues()
-                cv.put("id_revision",foto.idRevision)
+                val cv = ContentValues()
+                cv.put("id_revision",idRevi)
                 cv.put("nomdes",foto.nomDes)
                 cv.put("observacion",foto.observacion)
                 cv.put("ruta",foto.ruta)
-                var result = db.insert("fotos",null,cv)
+                val result = db.insert("fotos",null,cv)
                 if(result == -1.toLong()){
                     Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
                 }else{
 
                 }
                 db.close()
-            }
+            //}
         }
 
 
         fun insertUbicacion(ubicacion : Ubicacion){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",ubicacion.id)
             cv.put("nombreubicacion",ubicacion.nombre)
             cv.put("id_zona",ubicacion.zona)
-            var result = db.insert("ubicaciones",null,cv)
+            val result = db.insert("ubicaciones",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error ubicacion ${ubicacion.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -247,12 +247,12 @@ val VERSIONBBDD = 3
 
         fun insertTrabajador(trabajador : Trabajador){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",trabajador.id)
             cv.put("nombretrabajador",trabajador.nombre)
             cv.put("id_zona",trabajador.zona)
             cv.put("id_ubicacion",trabajador.ubicacion)
-            var result = db.insert("trabajadores",null,cv)
+            val result = db.insert("trabajadores",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error trabajador ${trabajador.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -263,7 +263,7 @@ val VERSIONBBDD = 3
 
         fun insertFamilia(familia : Familia){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",familia.id)
             cv.put("nombrefamilia",familia.nombre)
             cv.put("informacion",familia.info)
@@ -279,7 +279,7 @@ val VERSIONBBDD = 3
             cv.put("pregunta8",familia.p8)
             cv.put("pregunta9",familia.p9)
             cv.put("pregunta10",familia.p10)
-            var result = db.insert("familias",null,cv)
+            val result = db.insert("familias",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error familia ${familia.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -290,7 +290,7 @@ val VERSIONBBDD = 3
 
         fun insertEquipamiento(equipamiento : Equipamiento){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("n_serie",equipamiento.id)
             cv.put("id_familia",equipamiento.familia)
             cv.put("id_marca",equipamiento.marca)
@@ -309,7 +309,7 @@ val VERSIONBBDD = 3
             cv.put("id_trabajador",equipamiento.trabajador)
             cv.put("bitacora",equipamiento.bitacora)
             cv.put("situacion",equipamiento.situacion)
-            var result = db.insert("equipamientos",null,cv)
+            val result = db.insert("equipamientos",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error Equipamiento ${equipamiento.id}", Toast.LENGTH_SHORT).show()
             }else{
@@ -318,12 +318,13 @@ val VERSIONBBDD = 3
             db.close()
         }
 
-        fun insertRevision(revision : RevisionObjeto){
+        fun insertRevision(revision : RevisionObjeto) :Long{
+            var result :Long = 7
             if (buscarRevision(revision.equipamiento)){
                 updateRevision(revision)
             }else{
                 val db = this.writableDatabase
-                var cv = ContentValues()
+                val cv = ContentValues()
                 cv.put("id_equipamiento",revision.equipamiento)
                 cv.put("id_usuario",revision.usuario)
                 cv.put("fecharevision",revision.getfR())
@@ -353,19 +354,22 @@ val VERSIONBBDD = 3
                 cv.put("firma_trabajador",revision.firmaT)
                 cv.put("objeciones",revision.objecione)
                 cv.put("peticiones",revision.peticiones)
-                var result = db.insert("revisiones",null,cv)
+                result = db.insert("revisiones",null,cv)
                 if(result == -1.toLong()){
                     Toast.makeText(context,"Error revision ${revision.id} ", Toast.LENGTH_SHORT).show()
                 }else{
+
                     Toast.makeText(context,"Revision Guardada ", Toast.LENGTH_SHORT).show()
                 }
                 db.close()
             }
+            return result
+
         }
 
         fun updateRevision(revision : RevisionObjeto){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("fecharevision",revision.getfR())
             cv.put("estado",revision.estado)
             cv.put("vp1",revision.vp1)
@@ -399,7 +403,7 @@ val VERSIONBBDD = 3
 
         fun updateFoto(foto : Foto){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",foto.id)
             cv.put("id_revision",foto.idRevision)
             cv.put("nomdes",foto.nomDes)
@@ -429,7 +433,7 @@ val VERSIONBBDD = 3
             val db = this.writableDatabase
             val cusrsor: Cursor
             var foto :Boolean = false
-            cusrsor = db.rawQuery("Select * FROM fotos WHERE foto.id_revision= '${idRevi}'", null)
+            cusrsor = db.rawQuery("Select * FROM fotos WHERE foto.id_revision= ${idRevi}", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
                     if (cusrsor.moveToFirst()) {
