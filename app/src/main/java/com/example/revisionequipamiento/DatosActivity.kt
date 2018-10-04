@@ -5,13 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
 import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -24,6 +28,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
+import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
@@ -35,6 +40,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
@@ -45,14 +51,31 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var familia :String=""
     var username :String=""
     var contrasena :String=""
+    var positionCameraElement: Int=0
     val id : Int=0
     var or : RevisionObjeto = RevisionObjeto.getObjetoRevision(id)
+
+    var tv1: EditText?=null
+    var tv2: EditText?=null
+    var tv3: EditText?=null
+    var tv4: EditText?=null
+
+
+
+    var fotos: ArrayList<Foto> = ArrayList()
+
+    var mCurrentPhotoPath:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_datos)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         MODO = intent.getStringExtra("MODO")
         familia = intent.getStringExtra("familia")
+
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
+
 
         //SPINNER
         val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
@@ -88,6 +111,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         posts.add("")
         posts.add("")
         posts.add("")
+
+
+
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
 
@@ -95,6 +121,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         snapHelper.attachToRecyclerView(recyclerView)
 
         dt_guardar_bt.setOnClickListener{
+
             if (dt_estado_sp.selectedItemPosition!=0) {
                 if (or.firma!="") {
                     dt_UsuarioFirma_bt.setError(null)
@@ -140,6 +167,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                 errorText.setText(getString(R.string.err_NoEstado))
                 Toast.makeText(this@DatosActivity,getString(R.string.err_NoEstado),Toast.LENGTH_SHORT).show()
             }
+
         }
 
         dt_UsuarioFirma_bt.setOnClickListener {
@@ -192,9 +220,14 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     fun guardar(){
+
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         bbddsqlite.insertRevision(or)
+        var fotos = or.fotos
+        for (foto in fotos){
+            bbddsqlite.insertFoto(foto)
+        }
         bbddsqlite.close()
     }
 
@@ -211,6 +244,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
+        or.fotos = fotos
+        println(or)
     }
 
     private fun idUsuario(): Int {
@@ -231,47 +266,144 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
     }
 
-    override fun onHandleSelection(imagen2: ImageButton) {
+    override fun onHandleSelectionImage(imagen2: ImageButton,position:Int) {
         imagen=imagen2
-        showPictureDialog()
+
+        showPictureDialog(position)
+
     }
 
-    fun showPictureDialog() {
+    override fun onHandleSelectionEditext(obs: EditText, position: Int) {
+        when(position){
+            0->{
+                tv1 = obs
+            }
+            1->{
+                tv2 = obs
+            }
+            2->{
+                tv3 = obs
+            }
+            3->{
+                tv4 = obs
+            }
+        }
+    }
+
+    fun showPictureDialog(position:Int) {
         val pictureDialog = AlertDialog.Builder(this@DatosActivity)
         pictureDialog.setTitle(getString(R.string.seleccionFoto))
         val pictureDialogItems = arrayOf(getString(R.string.seleccionFotoGaleria), getString(R.string.seleccionFotoCamara))
         pictureDialog.setItems(pictureDialogItems) { dialog, which ->
             when (which) {
-                0 -> choosePhotoFromGallary()
-                1 -> takePhotoFromCamera()
+                0 -> choosePhotoFromGallary(position)
+                1 -> takePhotoFromCamera(position)
             }
         }
         pictureDialog.show()
     }
 
-    fun choosePhotoFromGallary() {
+    @Throws(IOException::class)
+    private fun createImageFile(): File? {
+        // Create an image file name
+        val timeStamp: String
+        val imageFileName: String
+        val storageDir: File
+        var image: File? = null
+
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        imageFileName = "JPEG_" + timeStamp + "_"
+        storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES)
+        image = File.createTempFile(
+                imageFileName, // prefix
+                ".jpg", // suffix
+                storageDir      // directory
+        )
+        //mCurrentPhotoPath = "file:" + image!!.absolutePath
+        return image
+    }
+    fun choosePhotoFromGallary(position:Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryIntent.putExtra("position", position)
+        //Toast.makeText(this@DatosActivity, "gallery"+position, Toast.LENGTH_SHORT).show()
 
-       startActivityForResult(galleryIntent, GALLERY)
+        startActivityForResult(galleryIntent, GALLERY)
     }
 
-    fun takePhotoFromCamera() {
+    fun takePhotoFromCamera(position:Int) {
+        var photoFile: File? = null
+        try {
+            photoFile = createImageFile()
+        }catch (ioe:IOException){
+            ioe.stackTrace
+        }
+        //Toast.makeText(this@DatosActivity, "Camera"+position, Toast.LENGTH_SHORT).show()
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1);
+        positionCameraElement = position
         startActivityForResult(intent, CAMERA)
+
+        mCurrentPhotoPath = "file:" + photoFile!!.getAbsolutePath()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == GALLERY) {
             if (data != null) {
                 val contentURI = data!!.data
                 try {
+                    var position = data!!.extras!!.getInt("position")
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
-                    Toast.makeText(this@DatosActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this@DatosActivity, "Galleria "+position, Toast.LENGTH_SHORT).show()
+
+
+                        when (position) {
+                            0 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-1.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+
+                            }
+
+                            1 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-2.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            2 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-3.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            3 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-4.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+                        }
+
+
                     imagen!!.setImageBitmap(bitmap)
 
                 } catch (e: IOException) {
@@ -282,17 +414,90 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             }
 
         } else if (requestCode == CAMERA) {
-            if (data != null) {
-                val thumbnail = data!!.extras!!.get("data") as Bitmap
-                imagen!!.setImageBitmap(thumbnail)
-                saveImage(thumbnail)
+
+            val bmp: Bitmap
+            val resizeBitmap: Bitmap
+            try{
+                if(mCurrentPhotoPath !=null){
+
+                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                    resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
+                    val path = saveImage(resizeBitmap)
+
+                        when (positionCameraElement) {
+                            0 -> {
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-1.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            1 -> {
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-2.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            2 -> {
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-3.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            3 -> {
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-4.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+                        }
+
+
+                    imagen!!.setImageBitmap(resizeBitmap)
+
+                }
+            }catch(e:Exception){
+                e.printStackTrace()
             }
+
+
+
         }
+    }
+
+
+    fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
+        //Redimensionamos
+        val width = mBitmap.width
+        val height = mBitmap.height
+        val scaleWidth = newWidth / width
+        val scaleHeight = newHeigth / height
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight)
+        // recreate the new Bitmap
+        return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false)
     }
 
     fun saveImage(myBitmap: Bitmap): String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+        var ruta: String =""
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
@@ -313,6 +518,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     arrayOf(f.getPath()),
                     arrayOf("image/jpeg"), null)
             fo.close()
+            ruta = f.getAbsolutePath()
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
 
             return f.getAbsolutePath()
@@ -320,7 +526,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             e1.printStackTrace()
         }
 
-        return ""
+        return ruta
     }
 
     companion object {

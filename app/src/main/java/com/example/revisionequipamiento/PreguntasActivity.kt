@@ -86,6 +86,7 @@ class PreguntasActivity : AppCompatActivity() {
                     or.objecione = cusrsor.getString(cusrsor.getColumnIndex("objeciones"))
                     or.peticiones = cusrsor.getString(cusrsor.getColumnIndex("peticiones"))
 
+
                 }
             }
         }

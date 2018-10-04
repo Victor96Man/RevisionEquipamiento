@@ -33,6 +33,7 @@
     <string name="URLtodo">slim/todo/</string>
     <string name="URLcontraseña">slim/cambiocontrasena</string>
     <string name="URLinsert">slim/insertrevision</string>
+    <string name="URLCompruebaDescargaPDF">slim/compruebaRevision/</string>
     <string name="URLDescargaPDF">slim/descargarpdf/</string>
 
     <!-- Toast -->

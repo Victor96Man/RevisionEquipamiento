@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.os.AsyncTask
 import android.widget.Toast
+import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpPost
@@ -55,10 +56,12 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
                         cusrsor.getString(cusrsor.getColumnIndex("firma")),
                         cusrsor.getString(cusrsor.getColumnIndex("firma_trabajador")),
                         cusrsor.getString(cusrsor.getColumnIndex("objeciones")),
-                        cusrsor.getString(cusrsor.getColumnIndex("peticiones")))
+                        cusrsor.getString(cusrsor.getColumnIndex("peticiones")), devuelveFotosRevision(cusrsor.getInt(cusrsor.getColumnIndex("id")),context))
+                val idRevi = cusrsor.getInt(cusrsor.getColumnIndex("id"))
                 db.close()
 
-                AsyncTaskHandleJSON(newRevision, n_serie, context).execute(url)
+
+                AsyncTaskHandleJSON(newRevision, n_serie,idRevi, context).execute(url)
             }else{
 
             }
@@ -70,10 +73,45 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
     }
 }
 
-private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,context :Context): AsyncTask<String, String, String>() {
+
+private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Foto>{
+
+    val bbddsqlite = BBDDSQLite(context)
+    val db = bbddsqlite.writableDatabase
+    val cusrsor: Cursor
+    var fotos : ArrayList<Foto>
+
+    cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= '${idRevision}'", null)
+    fotos = ArrayList<Foto>()
+    if (cusrsor != null) {
+        if (cusrsor.count > 0) {
+            if (cusrsor.moveToFirst()) {
+
+            }
+            do {
+                var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id")),
+                        cusrsor.getString(cusrsor.getColumnIndex("id_revision")),
+                        cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
+                        cusrsor.getString(cusrsor.getColumnIndex("observacion")))
+                fotos.add(foto)
+            }while (cusrsor.moveToNext())
+            db.close()
+
+
+        }else{
+
+        }
+    }else{
+
+    }
+    return fotos
+}
+
+private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,idRevi : Int, context :Context): AsyncTask<String, String, String>() {
     var rev = revision
     val context = context
     val n_serie = n_serie
+    val idRevision =idRevi
     override fun onPreExecute() {
         super.onPreExecute()
 
@@ -86,16 +124,17 @@ private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,cont
 
     override fun onPostExecute(result: String?) {
         super.onPostExecute(result)
-        handleJson(result, n_serie, context)
+        handleJson(result, n_serie,idRevision, context)
     }
 }
 
-private fun handleJson(jsonString: String? ,n_serie: String,context: Context) {
+private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context: Context) {
     val jsonobject = JSONObject(jsonString)
     val bbddsqlite = BBDDSQLite(context)
     val db = bbddsqlite.writableDatabase
     if(jsonobject.getInt("code")==1){
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
+        db.delete("fotos", "idRevision= '$idRevi'", null)
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
     }else{
         println(jsonobject.getString("message"))
