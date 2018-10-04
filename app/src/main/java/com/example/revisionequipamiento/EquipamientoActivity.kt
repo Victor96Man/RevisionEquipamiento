@@ -2,10 +2,12 @@ package com.example.revisionequipamiento
 
 import android.content.Intent
 import android.database.Cursor
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
@@ -13,8 +15,10 @@ import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import kotlinx.android.synthetic.main.activity_equipamiento.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.buttons_equipamiento.*
 import kotlinx.android.synthetic.main.content_equipamiento.*
+import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -124,8 +128,15 @@ class EquipamientoActivity : AppCompatActivity() {
         }
 
         descarga_revi_bt.setOnClickListener{
-            val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLDescargaPDF)}$n_serie"
+            val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLCompruebaDescargaPDF)}$n_serie"
+            println(urlDescarga)
             AsyncTaskHandleJSON2().execute(urlDescarga)
+            /*val uris = Uri.parse(urlDescarga)
+            val intents = Intent(Intent.ACTION_VIEW, uris)
+            val b = Bundle()
+            b.putBoolean("new_window", true)
+            intents.putExtras(b)
+            this@EquipamientoActivity.startActivity(intents)*/
         }
     }
 
@@ -155,8 +166,30 @@ class EquipamientoActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            Toast.makeText(this@EquipamientoActivity,"PDF descargado", Toast.LENGTH_SHORT).show()
+            handleJson(result)
         }
+    }
+
+    private fun handleJson(jsonString: String?) {
+        val jsonarray = JSONArray(jsonString)
+        val jsonobject = jsonarray.getJSONObject(0)
+        val codigo = jsonobject.getInt("code")
+        val mensaje = jsonobject.getString("message")
+        val n_serie = jsonobject.getString("n_serie")
+
+        if(codigo == 1){
+            Toast.makeText(this@EquipamientoActivity, mensaje, Toast.LENGTH_LONG).show()
+            val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLDescargaPDF)}$n_serie"
+            val uris = Uri.parse(urlDescarga)
+            val intents = Intent(Intent.ACTION_VIEW, uris)
+            val b = Bundle()
+            b.putBoolean("new_window", true)
+            intents.putExtras(b)
+            this@EquipamientoActivity.startActivity(intents)
+        }else{
+            Toast.makeText(this@EquipamientoActivity, mensaje, Toast.LENGTH_LONG).show()
+        }
+
     }
 
 

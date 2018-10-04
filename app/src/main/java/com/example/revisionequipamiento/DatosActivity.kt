@@ -5,13 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
 import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
 import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -23,6 +27,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
+import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
@@ -35,6 +40,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
@@ -45,14 +51,31 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var familia :String=""
     var username :String=""
     var contrasena :String=""
+    var positionCameraElement: Int=0
     val id : Int=0
     var or : RevisionObjeto = RevisionObjeto.getObjetoRevision(id)
+
+    var tv1: EditText?=null
+    var tv2: EditText?=null
+    var tv3: EditText?=null
+    var tv4: EditText?=null
+
+
+    var foto: Foto= Foto()
+    var fotos: ArrayList<Foto> = ArrayList()
+
+    var mCurrentPhotoPath:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_datos)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         MODO = intent.getStringExtra("MODO")
         familia = intent.getStringExtra("familia")
+
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
+
 
         //SPINNER
         val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
@@ -94,6 +117,12 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         posts.add("")
         posts.add("")
         posts.add("")
+
+        fotos.add(foto)
+        fotos.add(foto)
+        fotos.add(foto)
+        fotos.add(foto)
+
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
 
@@ -101,7 +130,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         snapHelper.attachToRecyclerView(recyclerView)
 
         dt_guardar_bt.setOnClickListener{
-            guardar()
+            //guardar()
+            println(tv1!!.text)
+
         }
 
         dt_UsuarioFirma_bt.setOnClickListener {
@@ -196,47 +227,117 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
     }
 
-    override fun onHandleSelection(imagen2: ImageButton) {
+    override fun onHandleSelectionImage(imagen2: ImageButton,position:Int) {
         imagen=imagen2
-       showPictureDialog()
+        showPictureDialog(position)
     }
 
-    fun showPictureDialog() {
+    override fun onHandleSelectionEditext(obs: EditText, position: Int) {
+        when(position){
+            0->{
+                tv1 = obs
+            }
+            1->{
+                tv2 = obs
+            }
+            2->{
+                tv3 = obs
+            }
+            3->{
+                tv4 = obs
+            }
+        }
+    }
+
+    fun showPictureDialog(position:Int) {
         val pictureDialog = AlertDialog.Builder(this@DatosActivity)
         pictureDialog.setTitle(getString(R.string.seleccionFoto))
         val pictureDialogItems = arrayOf(getString(R.string.seleccionFotoGaleria), getString(R.string.seleccionFotoCamara))
         pictureDialog.setItems(pictureDialogItems) { dialog, which ->
             when (which) {
-                0 -> choosePhotoFromGallary()
-                1 -> takePhotoFromCamera()
+                0 -> choosePhotoFromGallary(position)
+                1 -> takePhotoFromCamera(position)
             }
         }
         pictureDialog.show()
     }
 
-    fun choosePhotoFromGallary() {
+    @Throws(IOException::class)
+    private fun createImageFile(): File? {
+        // Create an image file name
+        val timeStamp: String
+        val imageFileName: String
+        val storageDir: File
+        var image: File? = null
+
+                timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                imageFileName = "JPEG_" + timeStamp + "_"
+                storageDir = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES)
+                image = File.createTempFile(
+                        imageFileName, // prefix
+                        ".jpg", // suffix
+                        storageDir      // directory
+                )
+                //mCurrentPhotoPath = "file:" + image!!.absolutePath
+        return image
+    }
+    fun choosePhotoFromGallary(position:Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryIntent.putExtra("position", position)
+
 
        startActivityForResult(galleryIntent, GALLERY)
     }
 
-    fun takePhotoFromCamera() {
+    fun takePhotoFromCamera(position:Int) {
+        var photoFile: File? = null
+        try {
+            photoFile = createImageFile()
+        }catch (ioe:IOException){
+           ioe.stackTrace
+        }
+
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1);
+        positionCameraElement = position
         startActivityForResult(intent, CAMERA)
+
+        mCurrentPhotoPath = "file:" + photoFile!!.getAbsolutePath()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == GALLERY) {
             if (data != null) {
                 val contentURI = data!!.data
                 try {
+                    var position = data!!.extras!!.getInt("position")
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
                     Toast.makeText(this@DatosActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+                    when(position){
+                        0->{
+                            fotos.get(position).nomDes="-1.jpg"
+                            fotos.get(position).ruta=path
+                        }
+
+                        1-> {
+                            fotos.get(position).nomDes = "-2.jpg"
+                            fotos.get(position).ruta=path
+                        }
+                        2->{
+                            fotos.get(position).nomDes="-3.jpg"
+                            fotos.get(position).ruta=path
+                        }
+                        3-> {
+                            fotos.get(position).nomDes = "-4.jpg"
+                            fotos.get(position).ruta=path
+                        }
+
+                    }
+
                     imagen!!.setImageBitmap(bitmap)
 
                 } catch (e: IOException) {
@@ -247,17 +348,63 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             }
 
         } else if (requestCode == CAMERA) {
-            if (data != null) {
-                val thumbnail = data!!.extras!!.get("data") as Bitmap
-                imagen!!.setImageBitmap(thumbnail)
-                saveImage(thumbnail)
-            }
+
+                val bmp: Bitmap
+                val resizeBitmap: Bitmap
+
+                if(mCurrentPhotoPath !=null){
+                    bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                    resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
+                    val path = saveImage(resizeBitmap)
+                    when(positionCameraElement){
+                        0->{
+                            fotos.get(positionCameraElement).nomDes="-1.jpg"
+                            fotos.get(positionCameraElement).ruta=path
+                        }
+
+                        1->{
+                            fotos.get(positionCameraElement).nomDes="-2.jpg"
+                            fotos.get(positionCameraElement).ruta=path
+                        }
+
+                        2->{
+                            fotos.get(positionCameraElement).nomDes="-3.jpg"
+                            fotos.get(positionCameraElement).ruta=path
+                        }
+
+                        3->{
+                            fotos.get(positionCameraElement).nomDes="-4.jpg"
+                            fotos.get(positionCameraElement).ruta=path
+                        }
+                    }
+
+                    imagen!!.setImageBitmap(resizeBitmap)
+                }
+
+
+
+
         }
+    }
+
+    fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
+        //Redimensionamos
+        val width = mBitmap.width
+        val height = mBitmap.height
+        val scaleWidth = newWidth / width
+        val scaleHeight = newHeigth / height
+        // create a matrix for the manipulation
+        val matrix = Matrix()
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight)
+        // recreate the new Bitmap
+        return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false)
     }
 
     fun saveImage(myBitmap: Bitmap): String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+        var ruta: String =""
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
@@ -278,6 +425,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     arrayOf(f.getPath()),
                     arrayOf("image/jpeg"), null)
             fo.close()
+            ruta = f.getAbsolutePath()
             Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
 
             return f.getAbsolutePath()
@@ -285,7 +433,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             e1.printStackTrace()
         }
 
-        return ""
+        return ruta
     }
 
     companion object {
