@@ -43,7 +43,9 @@
                 android:id="@+id/dt_estado_sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:focusable="auto"
+                android:focusableInTouchMode="true" />
 
 
         </LinearLayout>
@@ -174,13 +176,6 @@
                 android:layout_weight="1"
                 android:text="@string/Guardar" />
 
-            <Button
-                android:id="@+id/dt_enviarRV2_bt"
-                style="@style/ButtonNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/enviarRV_bt" />
         </LinearLayout>
 
     </LinearLayout>

@@ -20,10 +20,11 @@ import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.SnapHelper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
@@ -33,7 +34,6 @@ import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_datos.*
-import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.horizontal_scroll_card.*
 import java.io.*
 import java.net.HttpURLConnection
@@ -81,35 +81,29 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
         dt_estado_sp.adapter = spinnerArrayAdapter
-
-
-        dt_enviarRV2_bt.setOnClickListener{
-            var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            var networkInfo = cm.activeNetworkInfo
-            if (networkInfo != null && networkInfo.isConnected) {
-                val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                guardar()
-                EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
-                or.volveranull()
-                actualizarBD()
-
-            }else{
-                val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                builder.setTitle(getString(R.string.noInternet))
-                builder.setMessage(getString(R.string.noInternetInfo))
-                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
-
-                }
-                val dialog: android.support.v7.app.AlertDialog = builder.create()
-                dialog.show()
-            }
-        }
-
-        var dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
-
         if(MODO == "2"){
             MostrarDatos()
         }
+
+        ComprobarSiFirmado()
+
+        var dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
+        dt_objeciones_edit.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (count>0) {
+                    dt_objecionesFirma_bt.isEnabled = true
+                }else if(count==0){
+                    dt_objecionesFirma_bt.isEnabled = false
+                }
+            }
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+
+
 
         val posts: ArrayList<String> = ArrayList()
 
@@ -126,21 +120,70 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
 
-        val snapHelper: SnapHelper = LinearSnapHelper()
+        val snapHelper: SnapHelper = LinearSnapHelper() as SnapHelper
         snapHelper.attachToRecyclerView(recyclerView)
 
         dt_guardar_bt.setOnClickListener{
-            //guardar()
-            println(tv1!!.text)
+
+            if (dt_estado_sp.selectedItemPosition!=0) {
+                if (or.firma!="") {
+                    dt_UsuarioFirma_bt.setError(null)
+                    guardar()
+
+                    val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                    builder.setTitle(getString(R.string.enviarTitulo))
+                    builder.setMessage(getString(R.string.enviarInfo))
+                    builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
+                        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                        var networkInfo = cm.activeNetworkInfo
+                        if (networkInfo != null && networkInfo.isConnected) {
+                            val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                            EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
+                            or.volveranull()
+                            actualizarBD()
+
+
+                        } else {
+                            val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                            builder.setTitle(getString(R.string.noInternet))
+                            builder.setMessage(getString(R.string.noInternetInfo))
+                            builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
+
+                            }
+                            val dialog: android.support.v7.app.AlertDialog = builder.create()
+                            dialog.show()
+                        }
+
+                    }
+                    builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+                } else {
+                    dt_UsuarioFirma_bt.setError("")
+                }
+            }else{
+                val errorText :TextView = dt_estado_sp.getSelectedView() as TextView
+                errorText.setError("")
+                errorText.setTextColor(Color.RED)
+                errorText.setText(getString(R.string.err_NoEstado))
+                Toast.makeText(this@DatosActivity,getString(R.string.err_NoEstado),Toast.LENGTH_SHORT).show()
+            }
 
         }
 
         dt_UsuarioFirma_bt.setOnClickListener {
             dt_UsuarioFirma_bt.isEnabled=false
             val i = Intent(this@DatosActivity, FirmaActivity::class.java)
+            i.putExtra("Nombre", "0")
             startActivity(i)
         }
-
+        dt_objecionesFirma_bt.setOnClickListener {
+            val i = Intent(this@DatosActivity, FirmaActivity::class.java)
+            i.putExtra("Nombre", "1")
+            startActivity(i)
+        }
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -175,21 +218,15 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.setSelection(or.estado+1)
         dt_peticiones_edit.setText(or.peticiones)
         dt_objeciones_edit.setText(or.objecione)
+
+
     }
 
     fun guardar(){
-        if (dt_estado_sp.selectedItemPosition!=0){
-            recuperarDatos()
-            val bbddsqlite = BBDDSQLite(this@DatosActivity)
-            bbddsqlite.insertRevision(or)
-            bbddsqlite.close()
-        }else{
-            val errorText :TextView = dt_estado_sp.getSelectedView() as TextView
-            errorText.setError("")
-            errorText.setTextColor(Color.RED)
-            errorText.setText(getString(R.string.err_NoEstado))
-            Toast.makeText(this@DatosActivity,getString(R.string.err_NoEstado),Toast.LENGTH_SHORT).show()
-        }
+        recuperarDatos()
+        val bbddsqlite = BBDDSQLite(this@DatosActivity)
+        bbddsqlite.insertRevision(or)
+        bbddsqlite.close()
     }
 
     fun fechaHoy():String{
@@ -205,8 +242,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
-        //Toast.makeText(this@DatosActivity,or.toString(),Toast.LENGTH_LONG).show()
-
     }
 
     private fun idUsuario(): Int {
@@ -229,7 +264,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
     override fun onHandleSelectionImage(imagen2: ImageButton,position:Int) {
         imagen=imagen2
+
         showPictureDialog(position)
+
     }
 
     override fun onHandleSelectionEditext(obs: EditText, position: Int) {
@@ -485,6 +522,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             super.onPostExecute(result)
             ParseoFile(result, this@DatosActivity,2)
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            or.volveranull()
             finish()
         }
     }
@@ -493,7 +531,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recuperarDatos()
         val int = Intent(this@DatosActivity, PreguntasActivity::class.java)
         int.putExtra("familia", familia)
-        int.putExtra("MODO", "2")
+        int.putExtra("MODO", "3")
         int.putExtra("n_serie", or.equipamiento )
         startActivity(int)
         finish()
@@ -502,6 +540,27 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     override fun onRestart() {
         super.onRestart()
         dt_UsuarioFirma_bt.isEnabled=true
+        ComprobarSiFirmado()
+
     }
+
+    fun ComprobarSiFirmado() {
+        if (or.firma!="") {
+            cambiarStyle(dt_UsuarioFirma_bt)
+        }
+        if(or.firmaT!=""){
+            cambiarStyle(dt_objecionesFirma_bt)
+            dt_objeciones_edit.isEnabled=false
+        }
+    }
+
+    fun cambiarStyle(button :Button){
+        button.text = "Firmado"
+        button.setBackgroundColor(resources.getColor(R.color.GrisTransparente))
+        button.setTextColor(resources.getColor(R.color.colorPrimary))
+        button.isEnabled=false
+        button.setError(null)
+    }
+
 }
 

@@ -1,8 +1,11 @@
 package com.example.revisionequipamiento
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.net.Uri
+
+import android.net.ConnectivityManager
+
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -14,6 +17,7 @@ import android.widget.Toast
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
+import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_equipamiento.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.buttons_equipamiento.*
@@ -45,6 +49,8 @@ class EquipamientoActivity : AppCompatActivity() {
     var down_fechas : Animation? = null
     var up_fechas : Animation? = null
     val id : Int=0
+    var username :String=""
+    var contrasena :String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,6 +99,7 @@ class EquipamientoActivity : AppCompatActivity() {
             int.putExtra("MODO", "1")
             int.putExtra("n_serie", n_serie )
             startActivity(int)
+            finish()
         }
 
         layout_fechas1.setOnClickListener{
@@ -106,8 +113,9 @@ class EquipamientoActivity : AppCompatActivity() {
                 fechas_Status = false
             }
         }
-
-        if (buscarRevision(n_serie)) {
+        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
+        if (bbddsqlite.buscarRevision(n_serie)) {
+            bbddsqlite.close()
             enviarRV_bt.isEnabled = true
             fab.setImageResource(R.drawable.ic_mode_edit)
             fab.setOnClickListener {
@@ -118,13 +126,26 @@ class EquipamientoActivity : AppCompatActivity() {
                 startActivity(int)
                 finish()
             }
+            bbddsqlite.close()
         }
+
         enviarRV_bt.setOnClickListener {
-            val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
-            val db = bbddsqlite.writableDatabase
-            db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
-            /*val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-            EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)*/
+            var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            var networkInfo = cm.activeNetworkInfo
+            if (networkInfo != null && networkInfo.isConnected) {
+                val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
+                actualizarBD()
+            }else{
+                val builder = android.support.v7.app.AlertDialog.Builder(this@EquipamientoActivity)
+                builder.setTitle(getString(R.string.noInternet))
+                builder.setMessage(getString(R.string.noInternetInfo))
+                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
+
+                }
+                val dialog: android.support.v7.app.AlertDialog = builder.create()
+                dialog.show()
+            }
         }
 
         descarga_revi_bt.setOnClickListener{
@@ -139,8 +160,53 @@ class EquipamientoActivity : AppCompatActivity() {
             this@EquipamientoActivity.startActivity(intents)*/
         }
     }
+    fun actualizarBD(){
+        val bbddsqlite = BBDDSQLite(this)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    username = cusrsor.getString(cusrsor.getColumnIndex("username"))
+                    contrasena = cusrsor.getString(cusrsor.getColumnIndex("password"))
+                }
+            }
+            cusrsor.close()
+        }
+        val tables = arrayOf<String>( "marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "ubicaciones")
+        for (table in tables) {
+            db.delete(table, null, null)
+        }
+        db.close()
+        AsyncTaskHandleJSON3().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
+    }
+    inner class AsyncTaskHandleJSON3(): AsyncTask<String, String, String>() {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
 
+        override fun doInBackground(vararg url: String?): String {
+            var text: String
+            val connection = URL(url[0]).openConnection() as HttpURLConnection
+            try {
+                connection.connect()
+                text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
+            } finally {
+                connection.disconnect()
+            }
+            return text
+        }
 
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            ParseoFile(result, this@EquipamientoActivity,2)
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            finish()
+        }
+    }
     private fun hideFECHA() {
        // layout_fechas2.startAnimation(down_fechas)
         layout_fechas2.visibility = View.VISIBLE
@@ -193,21 +259,7 @@ class EquipamientoActivity : AppCompatActivity() {
     }
 
 
-    private fun buscarRevision(n_serie: String?): Boolean {
-        val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor: Cursor
-        var revision :Boolean = false
-        cusrsor = db.rawQuery("Select * FROM revisiones WHERE revisiones.id_equipamiento= '${n_serie}'", null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                }
-                revision = true
-            }
-        }
-        return revision
-    }
+
 
     private fun buscarEquipamiento(n_serie: String?) {
         val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
