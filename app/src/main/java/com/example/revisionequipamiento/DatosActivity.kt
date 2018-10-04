@@ -360,7 +360,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryIntent.putExtra("position", position)
-
+        //Toast.makeText(this@DatosActivity, "gallery"+position, Toast.LENGTH_SHORT).show()
 
         startActivityForResult(galleryIntent, GALLERY)
     }
@@ -372,7 +372,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }catch (ioe:IOException){
             ioe.stackTrace
         }
-
+        //Toast.makeText(this@DatosActivity, "Camera"+position, Toast.LENGTH_SHORT).show()
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
         intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1);
@@ -391,66 +391,58 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     var position = data!!.extras!!.getInt("position")
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
-                    //Toast.makeText(this@DatosActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
 
-                    when (position) {
-                        0 -> {
-                            if(fotos!=null) {
-                                if (fotos!!.get(position) != null) {
-                                    fotos!!.get(position).nomDes = "-1.jpg"
-                                    fotos!!.get(position).ruta = path
-                                } else {
-                                    var pos = position + 1
-                                    fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
+
+
+
+                        when (position) {
+                            0 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-1.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
                                 }
-                            }else{
-                                println("es null")
+
+
                             }
+
+
+                            1 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-2.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+
+                        
+                            }
+
+
+                            2 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-3.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            3 -> {
+                                try{
+                                    fotos.get(position).nomDes = "-4.jpg"
+                                    fotos.get(position).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = position+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
 
                         }
 
-                        1 -> {
-                            if(fotos!=null) {
-                                if (fotos!!.get(position) != null) {
-                                    fotos!!.get(position).nomDes = "-2.jpg"
-                                    fotos!!.get(position).ruta = path
-                                } else {
-                                    var pos = position + 1
-                                    fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                }
-                            }else{
-                                println("es null")
-                            }
-                        }
-
-                        2 -> {
-                            if(fotos!=null) {
-                                if (fotos!!.get(position) != null) {
-                                    fotos!!.get(position).nomDes = "-3.jpg"
-                                    fotos!!.get(position).ruta = path
-                                } else {
-                                    var pos = position + 1
-                                    fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                }
-                            }else{
-                                println("es null")
-                            }
-                        }
-
-                        3 -> {
-                            if(fotos!=null) {
-                                if (fotos!!.get(position) != null) {
-                                    fotos!!.get(position).nomDes = "-4.jpg"
-                                    fotos!!.get(position).ruta = path
-                                } else {
-                                    var pos = position + 1
-                                    fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                }
-                            }else{
-                                println("es null")
-                            }
-                        }
-                    }
 
                     imagen!!.setImageBitmap(bitmap)
 
@@ -474,64 +466,57 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
                         when (positionCameraElement) {
                             0 -> {
-                                if(fotos!=null) {
-                                    if(fotos!!.get(positionCameraElement)!=null){
-                                        fotos!!.get(positionCameraElement).nomDes = "-1.jpg"
-                                        fotos!!.get(positionCameraElement).ruta = path
-                                    }else{
-                                        var pos = positionCameraElement+1
-                                        fotos!!.add(Foto(0,path,"-$pos.jpg",""))
-                                    }
-                                }else{
-                                    println("es null")
-                                }
 
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-1.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+
+                                }
                             }
 
                             1 -> {
-                                if(fotos!=null) {
-                                    if (fotos!!.get(positionCameraElement) != null) {
-                                        fotos!!.get(positionCameraElement).nomDes = "-2.jpg"
-                                        fotos!!.get(positionCameraElement).ruta = path
-                                    } else {
-                                        var pos = positionCameraElement + 1
-                                        fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                    }
-                                }else{
-                                    println("es null")
+
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-2.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
 
                             2 -> {
-                                if(fotos!=null) {
-                                    if (fotos!!.get(positionCameraElement) != null) {
-                                        fotos!!.get(positionCameraElement).nomDes = "-3.jpg"
-                                        fotos!!.get(positionCameraElement).ruta = path
-                                    } else {
-                                        var pos = positionCameraElement + 1
-                                        fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                    }
-                                }else{
-                                    println("es null")
+
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-3.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
 
                             3 -> {
-                                if (fotos != null) {
-                                    if (fotos!!.get(positionCameraElement) != null) {
-                                        fotos!!.get(positionCameraElement).nomDes = "-4.jpg"
-                                        fotos!!.get(positionCameraElement).ruta = path
-                                    } else {
-                                        var pos = positionCameraElement + 1
-                                        fotos!!.add(Foto(0, path, "-$pos.jpg", ""))
-                                    }
-                                }else{
-                                    println("es null")
+
+                                try{
+                                    fotos.get(positionCameraElement).nomDes = "-4.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }catch (aoobe:IndexOutOfBoundsException){
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
                         }
 
+
                     imagen!!.setImageBitmap(resizeBitmap)
+
                 }
             }catch(e:Exception){
                 e.printStackTrace()
@@ -540,10 +525,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
 
         }
-    }
-
-    fun addFotoToArray(foto: Foto, pos: Int){
-
     }
 
 
