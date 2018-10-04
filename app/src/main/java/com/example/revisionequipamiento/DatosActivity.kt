@@ -83,9 +83,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.adapter = spinnerArrayAdapter
         if(MODO == "2"){
             MostrarDatos()
-            if(or.objecione!="" && or.firmaT!=""){
-                dt_objeciones_edit.isEnabled=false
-            }
         }
 
         ComprobarSiFirmado()
@@ -126,48 +123,42 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_guardar_bt.setOnClickListener{
 
             if (dt_estado_sp.selectedItemPosition!=0) {
-                if ((or.firmaT=="" && dt_objeciones_edit.text.isEmpty()) || (or.firmaT!="" && dt_objeciones_edit.text.isNotEmpty()) ) {
-                    dt_objecionesFirma_bt.setError(null)
-                    if (or.firma != "") {
-                        dt_UsuarioFirma_bt.setError(null)
-                        guardar()
+                if (or.firma!="") {
+                    dt_UsuarioFirma_bt.setError(null)
+                    guardar()
 
-                        val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                        builder.setTitle(getString(R.string.enviarTitulo))
-                        builder.setMessage(getString(R.string.enviarInfo))
-                        builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
-                            var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                            var networkInfo = cm.activeNetworkInfo
-                            if (networkInfo != null && networkInfo.isConnected) {
-                                val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                                EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
-                                or.volveranull()
-                                actualizarBD()
+                    val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                    builder.setTitle(getString(R.string.enviarTitulo))
+                    builder.setMessage(getString(R.string.enviarInfo))
+                    builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
+                        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                        var networkInfo = cm.activeNetworkInfo
+                        if (networkInfo != null && networkInfo.isConnected) {
+                            val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                            EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
+                            or.volveranull()
+                            actualizarBD()
 
 
+                        } else {
+                            val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                            builder.setTitle(getString(R.string.noInternet))
+                            builder.setMessage(getString(R.string.noInternetInfo))
+                            builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
 
-                            } else {
-                                val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                                builder.setTitle(getString(R.string.noInternet))
-                                builder.setMessage(getString(R.string.noInternetInfo))
-                                builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
-
-                                }
-                                val dialog: android.support.v7.app.AlertDialog = builder.create()
-                                dialog.show()
                             }
+                            val dialog: android.support.v7.app.AlertDialog = builder.create()
+                            dialog.show()
+                        }
 
-                        }
-                        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        val dialog = builder.create()
-                        dialog.show()
-                    } else {
-                        dt_UsuarioFirma_bt.setError("")
                     }
-                }else{
-                    dt_objecionesFirma_bt.setError("")
+                    builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    val dialog = builder.create()
+                    dialog.show()
+                } else {
+                    dt_UsuarioFirma_bt.setError("")
                 }
             }else{
                 val errorText :TextView = dt_estado_sp.getSelectedView() as TextView
@@ -229,6 +220,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     fun guardar(){
+
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         bbddsqlite.insertRevision(or)
@@ -319,16 +311,16 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val storageDir: File
         var image: File? = null
 
-                timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                imageFileName = "JPEG_" + timeStamp + "_"
-                storageDir = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES)
-                image = File.createTempFile(
-                        imageFileName, // prefix
-                        ".jpg", // suffix
-                        storageDir      // directory
-                )
-                //mCurrentPhotoPath = "file:" + image!!.absolutePath
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        imageFileName = "JPEG_" + timeStamp + "_"
+        storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES)
+        image = File.createTempFile(
+                imageFileName, // prefix
+                ".jpg", // suffix
+                storageDir      // directory
+        )
+        //mCurrentPhotoPath = "file:" + image!!.absolutePath
         return image
     }
     fun choosePhotoFromGallary(position:Int) {
@@ -337,7 +329,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         galleryIntent.putExtra("position", position)
 
 
-       startActivityForResult(galleryIntent, GALLERY)
+        startActivityForResult(galleryIntent, GALLERY)
     }
 
     fun takePhotoFromCamera(position:Int) {
@@ -345,7 +337,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         try {
             photoFile = createImageFile()
         }catch (ioe:IOException){
-           ioe.stackTrace
+            ioe.stackTrace
         }
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -429,48 +421,48 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
                     val path = saveImage(resizeBitmap)
 
-                    when (positionCameraElement) {
-                        0 -> {
-                            if(fotos.get(positionCameraElement)!=null){
-                                fotos.get(positionCameraElement).nomDes = "-1.jpg"
-                                fotos.get(positionCameraElement).ruta = path
-                            }else{
-                                var pos = positionCameraElement+1
-                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                        when (positionCameraElement) {
+                            0 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-1.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+
                             }
 
-                        }
+                            1 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-2.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
 
-                        1 -> {
-                            if(fotos.get(positionCameraElement)!=null){
-                                fotos.get(positionCameraElement).nomDes = "-2.jpg"
-                                fotos.get(positionCameraElement).ruta = path
-                            }else{
-                                var pos = positionCameraElement+1
-                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                            2 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-3.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            3 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-4.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
                             }
                         }
-
-                        2 -> {
-                            if(fotos.get(positionCameraElement)!=null){
-                                fotos.get(positionCameraElement).nomDes = "-3.jpg"
-                                fotos.get(positionCameraElement).ruta = path
-                            }else{
-                                var pos = positionCameraElement+1
-                                fotos.add(Foto(0,path,"-$pos.jpg",""))
-                            }
-                        }
-
-                        3 -> {
-                            if(fotos.get(positionCameraElement)!=null){
-                                fotos.get(positionCameraElement).nomDes = "-4.jpg"
-                                fotos.get(positionCameraElement).ruta = path
-                            }else{
-                                var pos = positionCameraElement+1
-                                fotos.add(Foto(0,path,"-$pos.jpg",""))
-                            }
-                        }
-                    }
 
                     imagen!!.setImageBitmap(resizeBitmap)
                 }
@@ -486,6 +478,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     fun addFotoToArray(foto: Foto, pos: Int){
 
     }
+
 
     fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
         //Redimensionamos
