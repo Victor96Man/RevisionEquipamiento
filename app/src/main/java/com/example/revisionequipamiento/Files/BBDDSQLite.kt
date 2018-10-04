@@ -23,6 +23,13 @@ val VERSIONBBDD = 3
                     "nombre VARCHAR(40)," +
                     "email VARCHAR(40))"
 
+            val CreateTableFotos = "CREATE TABLE fotos (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "id_revision INTEGER," +
+                    "ruta TEXT," +
+                    "nomdes VARCHAR(40)," +
+                    "observacion VARCHAR(20))"
+
             val CreateTableMarcas = "CREATE TABLE marcas (" +
                     "id integer PRIMARY KEY ," +
                     "nombremarca VARCHAR(40))"
@@ -118,6 +125,7 @@ val VERSIONBBDD = 3
 
             db?.execSQL(CreateTableUser)
             db?.execSQL(CreateTableMarcas)
+            db?.execSQL(CreateTableFotos)
             db?.execSQL(CreateTableZonas)
             db?.execSQL(CreateTableUsuariosZonas)
             db?.execSQL(CreateTableUbicaciones)
@@ -195,6 +203,21 @@ val VERSIONBBDD = 3
             var result = db.insert("usuariosZonas",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error usuzona ${usuZona.usuario} ${usuZona.zona}", Toast.LENGTH_SHORT).show()
+            }else{
+
+            }
+            db.close()
+        }
+
+        fun insertFoto(foto : Foto){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id_revision",foto.idRevision)
+            cv.put("nomdes",foto.nomDes)
+            cv.put("observacion",foto.observacion)
+            var result = db.insert("fotos",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
             }else{
 
             }
@@ -366,6 +389,18 @@ val VERSIONBBDD = 3
             db.update("revisiones", cv, "id_equipamiento = '${revision.equipamiento}'", null)
             db.close()
             Toast.makeText(context,"Revision Actualizada ", Toast.LENGTH_SHORT).show()
+        }
+
+        fun updateFoto(foto : Foto){
+            val db = this.writableDatabase
+            var cv = ContentValues()
+            cv.put("id",foto.id)
+            cv.put("id_revision",foto.idRevision)
+            cv.put("nomdes",foto.nomDes)
+            cv.put("observacion",foto.observacion)
+            db.update("fotos",cv,null, null)
+
+            db.close()
         }
 
         fun buscarRevision(n_serie: String?): Boolean {

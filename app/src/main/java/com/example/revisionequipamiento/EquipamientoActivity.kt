@@ -3,9 +3,8 @@ package com.example.revisionequipamiento
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-
 import android.net.ConnectivityManager
-
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -14,12 +13,10 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_equipamiento.*
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.buttons_equipamiento.*
 import kotlinx.android.synthetic.main.content_equipamiento.*
 import org.json.JSONArray
@@ -208,7 +205,7 @@ class EquipamientoActivity : AppCompatActivity() {
         }
     }
     private fun hideFECHA() {
-       // layout_fechas2.startAnimation(down_fechas)
+        // layout_fechas2.startAnimation(down_fechas)
         layout_fechas2.visibility = View.VISIBLE
     }
 

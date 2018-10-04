@@ -61,7 +61,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var tv4: EditText?=null
 
 
-    var foto: Foto= Foto()
+
     var fotos: ArrayList<Foto> = ArrayList()
 
     var mCurrentPhotoPath:String =""
@@ -112,10 +112,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         posts.add("")
         posts.add("")
 
-        fotos.add(foto)
-        fotos.add(foto)
-        fotos.add(foto)
-        fotos.add(foto)
+
 
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
@@ -223,9 +220,14 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     fun guardar(){
+
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         bbddsqlite.insertRevision(or)
+        var fotos = or.fotos
+        for (foto in fotos){
+            bbddsqlite.insertFoto(foto)
+        }
         bbddsqlite.close()
     }
 
@@ -242,6 +244,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
+        or.fotos = fotos
+        println(or)
     }
 
     private fun idUsuario(): Int {
@@ -307,16 +311,16 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val storageDir: File
         var image: File? = null
 
-                timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                imageFileName = "JPEG_" + timeStamp + "_"
-                storageDir = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES)
-                image = File.createTempFile(
-                        imageFileName, // prefix
-                        ".jpg", // suffix
-                        storageDir      // directory
-                )
-                //mCurrentPhotoPath = "file:" + image!!.absolutePath
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        imageFileName = "JPEG_" + timeStamp + "_"
+        storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES)
+        image = File.createTempFile(
+                imageFileName, // prefix
+                ".jpg", // suffix
+                storageDir      // directory
+        )
+        //mCurrentPhotoPath = "file:" + image!!.absolutePath
         return image
     }
     fun choosePhotoFromGallary(position:Int) {
@@ -325,7 +329,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         galleryIntent.putExtra("position", position)
 
 
-       startActivityForResult(galleryIntent, GALLERY)
+        startActivityForResult(galleryIntent, GALLERY)
     }
 
     fun takePhotoFromCamera(position:Int) {
@@ -333,7 +337,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         try {
             photoFile = createImageFile()
         }catch (ioe:IOException){
-           ioe.stackTrace
+            ioe.stackTrace
         }
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -353,26 +357,48 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     var position = data!!.extras!!.getInt("position")
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
-                    Toast.makeText(this@DatosActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
-                    when(position){
-                        0->{
-                            fotos.get(position).nomDes="-1.jpg"
-                            fotos.get(position).ruta=path
+                    //Toast.makeText(this@DatosActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+                    when (position) {
+                        0 -> {
+                            if(fotos.get(position)!=null){
+                                fotos.get(position).nomDes = "-1.jpg"
+                                fotos.get(position).ruta = path
+                            }else{
+                                var pos = position+1
+                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                            }
+
                         }
 
-                        1-> {
-                            fotos.get(position).nomDes = "-2.jpg"
-                            fotos.get(position).ruta=path
-                        }
-                        2->{
-                            fotos.get(position).nomDes="-3.jpg"
-                            fotos.get(position).ruta=path
-                        }
-                        3-> {
-                            fotos.get(position).nomDes = "-4.jpg"
-                            fotos.get(position).ruta=path
+                        1 -> {
+                            if(fotos.get(position)!=null){
+                                fotos.get(position).nomDes = "-2.jpg"
+                                fotos.get(position).ruta = path
+                            }else{
+                                var pos = position+1
+                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                            }
                         }
 
+                        2 -> {
+                            if(fotos.get(position)!=null){
+                                fotos.get(position).nomDes = "-3.jpg"
+                                fotos.get(position).ruta = path
+                            }else{
+                                var pos = position+1
+                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                            }
+                        }
+
+                        3 -> {
+                            if(fotos.get(position)!=null){
+                                fotos.get(position).nomDes = "-4.jpg"
+                                fotos.get(position).ruta = path
+                            }else{
+                                var pos = position+1
+                                fotos.add(Foto(0,path,"-$pos.jpg",""))
+                            }
+                        }
                     }
 
                     imagen!!.setImageBitmap(bitmap)
@@ -386,43 +412,73 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
         } else if (requestCode == CAMERA) {
 
-                val bmp: Bitmap
-                val resizeBitmap: Bitmap
-
+            val bmp: Bitmap
+            val resizeBitmap: Bitmap
+            try{
                 if(mCurrentPhotoPath !=null){
+
                     bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
                     resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
                     val path = saveImage(resizeBitmap)
-                    when(positionCameraElement){
-                        0->{
-                            fotos.get(positionCameraElement).nomDes="-1.jpg"
-                            fotos.get(positionCameraElement).ruta=path
-                        }
 
-                        1->{
-                            fotos.get(positionCameraElement).nomDes="-2.jpg"
-                            fotos.get(positionCameraElement).ruta=path
-                        }
+                        when (positionCameraElement) {
+                            0 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-1.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
 
-                        2->{
-                            fotos.get(positionCameraElement).nomDes="-3.jpg"
-                            fotos.get(positionCameraElement).ruta=path
-                        }
+                            }
 
-                        3->{
-                            fotos.get(positionCameraElement).nomDes="-4.jpg"
-                            fotos.get(positionCameraElement).ruta=path
+                            1 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-2.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            2 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-3.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
+
+                            3 -> {
+                                if(fotos.get(positionCameraElement)!=null){
+                                    fotos.get(positionCameraElement).nomDes = "-4.jpg"
+                                    fotos.get(positionCameraElement).ruta = path
+                                }else{
+                                    var pos = positionCameraElement+1
+                                    fotos.add(Foto(0,path,"-$pos.jpg",""))
+                                }
+                            }
                         }
-                    }
 
                     imagen!!.setImageBitmap(resizeBitmap)
                 }
-
+            }catch(e:Exception){
+                e.printStackTrace()
+            }
 
 
 
         }
     }
+
+    fun addFotoToArray(foto: Foto, pos: Int){
+        
+    }
+
 
     fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
         //Redimensionamos

@@ -204,7 +204,7 @@ class PrincipalActivity : AppCompatActivity() {
             _, _ ->
             val bbddsqlite = BBDDSQLite(this)
             val db = bbddsqlite.writableDatabase
-            val tables = arrayOf<String>("usuarios","marcas","zonas","trabajadores","usuariosZonas","familias","equipamientos","revisiones","ubicaciones")
+            val tables = arrayOf<String>("usuarios", "fotos","marcas","zonas","trabajadores","usuariosZonas","familias","equipamientos","revisiones","ubicaciones")
             for (table in tables) {
                 db.delete(table, null, null)
             }
