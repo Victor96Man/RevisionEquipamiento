@@ -2,6 +2,7 @@ package com.example.revisionequipamiento.Adapter
 
 
 import android.content.Context
+import android.provider.MediaStore
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,13 +12,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import com.example.revisionequipamiento.Clases.fotoItem
 import com.example.revisionequipamiento.R
 import java.util.*
 
 
 
 
-class PostsAdapter( context :Context,val posts: ArrayList<String>) : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
+class PostsAdapter( context :Context,val posts: ArrayList<fotoItem>) : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
 
     val mCallback: CallbackInterface? = context as CallbackInterface
 
@@ -46,7 +48,8 @@ class PostsAdapter( context :Context,val posts: ArrayList<String>) : RecyclerVie
     }
 
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
-
+        holder.ImagenButton.setImageBitmap(posts.get(position).imagen)
+        holder.observaciones.setText(posts.get(position).observacion)
         holder.ImagenButton.setOnClickListener{
             if(mCallback != null){
                 mCallback.onHandleSelectionImage(holder.ImagenButton,holder.adapterPosition)

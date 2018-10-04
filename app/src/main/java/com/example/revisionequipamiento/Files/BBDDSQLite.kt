@@ -210,19 +210,25 @@ val VERSIONBBDD = 3
         }
 
         fun insertFoto(foto : Foto){
-            val db = this.writableDatabase
-            var cv = ContentValues()
-            cv.put("id_revision",foto.idRevision)
-            cv.put("nomdes",foto.nomDes)
-            cv.put("observacion",foto.observacion)
-            var result = db.insert("fotos",null,cv)
-            if(result == -1.toLong()){
-                Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
+            if (buscarFoto(foto.idRevision)){
+                updateFoto(foto)
             }else{
+                val db = this.writableDatabase
+                var cv = ContentValues()
+                cv.put("id_revision",foto.idRevision)
+                cv.put("nomdes",foto.nomDes)
+                cv.put("observacion",foto.observacion)
+                cv.put("ruta",foto.ruta)
+                var result = db.insert("fotos",null,cv)
+                if(result == -1.toLong()){
+                    Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
+                }else{
 
+                }
+                db.close()
             }
-            db.close()
         }
+
 
         fun insertUbicacion(ubicacion : Ubicacion){
             val db = this.writableDatabase
@@ -398,6 +404,7 @@ val VERSIONBBDD = 3
             cv.put("id_revision",foto.idRevision)
             cv.put("nomdes",foto.nomDes)
             cv.put("observacion",foto.observacion)
+            cv.put("ruta",foto.ruta)
             db.update("fotos",cv,null, null)
 
             db.close()
@@ -416,5 +423,20 @@ val VERSIONBBDD = 3
                 }
             }
             return revision
+        }
+
+        fun buscarFoto(idRevi: Int): Boolean {
+            val db = this.writableDatabase
+            val cusrsor: Cursor
+            var foto :Boolean = false
+            cusrsor = db.rawQuery("Select * FROM fotos WHERE foto.id_revision= '${idRevi}'", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                    }
+                    foto = true
+                }
+            }
+            return foto
         }
 }
