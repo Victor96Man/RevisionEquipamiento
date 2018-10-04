@@ -30,6 +30,7 @@ import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
 import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
+import com.example.revisionequipamiento.Clases.fotoItem
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
@@ -62,7 +63,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
 
 
-    var fotos: ArrayList<Foto> = ArrayList()
+    var fotos: ArrayList<Foto>? = null
 
     var mCurrentPhotoPath:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,19 +104,19 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             }
         })
 
+        if(MODO=="2"){
+
+            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
+        }else{
+
+            recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = PostsAdapter(this@DatosActivity,selectFotos())
+        }
 
 
-        val posts: ArrayList<String> = ArrayList()
-
-        posts.add("")
-        posts.add("")
-        posts.add("")
-        posts.add("")
 
 
-
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = PostsAdapter(this@DatosActivity,posts)
 
         val snapHelper: SnapHelper = LinearSnapHelper() as SnapHelper
         snapHelper.attachToRecyclerView(recyclerView)
@@ -181,6 +182,38 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             i.putExtra("Nombre", "1")
             startActivity(i)
         }
+    }
+
+    fun selectFotos():ArrayList<fotoItem> {
+        var posts : ArrayList<fotoItem>? = null
+        val bbddsqlite = BBDDSQLite(this@DatosActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        cusrsor = db.rawQuery("Select * from fotos where id_revision= '$'",null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    posts = ArrayList<fotoItem>()
+                }
+                do {
+                    val ruta = cusrsor.getString(cusrsor.getColumnIndex("ruta")) as Uri
+                    val observacion = cusrsor.getString(cusrsor.getColumnIndex("observacion"))
+                    if (posts != null) {
+                        var imagen = MediaStore.Images.Media.getBitmap(this.contentResolver, ruta)
+                        posts.add(fotoItem(imagen,observacion))
+                    }
+                }while (cusrsor.moveToNext())
+
+                db.close()
+
+            }
+        }
+        if (posts!!.size!=4){
+            do {
+                posts.add(fotoItem(null,""))
+            }while (posts!!.size!=4)
+        }
+        return posts!!
     }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -350,6 +383,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        fotos = ArrayList()
         if (requestCode == GALLERY) {
             if (data != null) {
                 val contentURI = data!!.data
@@ -357,7 +391,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     var position = data!!.extras!!.getInt("position")
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
-                    //Toast.makeText(this@DatosActivity, "Galleria "+position, Toast.LENGTH_SHORT).show()
+
+
 
 
                         when (position) {
@@ -370,7 +405,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
                                 }
 
+
                             }
+
 
                             1 -> {
                                 try{
@@ -380,7 +417,10 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                                     var pos = position+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
                                 }
+
+                        
                             }
+
 
                             2 -> {
                                 try{
@@ -400,7 +440,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                                     var pos = position+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
                                 }
-                            }
+
                         }
 
 
@@ -426,42 +466,50 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
                         when (positionCameraElement) {
                             0 -> {
+
                                 try{
                                     fotos.get(positionCameraElement).nomDes = "-1.jpg"
                                     fotos.get(positionCameraElement).ruta = path
                                 }catch (aoobe:IndexOutOfBoundsException){
                                     var pos = positionCameraElement+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
 
                             1 -> {
+
                                 try{
                                     fotos.get(positionCameraElement).nomDes = "-2.jpg"
                                     fotos.get(positionCameraElement).ruta = path
                                 }catch (aoobe:IndexOutOfBoundsException){
                                     var pos = positionCameraElement+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
 
                             2 -> {
+
                                 try{
                                     fotos.get(positionCameraElement).nomDes = "-3.jpg"
                                     fotos.get(positionCameraElement).ruta = path
                                 }catch (aoobe:IndexOutOfBoundsException){
                                     var pos = positionCameraElement+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
 
                             3 -> {
+
                                 try{
                                     fotos.get(positionCameraElement).nomDes = "-4.jpg"
                                     fotos.get(positionCameraElement).ruta = path
                                 }catch (aoobe:IndexOutOfBoundsException){
                                     var pos = positionCameraElement+1
                                     fotos.add(Foto(0,path,"-$pos.jpg",""))
+
                                 }
                             }
                         }

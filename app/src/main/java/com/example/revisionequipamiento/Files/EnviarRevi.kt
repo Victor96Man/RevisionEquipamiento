@@ -56,7 +56,9 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
                         cusrsor.getString(cusrsor.getColumnIndex("firma")),
                         cusrsor.getString(cusrsor.getColumnIndex("firma_trabajador")),
                         cusrsor.getString(cusrsor.getColumnIndex("objeciones")),
-                        cusrsor.getString(cusrsor.getColumnIndex("peticiones")), devuelveFotosRevision(cusrsor.getInt(cusrsor.getColumnIndex("id")),context))
+                        cusrsor.getString(cusrsor.getColumnIndex("peticiones")),
+                        devuelveFotosRevision(cusrsor.getInt(cusrsor.getColumnIndex("id")),context))
+
                 val idRevi = cusrsor.getInt(cusrsor.getColumnIndex("id"))
                 db.close()
 
