@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
 import android.widget.Toast
 import com.example.revisionequipamiento.Clases.*
+import java.util.*
+
 val directorioexterno = Environment.getExternalStorageDirectory()
 val DATABASE_NAME = "revisiones"
 val VERSIONBBDD = 3
@@ -318,7 +320,7 @@ val VERSIONBBDD = 3
                 cv.put("obp8",revision.obp8)
                 cv.put("obp9",revision.obp9)
                 cv.put("obp10",revision.obp10)
-                cv.put("firma",revision.firma)
+                cv.put("firma", revision.firma)
                 cv.put("firma_trabajador",revision.firmaT)
                 cv.put("objeciones",revision.objecione)
                 cv.put("peticiones",revision.peticiones)
@@ -357,7 +359,7 @@ val VERSIONBBDD = 3
             cv.put("obp8",revision.obp8)
             cv.put("obp9",revision.obp9)
             cv.put("obp10",revision.obp10)
-            cv.put("firma",revision.firma)
+            cv.put("firma", revision.firma)
             cv.put("firma_trabajador",revision.firmaT)
             cv.put("objeciones",revision.objecione)
             cv.put("peticiones",revision.peticiones)

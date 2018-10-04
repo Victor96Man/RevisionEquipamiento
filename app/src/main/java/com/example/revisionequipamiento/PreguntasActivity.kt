@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.RadioButton
+import android.widget.Toast
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.activity_preguntas.*
@@ -28,6 +30,9 @@ class PreguntasActivity : AppCompatActivity() {
         MODO = intent.getStringExtra("MODO")
         n_serie = intent.getStringExtra("n_serie")
         Nfamilias(familia,View(this@PreguntasActivity))
+        if(MODO=="3"){
+            MostrarDatos()
+        }
         if(MODO=="2"){
             volcarDatos()
             MostrarDatos()
@@ -36,7 +41,7 @@ class PreguntasActivity : AppCompatActivity() {
             siguienteP_bt.isEnabled=false
             recogerDatos()
             val int = Intent(this@PreguntasActivity, DatosActivity::class.java)
-            if(MODO=="2"){
+            if(MODO=="2" || MODO=="3"){
                 int.putExtra("MODO", "2")
             }else{
                 int.putExtra("MODO","1")
@@ -78,12 +83,25 @@ class PreguntasActivity : AppCompatActivity() {
                     or.obp10 = cusrsor.getString(cusrsor.getColumnIndex("obp10"))
                     or.firma = cusrsor.getString(cusrsor.getColumnIndex("firma"))
                     or.firmaT = cusrsor.getString(cusrsor.getColumnIndex("firma_trabajador"))
+                    or.objecione = cusrsor.getString(cusrsor.getColumnIndex("objeciones"))
+                    or.peticiones = cusrsor.getString(cusrsor.getColumnIndex("peticiones"))
+
                 }
             }
         }
     }
 
     fun MostrarDatos(){
+        (pregunta1RadioGrup.getChildAt(or.vp1) as RadioButton).isChecked = true
+        (pregunta2RadioGrup.getChildAt(or.vp2) as RadioButton).isChecked = true
+        (pregunta3RadioGrup.getChildAt(or.vp3) as RadioButton).isChecked = true
+        (pregunta4RadioGrup.getChildAt(or.vp4) as RadioButton).isChecked = true
+        (pregunta5RadioGrup.getChildAt(or.vp5) as RadioButton).isChecked = true
+        (pregunta6RadioGrup.getChildAt(or.vp6) as RadioButton).isChecked = true
+        (pregunta7RadioGrup.getChildAt(or.vp7) as RadioButton).isChecked = true
+        (pregunta8RadioGrup.getChildAt(or.vp8) as RadioButton).isChecked = true
+        (pregunta9RadioGrup.getChildAt(or.vp9) as RadioButton).isChecked = true
+        (pregunta10RadioGrup.getChildAt(or.vp10) as RadioButton).isChecked = true
         pregunta1Obs_edt.setText(or.obp1)
         pregunta2Obs_edt.setText(or.obp2)
         pregunta3Obs_edt.setText(or.obp3)
@@ -99,6 +117,28 @@ class PreguntasActivity : AppCompatActivity() {
     fun recogerDatos() {
         or.equipamiento = n_serie
         or.enviado=0
+        var radioButton1 = findViewById<View>(pregunta1RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton2 = findViewById<View>(pregunta2RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton3 = findViewById<View>(pregunta3RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton4 = findViewById<View>(pregunta4RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton5 = findViewById<View>(pregunta5RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton6 = findViewById<View>(pregunta6RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton7 = findViewById<View>(pregunta7RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton8 = findViewById<View>(pregunta8RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton9 = findViewById<View>(pregunta9RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        var radioButton10 = findViewById<View>(pregunta10RadioGrup.getCheckedRadioButtonId()) as RadioButton
+
+        or.vp1 = pregunta1RadioGrup.indexOfChild(radioButton1)
+        or.vp2 = pregunta2RadioGrup.indexOfChild(radioButton2)
+        or.vp3 = pregunta3RadioGrup.indexOfChild(radioButton3)
+        or.vp4 = pregunta4RadioGrup.indexOfChild(radioButton4)
+        or.vp5 = pregunta5RadioGrup.indexOfChild(radioButton5)
+        or.vp6 = pregunta6RadioGrup.indexOfChild(radioButton6)
+        or.vp7 = pregunta7RadioGrup.indexOfChild(radioButton7)
+        or.vp8 = pregunta8RadioGrup.indexOfChild(radioButton8)
+        or.vp9 = pregunta9RadioGrup.indexOfChild(radioButton9)
+        or.vp10 = pregunta10RadioGrup.indexOfChild(radioButton10)
+
         or.obp1 = pregunta1Obs_edt.text.toString()
         or.obp2 = pregunta2Obs_edt.text.toString()
         or.obp3 = pregunta3Obs_edt.text.toString()
@@ -109,6 +149,7 @@ class PreguntasActivity : AppCompatActivity() {
         or.obp8 = pregunta8Obs_edt.text.toString()
         or.obp9 = pregunta9Obs_edt.text.toString()
         or.obp10 = pregunta10Obs_edt.text.toString()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

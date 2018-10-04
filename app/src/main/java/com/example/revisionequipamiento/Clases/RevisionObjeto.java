@@ -5,7 +5,6 @@ public class RevisionObjeto {
     int id, usuario,estado,enviado,vp1,vp2,vp3,vp4,vp5,vp6,vp7,vp8,vp9,vp10 = 0;
     String equipamiento,fR,obp1,obp2,obp3,obp4,obp5,obp6,obp7,obp8,obp9,obp10,firma,firmaT,objecione,peticiones = "";
 
-
     public RevisionObjeto(int id, String equipamiento, int usuario, String fR, int estado,int enviado,int vp1,int vp2,int vp3,int vp4,int vp5,int vp6,int vp7,int vp8,int vp9,int vp10,String obp1 ,String obp2 ,String obp3 ,String obp4 ,String obp5 ,String obp6 ,String obp7 ,String obp8 ,String obp9 ,String obp10 ,String firma ,String firmaT ,String objecione ,String peticiones ) {
         this.id = id;
         this.equipamiento = equipamiento;
@@ -42,7 +41,7 @@ public class RevisionObjeto {
 
     public static RevisionObjeto getObjetoRevision(int id){
         if (or == null) {
-            or = new RevisionObjeto(id,"",0,"",0,0,0,0,0,0,0,0,0,0,0,0,"","","","","","","","","","","","","","");
+            or = new RevisionObjeto(id,"",0,"",0,0,2,2,2,2,2,2,2,2,2,2,"","","","","","","","","","","","","","");
         }
         return or;
     }
@@ -293,6 +292,7 @@ public class RevisionObjeto {
 
     @Override
     public String toString() {
-        return "{'id':'"+id+"', 'equipamiento':'"+equipamiento+"', 'usuario':"+usuario+", 'fR':'"+fR+"', 'estado':"+estado+", 'enviado':"+enviado+", 'vp1':"+vp1+", 'vp2':"+vp2+", 'vp3':"+vp3+", 'vp4':"+vp4+", 'vp5':"+vp5+", 'vp6':"+vp6+", 'vp7':"+vp7+", 'vp8':"+vp8+", 'vp9':"+vp9+", 'vp10':"+vp10+", 'obp1':'"+obp1+"', 'obp2':'"+obp2+"', 'obp3':'"+obp3+"', 'obp4':'"+obp4+"', 'obp5':'"+obp5+"', 'obp6':'"+obp6+"', 'obp7':'"+obp7+"', 'obp8':'"+obp8+"', 'obp9':'"+obp9+"', 'obp10':'"+obp10+"', 'firma':'"+firma+"', 'firmaT':'"+firmaT+"', 'objeciones':'"+objecione+"', 'peticiones':'"+peticiones+"'}";
+        return "{'id':'"+id+"', 'equipamiento':'"+equipamiento+"', 'usuario':"+usuario+", 'fR':'"+fR+"', 'estado':"+estado+", 'enviado':"+enviado+", 'vp1':"+vp1+", 'vp2':"+vp2+", 'vp3':"+vp3+", 'vp4':"+vp4+", 'vp5':"+vp5+", 'vp6':"+vp6+", 'vp7':"+vp7+", 'vp8':"+vp8+", 'vp9':"+vp9+", 'vp10':"+vp10+", 'obp1':'"+obp1+"', 'obp2':'"+obp2+"', 'obp3':'"+obp3+"', 'obp4':'"+obp4+"', 'obp5':'"+obp5+"', 'obp6':'"+obp6+"', 'obp7':'"+obp7+"', 'obp8':'"+obp8+"', 'obp9':'"+obp9+"', 'obp10':'"+obp10+"', 'firma':'data:image/jpeg;base64,"+firma.replaceAll("\n", "")+"', 'firmaT':'data:image/jpeg;base64,"+firmaT.replaceAll("\n", "")+"', 'objeciones':'"+objecione+"', 'peticiones':'"+peticiones+"'}";
     }
+
 }

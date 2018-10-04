@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,17 +19,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
+import com.example.revisionequipamiento.Clases.RevisionObjeto;
+import com.example.revisionequipamiento.Fragments.PmaRevisiones;
+
 import java.io.ByteArrayOutputStream;
 
 public class FirmaActivity extends AppCompatActivity {
     //----------------------------------------------------VARIABLES-----------------------------------------------------------------------
     LinearLayout mContent;
     signature mSignature;
-    String  ID;
+    String  Nombre;
+    int ID;
     Button mBorrar, mfirmado, mCancelar;
-    CheckBox CheckAcepta;
     Context contexto;
     View mView;
+    private RevisionObjeto or =RevisionObjeto.getObjetoRevision(ID);
+
     private Bitmap mBitmap;
 
     //-------------------------------------------------------------------------------------------------------------------------------------
@@ -38,6 +44,8 @@ public class FirmaActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_firma);
         contexto = this;
+        Bundle extras = getIntent().getExtras();
+        Nombre= extras.getString("Nombre");
 
 
         //-----------------------------------------------------INICIALIZAMOS----------------------------------------------------------------
@@ -63,7 +71,6 @@ public class FirmaActivity extends AppCompatActivity {
 
         mfirmado.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                     mView.setDrawingCacheEnabled(true);
                     mSignature.save(mView);
                     mSignature.GuardarFirma();
@@ -73,7 +80,6 @@ public class FirmaActivity extends AppCompatActivity {
                     intent.putExtras(b);
                     setResult(RESULT_OK, intent);
                     finish();
-
 
             }
 
@@ -127,14 +133,23 @@ public class FirmaActivity extends AppCompatActivity {
         }
 
         public void GuardarFirma() {
+            switch (Integer.parseInt(Nombre)) {
+                case 0:
+                    or.setFirma(encodeToBase64(mBitmap));
+                    break;
+                case 1:
+                    or.setFirmaT(encodeToBase64(mBitmap));
+                    break;
+            }
         }
 
+        public  String encodeToBase64(Bitmap image){
+            ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOS);
+            return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
 
-        public byte[] getBytes(Bitmap bitmap) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-            return stream.toByteArray();
         }
+
 
         public void clear() {
             path.reset();
