@@ -85,6 +85,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.adapter = spinnerArrayAdapter
         if(MODO == "2"){
             MostrarDatos()
+            if(or.objecione!="" && or.firmaT!=""){
+                dt_objeciones_edit.isEnabled=false
+            }
         }
 
         ComprobarSiFirmado()

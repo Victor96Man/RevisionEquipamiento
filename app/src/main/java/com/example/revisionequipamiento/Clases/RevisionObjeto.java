@@ -292,7 +292,7 @@ public class RevisionObjeto {
 
     @Override
     public String toString() {
-        return "{'id':'"+id+"', 'equipamiento':'"+equipamiento+"', 'usuario':"+usuario+", 'fR':'"+fR+"', 'estado':"+estado+", 'enviado':"+enviado+", 'vp1':"+vp1+", 'vp2':"+vp2+", 'vp3':"+vp3+", 'vp4':"+vp4+", 'vp5':"+vp5+", 'vp6':"+vp6+", 'vp7':"+vp7+", 'vp8':"+vp8+", 'vp9':"+vp9+", 'vp10':"+vp10+", 'obp1':'"+obp1+"', 'obp2':'"+obp2+"', 'obp3':'"+obp3+"', 'obp4':'"+obp4+"', 'obp5':'"+obp5+"', 'obp6':'"+obp6+"', 'obp7':'"+obp7+"', 'obp8':'"+obp8+"', 'obp9':'"+obp9+"', 'obp10':'"+obp10+"', 'firma':'data:image/jpeg;base64,"+firma.replaceAll("\n", "")+"', 'firmaT':'data:image/jpeg;base64,"+firmaT.replaceAll("\n", "")+"', 'objeciones':'"+objecione+"', 'peticiones':'"+peticiones+"'}";
+        return "{'id':'"+id+"', 'equipamiento':'"+equipamiento+"', 'usuario':"+usuario+", 'fR':'"+fR+"', 'estado':"+estado+", 'enviado':"+enviado+", 'vp1':"+vp1+", 'vp2':"+vp2+", 'vp3':"+vp3+", 'vp4':"+vp4+", 'vp5':"+vp5+", 'vp6':"+vp6+", 'vp7':"+vp7+", 'vp8':"+vp8+", 'vp9':"+vp9+", 'vp10':"+vp10+", 'obp1':'"+obp1+"', 'obp2':'"+obp2+"', 'obp3':'"+obp3+"', 'obp4':'"+obp4+"', 'obp5':'"+obp5+"', 'obp6':'"+obp6+"', 'obp7':'"+obp7+"', 'obp8':'"+obp8+"', 'obp9':'"+obp9+"', 'obp10':'"+obp10+"', 'firma':'"+firma.replaceAll("\n", "")+"', 'firmaT':'data:image/jpeg;base64,"+firmaT.replaceAll("\n", "")+"', 'objeciones':'"+objecione+"', 'peticiones':'"+peticiones+"'}";
     }
 
 }

@@ -135,10 +135,10 @@ public class FirmaActivity extends AppCompatActivity {
         public void GuardarFirma() {
             switch (Integer.parseInt(Nombre)) {
                 case 0:
-                    or.setFirma(encodeToBase64(mBitmap));
+                    or.setFirma("data:image/jpeg;base64,"+encodeToBase64(mBitmap));
                     break;
                 case 1:
-                    or.setFirmaT(encodeToBase64(mBitmap));
+                    or.setFirmaT("data:image/jpeg;base64,"+encodeToBase64(mBitmap));
                     break;
             }
         }
