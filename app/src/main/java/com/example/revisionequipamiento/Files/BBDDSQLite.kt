@@ -209,26 +209,6 @@ val VERSIONBBDD = 4
             db.close()
         }
 
-        fun insertFoto(foto : Foto, idRevi: Int){
-            /*if (buscarFoto(foto.idRevision)){
-                updateFoto(foto)
-            }else{*/
-                val db = this.writableDatabase
-                val cv = ContentValues()
-                cv.put("id_revision",idRevi)
-                cv.put("nomdes",foto.nomDes)
-                cv.put("observacion",foto.observacion)
-                cv.put("ruta",foto.ruta)
-                val result = db.insert("fotos",null,cv)
-                if(result == -1.toLong()){
-                    Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
-                }else{
-
-                }
-                db.close()
-            //}
-        }
-
 
         fun insertUbicacion(ubicacion : Ubicacion){
             val db = this.writableDatabase
@@ -322,6 +302,7 @@ val VERSIONBBDD = 4
             var result :Long = 7
             if (buscarRevision(revision.equipamiento)){
                 updateRevision(revision)
+                result = revision.id.toLong()
             }else{
                 val db = this.writableDatabase
                 val cv = ContentValues()
@@ -401,15 +382,34 @@ val VERSIONBBDD = 4
             Toast.makeText(context,"Revision Actualizada ", Toast.LENGTH_SHORT).show()
         }
 
+        fun insertFoto(foto : Foto, idRevi: Int){
+            if (buscarFoto(foto.idRevision)){
+                updateFoto(foto)
+            }else{
+            val db = this.writableDatabase
+            val cv = ContentValues()
+            cv.put("id_revision",idRevi)
+            cv.put("nomdes",foto.nomDes)
+            cv.put("observacion",foto.observacion)
+            cv.put("ruta",foto.ruta)
+            val result = db.insert("fotos",null,cv)
+            if(result == -1.toLong()){
+                Toast.makeText(context,"Error foto ${foto.ruta}", Toast.LENGTH_SHORT).show()
+            }else{
+
+            }
+            db.close()
+            }
+        }
+
         fun updateFoto(foto : Foto){
             val db = this.writableDatabase
             val cv = ContentValues()
-            cv.put("id",foto.id)
             cv.put("id_revision",foto.idRevision)
             cv.put("nomdes",foto.nomDes)
             cv.put("observacion",foto.observacion)
             cv.put("ruta",foto.ruta)
-            db.update("fotos",cv,null, null)
+            db.update("fotos",cv,"id = foto.id", null)
 
             db.close()
         }

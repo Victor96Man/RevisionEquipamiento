@@ -85,7 +85,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
         ComprobarSiFirmado()
 
-        var dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
+        val dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
         dt_objeciones_edit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -118,8 +118,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     builder.setTitle(getString(R.string.enviarTitulo))
                     builder.setMessage(getString(R.string.enviarInfo))
                     builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
-                        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                        var networkInfo = cm.activeNetworkInfo
+                        val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                        val networkInfo = cm.activeNetworkInfo
                         if (networkInfo != null && networkInfo.isConnected) {
                             val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
                             EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
