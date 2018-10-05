@@ -264,6 +264,159 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         fotos[2].observacion=tv3
         fotos[3].observacion=tv4*/
         when(fotos.size){
+            1->{
+                when(fotos.get(0).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(0).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(0).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(0).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(0).observacion =tv4
+                    }
+                }
+            }
+
+            2->{
+
+                when(fotos.get(0).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(0).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(0).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(0).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(0).observacion =tv4
+                    }
+                }
+                when(fotos.get(1).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(1).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(1).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(1).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(1).observacion =tv4
+                    }
+                }
+            }
+
+            3->{
+                when(fotos.get(0).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(0).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(0).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(0).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(0).observacion =tv4
+                    }
+                }
+                when(fotos.get(1).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(1).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(1).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(1).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(1).observacion =tv4
+                    }
+                }
+                when(fotos.get(2).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(2).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(2).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(2).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(2).observacion =tv4
+                    }
+                }
+            }
+
+            4->{
+                when(fotos.get(0).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(0).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(0).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(0).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(0).observacion =tv4
+                    }
+                }
+                when(fotos.get(1).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(1).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(1).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(1).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(1).observacion =tv4
+                    }
+                }
+                when(fotos.get(2).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(2).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(2).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(2).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(2).observacion =tv4
+                    }
+                }
+                when(fotos.get(3).nomDes){
+                    "-1.jpg"->{
+                        fotos.get(3).observacion =tv1
+                    }
+                    "-2.jpg"->{
+                        fotos.get(3).observacion =tv2
+                    }
+                    "-3.jpg"->{
+                        fotos.get(3).observacion =tv3
+                    }
+                    "-4.jpg"->{
+                        fotos.get(3).observacion =tv4
+                    }
+                }
+            }
+
 
         }
         or.fotos = fotos
