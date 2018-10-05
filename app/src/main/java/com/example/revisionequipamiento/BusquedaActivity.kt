@@ -84,6 +84,7 @@ class BusquedaActivity : AppCompatActivity() {
             mAlertDialog.flt_marca_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarMarcas())
             //--------------------------------------------APLICAR--------------------------------------------------
             mAlertDialog.flt_aplicar_bt.setOnClickListener{
+                fab_2.isEnabled=true
                 nserie= mAlertDialog.flt_nserie_edit.text.toString()
                 familia = mAlertDialog.flt_familia_spnr.selectedItem.toString()
                 zona = mAlertDialog.flt_zona_spnr.selectedItem.toString()

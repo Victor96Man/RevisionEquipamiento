@@ -136,7 +136,7 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
     val db = bbddsqlite.writableDatabase
     if(jsonobject.getInt("code")==1){
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
-        db.delete("fotos", "idRevision= '$idRevi'", null)
+        db.delete("fotos", "id_revision = '$idRevi'", null)
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
     }else{
         println(jsonobject.getString("message"))

@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento
 
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.activity_preguntas.*
@@ -37,6 +39,7 @@ class PreguntasActivity : AppCompatActivity() {
             volcarDatos()
             MostrarDatos()
         }
+
         siguienteP_bt.setOnClickListener{
             siguienteP_bt.isEnabled=false
             recogerDatos()
@@ -86,9 +89,44 @@ class PreguntasActivity : AppCompatActivity() {
                     or.firmaT = cusrsor.getString(cusrsor.getColumnIndex("firma_trabajador"))
                     or.objecione = cusrsor.getString(cusrsor.getColumnIndex("objeciones"))
                     or.peticiones = cusrsor.getString(cusrsor.getColumnIndex("peticiones"))
+                    or.fotos = devuelveFotosRevision(or.id,this)
                 }
             }
         }
+    }
+
+
+    private fun devuelveFotosRevision(idRevision:Int, context: Context):ArrayList<Foto>{
+
+        val bbddsqlite = BBDDSQLite(context)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        var fotos : ArrayList<Foto>
+
+        cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= '${idRevision}'", null)
+        fotos = ArrayList<Foto>()
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+
+                }
+                do {
+                    var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id")),
+                            cusrsor.getString(cusrsor.getColumnIndex("id_revision")),
+                            cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
+                            cusrsor.getString(cusrsor.getColumnIndex("observacion")))
+                    fotos.add(foto)
+                }while (cusrsor.moveToNext())
+                db.close()
+
+
+            }else{
+
+            }
+        }else{
+
+        }
+        return fotos
     }
 
     fun MostrarDatos(){

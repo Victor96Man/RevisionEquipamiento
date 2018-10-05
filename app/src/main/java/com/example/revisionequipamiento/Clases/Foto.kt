@@ -20,6 +20,6 @@ class Foto{
 
 
     override fun toString(): String {
-        return "{'foto':{'idRevision':'$idRevision','nomDes':'$nomDes', 'observacion':'$observacion', 'ruta':'$ruta'}}"
+        return "{'foto':{'idRevision':'$idRevision','nomDes':'$nomDes', 'observacion':'$observacion'}}"
     }
 }

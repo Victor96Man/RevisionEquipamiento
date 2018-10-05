@@ -213,6 +213,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                 builder.setMessage(getString(R.string.salirNoGuardarInfo))
                 builder.setPositiveButton(getString(R.string.aceptar)) {
                     _, _ ->
+                    or.volveranull()
                     finish()
                 }
                 builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
@@ -258,12 +259,15 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
-        fotos[0].observacion=tv1
+        /*fotos[0].observacion=tv1
         fotos[1].observacion=tv2
         fotos[2].observacion=tv3
-        fotos[3].observacion=tv4
+        fotos[3].observacion=tv4*/
+        when(fotos.size){
+
+        }
         or.fotos = fotos
-        println(or)
+        //println(or)
     }
 
     private fun idUsuario(): Int {

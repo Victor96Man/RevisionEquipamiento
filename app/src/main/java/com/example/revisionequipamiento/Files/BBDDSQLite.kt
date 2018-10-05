@@ -433,7 +433,7 @@ val VERSIONBBDD = 4
             val db = this.writableDatabase
             val cusrsor: Cursor
             var foto :Boolean = false
-            cusrsor = db.rawQuery("Select * FROM fotos WHERE foto.id_revision= ${idRevi}", null)
+            cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${idRevi}", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
                     if (cusrsor.moveToFirst()) {
