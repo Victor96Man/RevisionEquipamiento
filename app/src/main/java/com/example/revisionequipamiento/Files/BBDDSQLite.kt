@@ -383,8 +383,8 @@ val VERSIONBBDD = 4
         }
 
         fun insertFoto(foto : Foto, idRevi: Int){
-            if (buscarFoto(foto.idRevision)){
-                updateFoto(foto)
+            if (updateFoto(foto)){
+
             }else{
             val db = this.writableDatabase
             val cv = ContentValues()
@@ -402,16 +402,27 @@ val VERSIONBBDD = 4
             }
         }
 
-        fun updateFoto(foto : Foto){
+        fun updateFoto(foto : Foto) :Boolean{
             val db = this.writableDatabase
-            val cv = ContentValues()
-            cv.put("id_revision",foto.idRevision)
-            cv.put("nomdes",foto.nomDes)
-            cv.put("observacion",foto.observacion)
-            cv.put("ruta",foto.ruta)
-            db.update("fotos",cv,"id = foto.id", null)
+            val cusrsor: Cursor
+            var fotoS :Boolean = false
+            cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${foto.idRevision} AND fotos.nomDes='${foto.nomDes}'", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                        val id: Int = cusrsor.getInt(cusrsor.getColumnIndex("id"))
+                        val cv = ContentValues()
+                        cv.put("observacion",foto.observacion)
+                        cv.put("ruta",foto.ruta)
+                        db.update("fotos",cv,"id = ${id}", null)
+                    }
+                    fotoS = true
+                }
+            }
 
             db.close()
+
+            return fotoS
         }
 
         fun buscarRevision(n_serie: String?): Boolean {
@@ -429,15 +440,17 @@ val VERSIONBBDD = 4
             return revision
         }
 
-        fun buscarFoto(idRevi: Int): Boolean {
+        fun buscarFoto(id: Int, nombre : String): Boolean {
             val db = this.writableDatabase
             val cusrsor: Cursor
             var foto :Boolean = false
-            cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${idRevi}", null)
+            cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${id} AND fotos.nomDes='${nombre}'", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
                     if (cusrsor.moveToFirst()) {
+
                     }
+
                     foto = true
                 }
             }

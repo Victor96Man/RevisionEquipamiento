@@ -109,7 +109,7 @@ class PreguntasActivity : AppCompatActivity() {
                 if (cusrsor.moveToFirst()) {
                 }
                 do {
-                    var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id_revision")),
+                    val foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id_revision")),
                             cusrsor.getString(cusrsor.getColumnIndex("ruta")),
                             cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
                             cusrsor.getString(cusrsor.getColumnIndex("observacion")))

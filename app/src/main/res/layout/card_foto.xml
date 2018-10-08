@@ -48,6 +48,7 @@
                 android:layout_weight="1"
                 android:autofillHints=""
                 android:ems="10"
+                android:hint="@string/obs"
                 android:inputType="textMultiLine"
                 android:selectAllOnFocus="false"
                 android:textIsSelectable="false" />

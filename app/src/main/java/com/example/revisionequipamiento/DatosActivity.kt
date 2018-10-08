@@ -228,10 +228,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
         val fotos = fotos
-        if (fotos!=null) {
-            for (i in 0 until fotos.size) {
-                bbddsqlite.insertFoto(fotos.get(i), id_revision)
-            }
+        for (i in 0 until fotos.size) {
+            bbddsqlite.insertFoto(fotos.get(i), id_revision)
         }
         bbddsqlite.close()
     }
