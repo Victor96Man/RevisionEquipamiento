@@ -43,9 +43,9 @@ public class RevisionObjeto {
 
     }
 
-    public static RevisionObjeto getObjetoRevision(int id){
+    public static RevisionObjeto getObjetoRevision(){
         if (or == null) {
-            or = new RevisionObjeto(id,"",0,"",0,0,2,2,2,2,2,2,2,2,2,2,"","","","","","","","","","","","","","",null);
+            or = new RevisionObjeto(0,"",0,"",0,0,2,2,2,2,2,2,2,2,2,2,"","","","","","","","","","","","","","",null);
         }
         return or;
     }

@@ -17,8 +17,6 @@ class Foto{
     }
 
 
-
-
     override fun toString(): String {
         return "{'foto':{'idRevision':'$idRevision','nomDes':'$nomDes', 'observacion':'$observacion'}}"
     }

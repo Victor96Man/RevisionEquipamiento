@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
-import android.widget.Toast
 import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.Files.BBDDSQLite
@@ -22,17 +21,18 @@ class PreguntasActivity : AppCompatActivity() {
     var familia : String= ""
     var MODO : String= "1"
     var n_serie : String= ""
-    var id : Int= 0
-    var or : RevisionObjeto= RevisionObjeto.getObjetoRevision(id)
+    var or : RevisionObjeto= RevisionObjeto.getObjetoRevision()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preguntas)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        println(or.fotos)
         familia = intent.getStringExtra("familia")
         MODO = intent.getStringExtra("MODO")
         n_serie = intent.getStringExtra("n_serie")
         Nfamilias(familia,View(this@PreguntasActivity))
         if(MODO=="3"){
+            println(or.fotos)
             MostrarDatos()
         }
         if(MODO=="2"){
@@ -97,29 +97,25 @@ class PreguntasActivity : AppCompatActivity() {
 
 
     private fun devuelveFotosRevision(idRevision:Int, context: Context):ArrayList<Foto>{
-
         val bbddsqlite = BBDDSQLite(context)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        var fotos : ArrayList<Foto>
+        val fotos : ArrayList<Foto>
 
         cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= '${idRevision}'", null)
         fotos = ArrayList<Foto>()
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
-
                 }
                 do {
-                    var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id")),
-                            cusrsor.getString(cusrsor.getColumnIndex("id_revision")),
+                    var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id_revision")),
+                            cusrsor.getString(cusrsor.getColumnIndex("ruta")),
                             cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
                             cusrsor.getString(cusrsor.getColumnIndex("observacion")))
                     fotos.add(foto)
                 }while (cusrsor.moveToNext())
                 db.close()
-
-
             }else{
 
             }
@@ -155,16 +151,16 @@ class PreguntasActivity : AppCompatActivity() {
     fun recogerDatos() {
         or.equipamiento = n_serie
         or.enviado=0
-        var radioButton1 = findViewById<View>(pregunta1RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton2 = findViewById<View>(pregunta2RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton3 = findViewById<View>(pregunta3RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton4 = findViewById<View>(pregunta4RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton5 = findViewById<View>(pregunta5RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton6 = findViewById<View>(pregunta6RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton7 = findViewById<View>(pregunta7RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton8 = findViewById<View>(pregunta8RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton9 = findViewById<View>(pregunta9RadioGrup.getCheckedRadioButtonId()) as RadioButton
-        var radioButton10 = findViewById<View>(pregunta10RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton1 = findViewById<View>(pregunta1RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton2 = findViewById<View>(pregunta2RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton3 = findViewById<View>(pregunta3RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton4 = findViewById<View>(pregunta4RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton5 = findViewById<View>(pregunta5RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton6 = findViewById<View>(pregunta6RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton7 = findViewById<View>(pregunta7RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton8 = findViewById<View>(pregunta8RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton9 = findViewById<View>(pregunta9RadioGrup.getCheckedRadioButtonId()) as RadioButton
+        val radioButton10 = findViewById<View>(pregunta10RadioGrup.getCheckedRadioButtonId()) as RadioButton
 
         or.vp1 = pregunta1RadioGrup.indexOfChild(radioButton1)
         or.vp2 = pregunta2RadioGrup.indexOfChild(radioButton2)
@@ -350,10 +346,10 @@ class PreguntasActivity : AppCompatActivity() {
         builder.setMessage(getString(R.string.salirNoGuardarInfo))
         builder.setPositiveButton(getString(R.string.aceptar)) {
             _, _ ->
+            or.volveranull()
             val int = Intent(this@PreguntasActivity, EquipamientoActivity::class.java)
             int.putExtra("n_serie", n_serie)
             startActivity(int)
-            or.volveranull()
             finish()
         }
         builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->

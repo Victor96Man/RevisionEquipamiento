@@ -54,15 +54,14 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var username :String=""
     var contrasena :String=""
     var positionCameraElement: Int=0
-    val id : Int=0
-    var or : RevisionObjeto = RevisionObjeto.getObjetoRevision(id)
+    var or : RevisionObjeto = RevisionObjeto.getObjetoRevision()
 
     var tv1: String = ""
     var tv2: String = ""
     var tv3: String = ""
     var tv4: String = ""
 
-    var fotos: ArrayList<Foto> = ArrayList(4)
+    var fotos: ArrayList<Foto> = ArrayList()
 
     var mCurrentPhotoPath:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +81,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         if(MODO == "2"){
             MostrarDatos()
         }
-
         ComprobarSiFirmado()
 
         val dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
@@ -102,7 +100,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         })
 
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = PostsAdapter(this@DatosActivity,selectFotos())
+        recyclerView.adapter = PostsAdapter(this@DatosActivity,sacarFotosObjeto(or.fotos))
 
         val snapHelper: SnapHelper = LinearSnapHelper() as SnapHelper
         snapHelper.attachToRecyclerView(recyclerView)
@@ -170,26 +168,16 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
     }
 
-    fun selectFotos():ArrayList<fotoItem> {
+    fun sacarFotosObjeto(arrayFotos :ArrayList<Foto>?):ArrayList<fotoItem> {
         val posts : ArrayList<fotoItem> = ArrayList<fotoItem>()
-        val bbddsqlite = BBDDSQLite(this@DatosActivity)
-        val db = bbddsqlite.writableDatabase
-        val cusrsor: Cursor
-        cusrsor = db.rawQuery("Select * from fotos where id_revision = ${or.id}",null)
-        if (cusrsor != null) {
-            if (cusrsor.count > 0) {
-                if (cusrsor.moveToFirst()) {
-                }
-                do {
-                    val ruta :Uri = Uri.parse(cusrsor.getString(cusrsor.getColumnIndex("ruta")))
-                    val observacion = cusrsor.getString(cusrsor.getColumnIndex("observacion"))
-                    val imagen = MediaStore.Images.Media.getBitmap(contentResolver,Uri.fromFile(File(ruta.path)))
-                    posts.add(fotoItem(imagen,observacion))
-
-                }while (cusrsor.moveToNext())
+        if (arrayFotos!=null) {
+            for (i in 0 until arrayFotos.size) {
+                val ruta: Uri = Uri.parse(arrayFotos.get(i).ruta)
+                val observacion = arrayFotos.get(i).observacion
+                val imagen = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(File(ruta.path)))
+                posts.add(fotoItem(imagen, observacion))
             }
         }
-        db.close()
         if (posts.size!=4){
             do {
                 val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_action_camera)
@@ -239,9 +227,11 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
-        val fotos = or.fotos
-        for (foto in fotos){
-            bbddsqlite.insertFoto(foto,id_revision)
+        val fotos = fotos
+        if (fotos!=null) {
+            for (i in 0 until fotos.size) {
+                bbddsqlite.insertFoto(fotos.get(i), id_revision)
+            }
         }
         bbddsqlite.close()
     }
@@ -259,168 +249,26 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
-        /*fotos[0].observacion=tv1
-        fotos[1].observacion=tv2
-        fotos[2].observacion=tv3
-        fotos[3].observacion=tv4*/
-        when(fotos.size){
-            1->{
-                when(fotos.get(0).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(0).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(0).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(0).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(0).observacion =tv4
-                    }
+
+        for(i in 0 until fotos.size){
+            when(fotos.get(i).nomDes){
+                "-1.jpg"->{
+                    fotos.get(i).observacion =tv1
                 }
+                "-2.jpg"->{
+                    fotos.get(i).observacion =tv2
+                }
+                "-3.jpg"->{
+                    fotos.get(i).observacion =tv3
+                }
+                "-4.jpg"-> {
+                    fotos.get(i).observacion = tv4
+                }
+
             }
-
-            2->{
-
-                when(fotos.get(0).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(0).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(0).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(0).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(0).observacion =tv4
-                    }
-                }
-                when(fotos.get(1).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(1).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(1).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(1).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(1).observacion =tv4
-                    }
-                }
-            }
-
-            3->{
-                when(fotos.get(0).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(0).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(0).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(0).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(0).observacion =tv4
-                    }
-                }
-                when(fotos.get(1).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(1).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(1).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(1).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(1).observacion =tv4
-                    }
-                }
-                when(fotos.get(2).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(2).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(2).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(2).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(2).observacion =tv4
-                    }
-                }
-            }
-
-            4->{
-                when(fotos.get(0).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(0).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(0).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(0).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(0).observacion =tv4
-                    }
-                }
-                when(fotos.get(1).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(1).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(1).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(1).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(1).observacion =tv4
-                    }
-                }
-                when(fotos.get(2).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(2).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(2).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(2).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(2).observacion =tv4
-                    }
-                }
-                when(fotos.get(3).nomDes){
-                    "-1.jpg"->{
-                        fotos.get(3).observacion =tv1
-                    }
-                    "-2.jpg"->{
-                        fotos.get(3).observacion =tv2
-                    }
-                    "-3.jpg"->{
-                        fotos.get(3).observacion =tv3
-                    }
-                    "-4.jpg"->{
-                        fotos.get(3).observacion =tv4
-                    }
-                }
-            }
-
-
         }
-        or.fotos = fotos
-        //println(or)
+
+
     }
 
     private fun idUsuario(): Int {
@@ -666,7 +514,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     fun saveImage(myBitmap: Bitmap): String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        var ruta: String =""
+        var ruta :String =""
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
@@ -754,10 +602,11 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
     override fun onBackPressed() {
         recuperarDatos()
+
         val int = Intent(this@DatosActivity, PreguntasActivity::class.java)
         int.putExtra("familia", familia)
         int.putExtra("MODO", "3")
-        int.putExtra("n_serie", or.equipamiento )
+        int.putExtra("n_serie", or.equipamiento)
         startActivity(int)
         finish()
     }

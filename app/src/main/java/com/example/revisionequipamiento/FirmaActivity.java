@@ -29,11 +29,10 @@ public class FirmaActivity extends AppCompatActivity {
     LinearLayout mContent;
     signature mSignature;
     String  Nombre;
-    int ID;
     Button mBorrar, mfirmado, mCancelar;
     Context contexto;
     View mView;
-    private RevisionObjeto or =RevisionObjeto.getObjetoRevision(ID);
+    private RevisionObjeto or =RevisionObjeto.getObjetoRevision();
 
     private Bitmap mBitmap;
 

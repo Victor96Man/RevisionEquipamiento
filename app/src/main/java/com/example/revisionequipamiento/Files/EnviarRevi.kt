@@ -91,8 +91,8 @@ private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Fot
 
             }
             do {
-                var foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id")),
-                        cusrsor.getString(cusrsor.getColumnIndex("id_revision")),
+                val foto = Foto(cusrsor.getInt(cusrsor.getColumnIndex("id_revision")),
+                        cusrsor.getString(cusrsor.getColumnIndex("ruta")),
                         cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
                         cusrsor.getString(cusrsor.getColumnIndex("observacion")))
                 fotos.add(foto)
@@ -149,7 +149,7 @@ private fun POST(url: String, revision: RevisionObjeto): String {
     var result = ""
     val httpclient = DefaultHttpClient()
     val httpPost = HttpPost(url)
-    var json = revision.toString().replace("'","\"")
+    val json = revision.toString().replace("'","\"")
     println(revision.toString().replace("'","\""))
     val se = StringEntity(json)
     httpPost.entity = se as HttpEntity?
