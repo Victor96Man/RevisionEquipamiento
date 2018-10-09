@@ -43,10 +43,12 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        var fecha = mDataset.get(position).fecha
+        fecha = fecha!!.substring(8,10)+"-"+fecha!!.substring(5,7)+"-"+fecha!!.substring(0,4)
         holder.n_serie.text = mDataset.get(position).id_equipamiento
         holder.familia.text = mDataset.get(position).familia
         holder.ubicacion.text = mDataset.get(position).ubicacion
-        holder.fecha.text = mDataset.get(position).fecha
+        holder.fecha.text = fecha
         if(mDataset.get(position).trabajador!=null){
             holder.trabajador.text = mDataset.get(position).trabajador
         }else{

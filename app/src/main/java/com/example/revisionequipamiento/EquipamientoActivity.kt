@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -49,6 +50,7 @@ class EquipamientoActivity : AppCompatActivity() {
     var username :String=""
     var contrasena :String=""
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_equipamiento)
@@ -71,12 +73,12 @@ class EquipamientoActivity : AppCompatActivity() {
         eq_zona_tx.text = zona
         eq_ubicacion_tx.text = ubicacion
         eq_situacion_tx.text = situacion
-        eq_fechaPR_tx.text = fecha_proxima_revision
-        eq_fechaR_tx.text = fecha_revision
-        eq_fechaC_tx.text = fecha_compra
-        eq_fechaPF_tx.text = fecha_puesta_funcionamiento
-        eq_fechaCaducidad_tx.text = fecha_caducidad
-        eq_fechaBaja_tx.text = fecha_baja
+        eq_fechaPR_tx.text = cambiarFecha(fecha_proxima_revision)
+        eq_fechaR_tx.text = cambiarFecha(fecha_revision)
+        eq_fechaC_tx.text = cambiarFecha(fecha_compra)
+        eq_fechaPF_tx.text = cambiarFecha(fecha_puesta_funcionamiento)
+        eq_fechaCaducidad_tx.text = cambiarFecha(fecha_caducidad)
+        eq_fechaBaja_tx.text = cambiarFecha(fecha_baja)
         eq_referenciaN_tx.text = referencia_normativa
         eq_bitacora_tx.text = bitacora
 
@@ -147,16 +149,15 @@ class EquipamientoActivity : AppCompatActivity() {
 
         descarga_revi_bt.setOnClickListener{
             val urlDescarga= "${getString(R.string.URL)}${getString(R.string.URLCompruebaDescargaPDF)}$n_serie"
-            println(urlDescarga)
             AsyncTaskHandleJSON2().execute(urlDescarga)
-            /*val uris = Uri.parse(urlDescarga)
-            val intents = Intent(Intent.ACTION_VIEW, uris)
-            val b = Bundle()
-            b.putBoolean("new_window", true)
-            intents.putExtras(b)
-            this@EquipamientoActivity.startActivity(intents)*/
         }
     }
+
+    fun cambiarFecha(fecha :String):String{
+        val fecha2 = fecha!!.substring(8,10)+"-"+fecha!!.substring(5,7)+"-"+fecha!!.substring(0,4)
+        return fecha2
+    }
+
     fun actualizarBD(){
         val bbddsqlite = BBDDSQLite(this)
         val db = bbddsqlite.writableDatabase
