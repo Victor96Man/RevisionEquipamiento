@@ -1,5 +1,6 @@
 package com.example.revisionequipamiento
 
+import android.annotation.SuppressLint
 import android.database.Cursor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -37,15 +38,17 @@ class BusquedaActivity : AppCompatActivity() {
     var whereTrabajador :String=""
     var whereMarca :String=""
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        cargarZona()
         BuscarEquipamiento()
 
         fab_2.setOnClickListener { _ ->
             fab_2.isEnabled=false
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.filtro_dialog, null)
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.filtro_dialog,null)
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
                     .setView(mDialogView)
@@ -103,6 +106,7 @@ class BusquedaActivity : AppCompatActivity() {
         rv_recycler_view2.layoutManager=LinearLayoutManager(this@BusquedaActivity,LinearLayout.VERTICAL,false)
 
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
@@ -234,9 +238,29 @@ class BusquedaActivity : AppCompatActivity() {
         return  list
     }
 
+    private fun cargarZona() {
+        val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+
+        cusrsor = db.rawQuery("SELECT zonas.nombrezona  FROM  zonas, usuariosZonas, usuarios WHERE usuarios.id = usuariosZonas.id_usuario AND usuariosZonas.id_zona = zonas.id ", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                if (cusrsor.moveToFirst()) {
+                    zona=""
+                }
+                do{
+                    zona+= "'"+cusrsor.getString(cusrsor.getColumnIndex("nombrezona"))+"'"+", "
+                }while (cusrsor.moveToNext())
+            }
+            db.close()
+            zona = zona!!.substring(0,zona!!.length-2)
+        }
+    }
+
     private fun BuscarEquipamiento() {
 
-        var equipos = ArrayList<EquipamientoItem>()
+        val equipos = ArrayList<EquipamientoItem>()
         val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
@@ -249,7 +273,7 @@ class BusquedaActivity : AppCompatActivity() {
         }
 
         if(zona!=null && zona!=getString(R.string.spnr_zona)){
-            whereZona = "AND t3.nombrezona = '$zona'"
+            whereZona += "AND t3.nombrezona in ($zona)"
         }
 
         if(ubicacion!=null && ubicacion!=getString(R.string.spnr_ubicacion)){
