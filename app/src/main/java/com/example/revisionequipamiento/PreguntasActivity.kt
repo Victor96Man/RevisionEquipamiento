@@ -26,13 +26,11 @@ class PreguntasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preguntas)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        println(or.fotos)
         familia = intent.getStringExtra("familia")
         MODO = intent.getStringExtra("MODO")
         n_serie = intent.getStringExtra("n_serie")
         Nfamilias(familia,View(this@PreguntasActivity))
         if(MODO=="3"){
-            println(or.fotos)
             MostrarDatos()
         }
         if(MODO=="2"){

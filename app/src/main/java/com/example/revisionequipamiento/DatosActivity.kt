@@ -46,8 +46,10 @@ import kotlin.collections.ArrayList
 
 
 class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
+
     private val GALLERY = 1
     private val CAMERA = 2
+
     var imagen :ImageButton?= null
     var MODO : String=""
     var familia :String=""
@@ -63,8 +65,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var tv4: String = ""
 
     var fotos: ArrayList<Foto> = ArrayList()
-
     var mCurrentPhotoPath:String =""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_datos)
@@ -81,6 +83,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         dt_estado_sp.adapter = spinnerArrayAdapter
         if(MODO == "2"){
             MostrarDatos()
+        }else{
+            or.fotos = ArrayList<Foto>()
         }
         ComprobarSiFirmado()
 
@@ -229,10 +233,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
-        //val fotos = fotos
-        or.fotos = fotos
-        for (i in 0 until fotos.size) {
-            bbddsqlite.insertFoto(fotos.get(i), id_revision)
+        for (i in 0 until or.fotos.size) {
+            bbddsqlite.insertFoto(or.fotos.get(i), id_revision)
         }
         bbddsqlite.close()
     }
@@ -250,24 +252,48 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         or.setfR(fechaHoy())
         or.peticiones = dt_peticiones_edit.text.toString()
         or.objecione = dt_objeciones_edit.text.toString()
-
         for(i in 0 until fotos.size){
-            when(fotos.get(i).nomDes){
-                "-1.jpg"->{
-                    fotos.get(i).observacion =tv1
+            when(fotos.get(i).nomDes) {
+                "-1.jpg" -> {
+                    fotos.get(i).observacion = tv1
+                    if(MODO == "2") {
+                        if(or.fotos.getOrNull(0)!=null) {
+                            or.fotos.removeAt(0)
+                        }
+                    }
+                    or.fotos.add(0,fotos.get(i))
                 }
-                "-2.jpg"->{
-                    fotos.get(i).observacion =tv2
+                "-2.jpg" -> {
+                    fotos.get(i).observacion = tv2
+                    if(MODO == "2") {
+                        if(or.fotos.getOrNull(1)!=null) {
+                            or.fotos.removeAt(1)
+                        }
+                    }
+                    or.fotos.add(1,fotos.get(i))
                 }
-                "-3.jpg"->{
-                    fotos.get(i).observacion =tv3
+                "-3.jpg" -> {
+                    fotos.get(i).observacion = tv3
+                    if(MODO == "2") {
+                        if(or.fotos.getOrNull(2)!=null) {
+                            or.fotos.removeAt(2)
+                        }
+                    }
+                    or.fotos.add(2,fotos.get(i))
                 }
-                "-4.jpg"-> {
+                "-4.jpg" -> {
                     fotos.get(i).observacion = tv4
+                    if(MODO == "2") {
+                        if(or.fotos.getOrNull(3)!=null) {
+                            or.fotos.removeAt(3)
+                        }
+                    }
+                    or.fotos.add(3,fotos.get(i))
                 }
-
             }
         }
+
+
 
 
     }
