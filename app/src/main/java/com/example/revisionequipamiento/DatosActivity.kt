@@ -174,25 +174,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
     }
 
-    fun sacarFotosObjeto(arrayFotos :ArrayList<Foto>?):ArrayList<fotoItem> {
-        val posts : ArrayList<fotoItem> = ArrayList<fotoItem>()
-        if (arrayFotos!=null) {
-            for (i in 0 until arrayFotos.size) {
-                val ruta: Uri = Uri.parse(arrayFotos.get(i).ruta)
-                val observacion = arrayFotos.get(i).observacion
-                val imagen = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(File(ruta.path)))
-                posts.add(fotoItem(imagen, observacion))
-            }
-        }
-        if (posts.size!=4){
-            do {
-                val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_action_camera)
-                posts.add(fotoItem(icon,""))
-            }while (posts.size!=4)
-        }
-        return posts
-    }
-
+    //********************************************BOTON SALIR*****************************************************
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_exit, menu)
@@ -223,81 +205,85 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         return true
     }
 
+    //***********************************************MOSTRAR DATOS*******************************************
     fun MostrarDatos(){
         dt_estado_sp.setSelection(or.estado+1)
         dt_peticiones_edit.setText(or.peticiones)
         dt_objeciones_edit.setText(or.objecione)
     }
 
-    fun guardar(){
-        recuperarDatos()
-        val bbddsqlite = BBDDSQLite(this@DatosActivity)
-        val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
-        for (i in 0 until or.fotos.size) {
-            bbddsqlite.insertFoto(or.fotos.get(i), id_revision)
+    fun sacarFotosObjeto(arrayFotos :ArrayList<Foto>?):ArrayList<fotoItem> {
+        val posts : ArrayList<fotoItem> = ArrayList<fotoItem>()
+        if (arrayFotos!=null) {
+            for (i in 0 until arrayFotos.size) {
+                val ruta: Uri = Uri.parse(arrayFotos.get(i).ruta)
+                val observacion = arrayFotos.get(i).observacion
+                val imagen = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(File(ruta.path)))
+                posts.add(fotoItem(imagen, observacion))
+            }
         }
-        bbddsqlite.close()
+        if (posts.size!=4){
+            do {
+                val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_action_camera)
+                posts.add(fotoItem(icon,""))
+            }while (posts.size!=4)
+        }
+        return posts
     }
-
+ //*******************************************RECUPERAR DATOS******************************************
+    fun recuperarDatos(){
+         or.estado = dt_estado_sp.selectedItemPosition -1
+         or.usuario = idUsuario()
+         or.setfR(fechaHoy())
+         or.peticiones = dt_peticiones_edit.text.toString()
+         or.objecione = dt_objeciones_edit.text.toString()
+         for(i in 0 until fotos.size){
+             when(fotos.get(i).nomDes) {
+                 "-1.jpg" -> {
+                     fotos.get(i).observacion = tv1
+                     if(MODO == "2") {
+                         if(or.fotos.getOrNull(0)!=null) {
+                             or.fotos.removeAt(0)
+                         }
+                     }
+                     or.fotos.add(0,fotos.get(i))
+                 }
+                 "-2.jpg" -> {
+                     fotos.get(i).observacion = tv2
+                     if(MODO == "2") {
+                         if(or.fotos.getOrNull(1)!=null) {
+                             or.fotos.removeAt(1)
+                         }
+                     }
+                     or.fotos.add(1,fotos.get(i))
+                 }
+                 "-3.jpg" -> {
+                     fotos.get(i).observacion = tv3
+                     if(MODO == "2") {
+                         if(or.fotos.getOrNull(2)!=null) {
+                             or.fotos.removeAt(2)
+                         }
+                     }
+                     or.fotos.add(2,fotos.get(i))
+                 }
+                 "-4.jpg" -> {
+                     fotos.get(i).observacion = tv4
+                     if(MODO == "2") {
+                         if(or.fotos.getOrNull(3)!=null) {
+                             or.fotos.removeAt(3)
+                         }
+                     }
+                     or.fotos.add(3,fotos.get(i))
+                 }
+             }
+         }
+    }
     fun fechaHoy():String{
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val date = Date()
         val fecha = dateFormat.format(date)
         return fecha
     }
-
-    fun recuperarDatos(){
-        or.estado = dt_estado_sp.selectedItemPosition -1
-        or.usuario = idUsuario()
-        or.setfR(fechaHoy())
-        or.peticiones = dt_peticiones_edit.text.toString()
-        or.objecione = dt_objeciones_edit.text.toString()
-        for(i in 0 until fotos.size){
-            when(fotos.get(i).nomDes) {
-                "-1.jpg" -> {
-                    fotos.get(i).observacion = tv1
-                    if(MODO == "2") {
-                        if(or.fotos.getOrNull(0)!=null) {
-                            or.fotos.removeAt(0)
-                        }
-                    }
-                    or.fotos.add(0,fotos.get(i))
-                }
-                "-2.jpg" -> {
-                    fotos.get(i).observacion = tv2
-                    if(MODO == "2") {
-                        if(or.fotos.getOrNull(1)!=null) {
-                            or.fotos.removeAt(1)
-                        }
-                    }
-                    or.fotos.add(1,fotos.get(i))
-                }
-                "-3.jpg" -> {
-                    fotos.get(i).observacion = tv3
-                    if(MODO == "2") {
-                        if(or.fotos.getOrNull(2)!=null) {
-                            or.fotos.removeAt(2)
-                        }
-                    }
-                    or.fotos.add(2,fotos.get(i))
-                }
-                "-4.jpg" -> {
-                    fotos.get(i).observacion = tv4
-                    if(MODO == "2") {
-                        if(or.fotos.getOrNull(3)!=null) {
-                            or.fotos.removeAt(3)
-                        }
-                    }
-                    or.fotos.add(3,fotos.get(i))
-                }
-            }
-        }
-
-
-
-
-    }
-
     private fun idUsuario(): Int {
         val bbddsqlite = BBDDSQLite(this)
         val db = bbddsqlite.writableDatabase
@@ -315,6 +301,18 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         return id
     }
 
+    //******************************************GUARDAR EN BBDD**********************************************
+    fun guardar(){
+        recuperarDatos()
+        val bbddsqlite = BBDDSQLite(this@DatosActivity)
+        val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
+        for (i in 0 until or.fotos.size) {
+            bbddsqlite.insertFoto(or.fotos.get(i), id_revision)
+        }
+        bbddsqlite.close()
+    }
+
+    //*******************************************ONCLICK FOTOITEM**********************************************
     override fun onHandleSelectionImage(imagen2: ImageButton,position:Int) {
         imagen=imagen2
         showPictureDialog(position)
@@ -371,12 +369,12 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         //mCurrentPhotoPath = "file:" + image!!.absolutePath
         return image
     }
+
     fun choosePhotoFromGallary(position:Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         positionGalleryElement = position
         startActivityForResult(galleryIntent, GALLERY)
     }
-
     fun takePhotoFromCamera(position:Int) {
         var photoFile: File? = null
         try {
@@ -523,8 +521,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             }
         }
 
-
-
     fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
         //Redimensionamos
         val width = mBitmap.width
@@ -538,6 +534,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         // recreate the new Bitmap
         return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false)
     }
+
+
 
     fun saveImage(myBitmap: Bitmap): String {
         val bytes = ByteArrayOutputStream()
@@ -575,9 +573,11 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     companion object {
+
         private val IMAGE_DIRECTORY = "/RevisionesEmproacsa"
     }
 
+    //******************************BORRAR Y ACTUALIZAR BBDD*****************************************
     fun actualizarBD(){
         val bbddsqlite = BBDDSQLite(this)
         val db = bbddsqlite.writableDatabase
@@ -601,6 +601,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
 
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
+
         override fun onPreExecute() {
             super.onPreExecute()
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -628,24 +629,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
     }
 
-    override fun onBackPressed() {
-        recuperarDatos()
-
-        val int = Intent(this@DatosActivity, PreguntasActivity::class.java)
-        int.putExtra("familia", familia)
-        int.putExtra("MODO", "3")
-        int.putExtra("n_serie", or.equipamiento)
-        startActivity(int)
-        finish()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        dt_UsuarioFirma_bt.isEnabled=true
-        ComprobarSiFirmado()
-
-    }
-
+    //***************************************CONTROL FIRMAS*******************************************
     fun ComprobarSiFirmado() {
         if (or.firma!="") {
             cambiarStyle(dt_UsuarioFirma_bt)
@@ -662,6 +646,25 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         button.setTextColor(resources.getColor(R.color.colorPrimary))
         button.isEnabled=false
         button.setError(null)
+    }
+
+    //***************************************OnBACK Y OnRESTAR**************************************
+
+    override fun onBackPressed() {
+        recuperarDatos()
+
+        val int = Intent(this@DatosActivity, PreguntasActivity::class.java)
+        int.putExtra("familia", familia)
+        int.putExtra("MODO", "3")
+        int.putExtra("n_serie", or.equipamiento)
+        startActivity(int)
+        finish()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        dt_UsuarioFirma_bt.isEnabled=true
+        ComprobarSiFirmado()
     }
 
 }
