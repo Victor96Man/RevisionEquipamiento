@@ -11,6 +11,7 @@ fun ParseoFile(jsonString: String?, context: Context, code :Int){
     val jsonobject = jsonarray.getJSONObject(0)
 
     if(code ==1){
+        println(jsonobject)
         val usuarios= jsonobject.getJSONArray("usuarios")
         val usuariosjsonobject = usuarios.getJSONObject(0)
         val idusuario = usuariosjsonobject.getInt("id")

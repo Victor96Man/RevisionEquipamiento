@@ -54,6 +54,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var username :String=""
     var contrasena :String=""
     var positionCameraElement: Int=0
+    var positionGalleryElement: Int=0
     var or : RevisionObjeto = RevisionObjeto.getObjetoRevision()
 
     var tv1: String = ""
@@ -119,6 +120,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                         val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                         val networkInfo = cm.activeNetworkInfo
                         if (networkInfo != null && networkInfo.isConnected) {
+                            //println(or.toString().replace("'","\""))
                             val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
                             EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
                             or.volveranull()
@@ -227,7 +229,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recuperarDatos()
         val bbddsqlite = BBDDSQLite(this@DatosActivity)
         val id_revision :Int = bbddsqlite.insertRevision(or).toInt()
-        val fotos = fotos
+        //val fotos = fotos
+        or.fotos = fotos
         for (i in 0 until fotos.size) {
             bbddsqlite.insertFoto(fotos.get(i), id_revision)
         }
@@ -344,7 +347,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     }
     fun choosePhotoFromGallary(position:Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryIntent.putExtra("position", position)
+        positionGalleryElement = position
         startActivityForResult(galleryIntent, GALLERY)
     }
 
@@ -369,48 +372,49 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         if (requestCode == GALLERY) {
             if (data != null) {
                 val contentURI = data.data
+
                 try {
-                    val position = data.extras!!.getInt("position")
+
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
                     val path = saveImage(bitmap)
 
-                    when (position) {
+                    when (positionGalleryElement) {
                         0 -> {
                             try {
-                                fotos.get(position).nomDes = "-1.jpg"
-                                fotos.get(position).ruta = path
+                                fotos.get(positionGalleryElement).nomDes = "-1.jpg"
+                                fotos.get(positionGalleryElement).ruta = path
                             } catch (aoobe: IndexOutOfBoundsException) {
-                                val pos = position + 1
+                                val pos = positionGalleryElement + 1
                                 fotos.add(Foto(or.id, path, "-$pos.jpg", tv1))
                             }
                         }
 
                         1 -> {
                             try {
-                                fotos.get(position).nomDes = "-2.jpg"
-                                fotos.get(position).ruta = path
+                                fotos.get(positionGalleryElement).nomDes = "-2.jpg"
+                                fotos.get(positionGalleryElement).ruta = path
                             } catch (aoobe: IndexOutOfBoundsException) {
-                                val pos = position + 1
+                                val pos = positionGalleryElement + 1
                                 fotos.add(Foto(or.id, path, "-$pos.jpg", tv2))
                             }
                         }
                         2 -> {
                             try {
-                                fotos.get(position).nomDes = "-3.jpg"
-                                fotos.get(position).ruta = path
+                                fotos.get(positionGalleryElement).nomDes = "-3.jpg"
+                                fotos.get(positionGalleryElement).ruta = path
                             } catch (aoobe: IndexOutOfBoundsException) {
-                                val pos = position + 1
+                                val pos = positionGalleryElement + 1
                                 fotos.add(Foto(or.id, path, "-$pos.jpg", tv3))
                             }
                         }
 
                         3 -> {
                             try {
-                                fotos.get(position).nomDes = "-4.jpg"
-                                fotos.get(position).ruta = path
+                                fotos.get(positionGalleryElement).nomDes = "-4.jpg"
+                                fotos.get(positionGalleryElement).ruta = path
                             } catch (aoobe: IndexOutOfBoundsException) {
-                                val pos = position + 1
+                                val pos = positionGalleryElement + 1
                                 fotos.add(Foto(or.id, path, "-$pos.jpg", tv4))
                             }
                         }

@@ -138,6 +138,7 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
         db.delete("fotos", "id_revision = '$idRevi'", null)
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
+        //
     }else{
         println(jsonobject.getString("message"))
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
