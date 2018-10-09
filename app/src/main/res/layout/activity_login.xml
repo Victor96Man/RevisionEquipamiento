@@ -88,6 +88,23 @@
         app:layout_constraintTop_toBottomOf="@+id/contrasena_login"
         app:layout_constraintVertical_bias="0.060000002" />
 
+    <TextView
+        android:id="@+id/lg_olvido_tx"
+        style="@style/textBlanco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/olvidoContraseña"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entrar_login"
+        app:layout_constraintVertical_bias="0.37" />
+
     <ProgressBar
         android:id="@+id/MyprogressBar"
         android:layout_width="103dp"

@@ -9,52 +9,13 @@
     <string name="title_activity_Firma">Firma</string>
     <string name="title_activity_Ajustes">Ajustes</string>
 
-    <!-- Dialogs-->
-    <string name="permisoD">Permisos denegados</string>
-    <string name="permisoInfo">Para usar las funciones de la app necesitas aceptar los permisos.</string>
-    <string name="noInternet">No tienes Internet</string>
-    <string name="noInternetInfo">No puedes enviar o recibir datos si no tienes internet en tu dispositivo.</string>
-    <string name="cerrarSesion">¿Cerrar Sesion?</string>
-    <string name="cerrarSesionInfo">Los datos almacenados en su teléfono se borrarán.</string>
-    <string name="salirNoGuardar">¿Seguro que quiere salir?</string>
-    <string name="salirNoGuardarInfo">Se perderan los datos si no han sido guardados.</string>
-    <string name="aceptar">Aceptar</string>
-    <string name="cancelar">Cancelar</string>
-    <string name="aplicar">Aplicar</string>
-    <string name="seleccionFoto">Selecciona</string>
-    <string name="seleccionFotoGaleria">Galeria</string>
-    <string name="seleccionFotoCamara">Camara</string>
-    <string name="enviarTitulo">Enviar Revisión</string>
-    <string name="enviarInfo">¿Quieres enviar la revisión directamente?</string>
-
-    <!-- URLS-->
-    <string name="URL">http://emproacsa.mjhudesings.com/</string>
-    <string name="URLinicio">slim/login</string>
-    <string name="URLtodo">slim/todo/</string>
-    <string name="URLcontraseña">slim/cambiocontrasena</string>
-    <string name="URLinsert">slim/insertrevision</string>
-    <string name="URLCompruebaDescargaPDF">slim/compruebaRevision/</string>
-    <string name="URLDescargaPDF">slim/descargarpdf/</string>
-
-    <!-- Toast -->
-    <string name="loginError">Usuario o contraseña no válidos</string>
-    <string name="actualizar">Actualización Correcta</string>
-    <string name="errorBD">Error en la Base de Datos</string>
-    <string name="contraseñaOK">Contraseña Actualizada</string>
-
-    <!-- CardView -->
-    <string name="familiaCard">Familia:</string>
-    <string name="nserieCard">Nº Serie:</string>
-    <string name="ubicacionCard">Ubicación:</string>
-    <string name="fechaCard">Fecha:</string>
-    <string name="trabajadorCard">Trabajador:</string>
-
     <!-- Pantalla Login -->
     <string name="login">Log In</string>
     <string name="usuario">Usuario</string>
     <string name="contrasena">Contraseña</string>
     <string name="entrar">Entrar</string>
     <string name="user_id">user_id</string>
+    <string name="olvidoContraseña">¿Has olvidado la contraseña?</string>
 
     <!-- Pantalla Principal -->
     <string name="tab_text_1">Próximas</string>
@@ -64,6 +25,14 @@
     <string name="emptyPma">No hay próximas revisiones.</string>
     <string name="emptyReparacion">Ningún equipamiento en reparación.</string>
     <string name="emptyEnviado">Todas las revisiones están enviadas.</string>
+
+    <!-- Pantalla Ajustes -->
+    <string name="aj_cambiarContra_bt">Cambiar Contraseña</string>
+    <string name="aj_cambiarContra_tx">Cambiar de contraseña</string>
+    <string name="aj_infoContraseña_tx">Introduce tú actual contraseña y la nueva.</string>
+    <string name="aj_contraActual_edt">Contraseña Actual</string>
+    <string name="aj_contraNueva_edt">Contraseña Nueva</string>
+    <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
 
     <!-- Pantalla Equipamiento -->
     <string name="eqpTrabajador">Trabajador:</string>
@@ -105,25 +74,11 @@
     <string name="obs">Observaciones</string>
     <string name="informacion">Información</string>
 
-
-    <!-- Buttons -->
-    <string name="descarga_revi_bt">Descargar Revisión</string>
-    <string name="enviarRV_bt">Enviar Revisión</string>
-    <string name="siguiente">Siguiente</string>
-    <string name="firmar">Firmar</string>
-    <string name="firmado">Firmado</string>
-    <string name="Guardar">Guardar</string>
-    <string name="borrar">Borrar</string>
-
     <!-- Pantalla Datos -->
     <string name="dt_fotos_tx">Fotos</string>
     <string name="dt_objecione_tx">Objeciones del Trabajador:</string>
     <string name="dt_peticiones_tx">Peticiones/Observaciones:</string>
     <string name="dt_estado_tx">Estado:</string>
-
-    <!-- Pantalla Firma -->
-    <string name="firmeaqui">Firme aqui:</string>
-
     <string-array name="estados_sp">
         <item>-----------</item>
         <item>Aceptable</item>
@@ -131,27 +86,68 @@
         <item>Baja</item>
     </string-array>
 
-    <!-- Pantalla Ajustes -->
-    <string name="aj_cambiarContra_bt">Cambiar Contraseña</string>
-    <string name="aj_cambiarContra_tx">Cambiar de contraseña</string>
-    <string name="aj_infoContraseña_tx">Introduce tú actual contraseña y la nueva.</string>
-    <string name="aj_contraActual_edt">Contraseña Actual</string>
-    <string name="aj_contraNueva_edt">Contraseña Nueva</string>
-    <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
+    <!-- Pantalla Firma -->
+    <string name="firmeaqui">Firme aqui:</string>
+
+    <!-- URLS-->
+    <string name="URL">http://emproacsa.mjhudesings.com/</string>
+    <string name="URLinicio">slim/login</string>
+    <string name="URLemail">slim/email</string>
+    <string name="URLtodo">slim/todo/</string>
+    <string name="URLcontraseña">slim/cambiocontrasena</string>
+    <string name="URLinsert">slim/insertrevision</string>
+    <string name="URLCompruebaDescargaPDF">slim/compruebaRevision/</string>
+    <string name="URLDescargaPDF">slim/descargarpdf/</string>
+
+    <!-- CardView -->
+    <string name="familiaCard">Familia:</string>
+    <string name="nserieCard">Nº Serie:</string>
+    <string name="ubicacionCard">Ubicación:</string>
+    <string name="fechaCard">Fecha:</string>
+    <string name="trabajadorCard">Trabajador:</string>
+
+    <!-- Dialogs-->
+    <string name="permisoD">Permisos denegados</string>
+    <string name="permisoInfo">Para usar las funciones de la app necesitas aceptar los permisos.</string>
+    <string name="noInternet">No tienes Internet</string>
+    <string name="noInternetInfo">No puedes enviar o recibir datos si no tienes internet en tu dispositivo.</string>
+    <string name="cerrarSesion">¿Cerrar Sesion?</string>
+    <string name="cerrarSesionInfo">Los datos almacenados en su teléfono se borrarán.</string>
+    <string name="salirNoGuardar">¿Seguro que quiere salir?</string>
+    <string name="salirNoGuardarInfo">Se perderan los datos si no han sido guardados.</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="seleccionFoto">Selecciona</string>
+    <string name="seleccionFotoGaleria">Galeria</string>
+    <string name="seleccionFotoCamara">Camara</string>
+    <string name="enviarTitulo">Enviar Revisión</string>
+    <string name="enviarInfo">¿Quieres enviar la revisión directamente?</string>
+    <string name="lg_tituloEmail">Introduce tu email</string>
+    <string name="lg_infoEmail">Recibiras un email con un enlace para recuperar tu contraseña</string>
+    <string name="lg_email_hint">Email</string>
+
+    <!-- Toast -->
+    <string name="loginError">Usuario o contraseña no válidos</string>
+    <string name="actualizar">Actualización Correcta</string>
+    <string name="errorBD">Error en la Base de Datos</string>
+    <string name="contraseñaOK">Contraseña Actualizada</string>
+    <string name="emailOK">Se te ha enviado un email</string>
+    <string name="emailError">Email no encontrado</string>
+
+    <!-- Buttons -->
+    <string name="descarga_revi_bt">Descargar</string>
+    <string name="enviarRV_bt">Enviar</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="firmar">Firmar</string>
+    <string name="firmado">Firmado</string>
+    <string name="Guardar">Guardar</string>
+    <string name="borrar">Borrar</string>
 
     <!-- Errores -->
     <string name="err_campoVacio">Campo vacio</string>
     <string name="err_campoNoIgual">Los campo no concuerdan</string>
-    <string name="err_campoPSW">La contraseña debe contener entre 8-16 caracteres con una minuscula, una mayuscula, un numero y un caracter especial</string>
+    <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minuscula, una mayuscula, un numero y un caracter especial</string>
     <string name="err_NoEstado">Debes elegir un estado</string>
-
-    <!-- Regex -->
-    <string name="regex_password"></string>
-
-
-    <string name="lore">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum quis lorem vel fermentum. Maecenas erat elit, dignissim quis tempor ac, efficitur at neque. Integer et enim eleifend, luctus turpis id, congue diam. Quisque pharetra arcu sit amet odio gravida porttitor. Proin et porttitor orci, at iaculis quam. Nulla sit amet sapien varius, imperdiet nunc accumsan, varius sapien. Donec ex turpis, sodales eu nisl id, convallis venenatis lectus. Suspendisse ut varius arcu, in cursus est.
-Morbi semper fringilla justo, vitae faucibus est consectetur a. Aliquam ultrices massa sed neque cursus eleifend. Donec blandit, nunc quis porttitor dapibus, diam sem rhoncus eros, vitae congue dolor arcu eu odio. Integer eget orci vitae nisi molestie mollis vel sit amet arcu. Aliquam erat volutpat. Aliquam tincidunt arcu id nisi blandit pretium. Fusce eleifend nibh mi, non finibus nulla finibus vel. Suspendisse felis est, finibus in ipsum vel, accumsan tempor sapien. Nulla pellentesque suscipit nulla, non consectetur justo gravida quis. Suspendisse potenti. Nam ac ante erat. Donec eu ornare lectus. Phasellus aliquet aliquam arcu at gravida. Nunc fringilla ex nec maximus sollicitudin. Aliquam lacinia aliquet justo at sollicitudin.</string>
-
-
 
 </resources>
