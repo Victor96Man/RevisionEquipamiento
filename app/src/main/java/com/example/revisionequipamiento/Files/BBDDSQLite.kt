@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
 import android.widget.Toast
 import com.example.revisionequipamiento.Clases.*
-import java.util.*
 
 val directorioexterno = Environment.getExternalStorageDirectory()
 val DATABASE_NAME = "revisiones"
@@ -440,20 +439,40 @@ val VERSIONBBDD = 4
             return revision
         }
 
-        fun buscarFoto(id: Int, nombre : String): Boolean {
+        fun enviarColores(n_serie: String):Int{
+            var color:Int = 3
             val db = this.writableDatabase
             val cusrsor: Cursor
-            var foto :Boolean = false
-            cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${id} AND fotos.nomDes='${nombre}'", null)
+            cusrsor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND estado = 2", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
                     if (cusrsor.moveToFirst()) {
-
                     }
+                    color = 0 //Color Negro
+                } else {
+                    val cursor: Cursor
+                    cursor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision > date('now') AND fecha_proxima_revision <= date('now','+10 days')", null)
+                    if (cursor != null) {
+                        if (cursor.count > 0) {
+                            if (cursor.moveToFirst()) {
+                            }
+                            color = 2 //Color Naranja
+                        } else {
+                            val cursor1: Cursor
+                            cursor1 = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision < date('now')", null)
+                            if (cursor1 != null) {
+                                if (cursor1.count > 0) {
+                                    if (cursor1.moveToFirst()) {
+                                    }
+                                    color = 1 //Color Rojo
+                                }
+                            } else {
 
-                    foto = true
+                            }
+                        }
+                    }
                 }
             }
-            return foto
+            return color
         }
 }

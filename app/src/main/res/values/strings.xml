@@ -66,6 +66,13 @@
     <string name="spnr_ubicacion">----Ubicacion----</string>
     <string name="spnr_trabajador">----Trabajador----</string>
     <string name="spnr_marca">----Marca----</string>
+    <string-array name="fechas_sp">
+        <item>----Fecha----</item>
+        <item>1 Semana</item>
+        <item>1 Mes</item>
+        <item>3 Meses</item>
+        <item>6 Meses</item>
+    </string-array>
 
     <!-- Pantalla Preguntas -->
     <string name="si">Si</string>

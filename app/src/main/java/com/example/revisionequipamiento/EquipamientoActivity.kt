@@ -63,6 +63,7 @@ class EquipamientoActivity : AppCompatActivity() {
         up_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_up)
 
         buscarEquipamiento(n_serie)
+
         eq_familia_tx.text = familia
         if(trabajador!=null) {
             eq_trabajador_tx.text = trabajador
@@ -85,7 +86,10 @@ class EquipamientoActivity : AppCompatActivity() {
         when(estado){
             0 -> eq_estado_tx.text = getString(R.string.estadoBien)
             1 -> eq_estado_tx.text = getString(R.string.estadoReparacion)
-            2 -> eq_estado_tx.text = getString(R.string.estadoBaja)
+            2 -> {
+                eq_estado_tx.text = getString(R.string.estadoBaja)
+                fab.isEnabled = false
+            }
         }
         eq_idremplaza_tx.text = id_remplaza
 
@@ -116,6 +120,7 @@ class EquipamientoActivity : AppCompatActivity() {
         if (bbddsqlite.buscarRevision(n_serie)) {
             bbddsqlite.close()
             enviarRV_bt.isEnabled = true
+            fab.isEnabled = true
             fab.setImageResource(R.drawable.ic_mode_edit)
             fab.setOnClickListener {
                 val int = Intent(this@EquipamientoActivity, PreguntasActivity::class.java)
@@ -129,8 +134,8 @@ class EquipamientoActivity : AppCompatActivity() {
         }
 
         enviarRV_bt.setOnClickListener {
-            var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            var networkInfo = cm.activeNetworkInfo
+            val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = cm.activeNetworkInfo
             if (networkInfo != null && networkInfo.isConnected) {
                 val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
                 EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)

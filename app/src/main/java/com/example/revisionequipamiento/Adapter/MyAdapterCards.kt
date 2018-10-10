@@ -2,6 +2,7 @@ package com.example.revisionequipamiento.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.support.v4.content.ContextCompat.getDrawable
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -24,6 +25,7 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
         var ubicacion: TextView
         var fecha: TextView
         var trabajador: TextView
+        var icon: View
 
         init {
 
@@ -33,6 +35,7 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
             ubicacion = v.findViewById<View>(R.id.ubicacion_tx) as TextView
             fecha = v.findViewById<View>(R.id.fecha_tx) as TextView
             trabajador = v.findViewById<View>(R.id.trabajador_tx) as TextView
+            icon = v.findViewById<View>(R.id.icon_circle) as View
 
         }
     }
@@ -49,6 +52,13 @@ class MyAdapterCards(context: Context,private val mDataset: ArrayList<Equipamien
         holder.familia.text = mDataset.get(position).familia
         holder.ubicacion.text = mDataset.get(position).ubicacion
         holder.fecha.text = fecha
+        when (mDataset.get(position).icon){
+            0 -> holder.icon.background = getDrawable(mContext,R.drawable.circle_negro)
+            1 -> holder.icon.background = getDrawable(mContext,R.drawable.circle_rojo)
+            2 -> holder.icon.background = getDrawable(mContext,R.drawable.circle_naranja)
+            3 -> holder.icon.background = getDrawable(mContext,R.drawable.circle_verde)
+        }
+
         if(mDataset.get(position).trabajador!=null){
             holder.trabajador.text = mDataset.get(position).trabajador
         }else{

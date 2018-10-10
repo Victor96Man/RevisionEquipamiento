@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.revisionequipamiento.Adapter.MyAdapterCards
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
-import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Clases.EquipamientoItem
+import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.R
 
 class Reparacion : Fragment() {
@@ -39,8 +39,9 @@ class Reparacion : Fragment() {
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
                     val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
                     val trabajador = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
+                    val color = bbddsqlite.enviarColores(id_equipamiento)
                     if (equipos != null) {
-                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha, trabajador))
+                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha, trabajador,color))
                     }
                 }while (cusrsor.moveToNext())
                 db.close()

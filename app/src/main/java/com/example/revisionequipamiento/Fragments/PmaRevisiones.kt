@@ -10,8 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.revisionequipamiento.Adapter.MyAdapterCards
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
-import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Clases.EquipamientoItem
+import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.R
 
 
@@ -28,7 +28,7 @@ class PmaRevisiones : Fragment() {
         val bbddsqlite = BBDDSQLite(requireContext())
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion ,(SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=0  AND t1.fecha_proxima_revision <= date('now','+7 day') AND t1.n_serie not in (SELECT id_equipamiento FROM revisiones) AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion ,(SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2,  ubicaciones as t4 WHERE t1.id_familia = t2.id  AND t1.id_ubicacion = t4.id AND t1.estado=0  AND t1.fecha_proxima_revision <= date('now','+10 day') AND t1.n_serie not in (SELECT id_equipamiento FROM revisiones) AND t1.id_zona in (SELECT id_zona FROM usuariosZonas) ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -40,8 +40,9 @@ class PmaRevisiones : Fragment() {
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
                     val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
                     val trabajador = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
+                    val color = bbddsqlite.enviarColores(id_equipamiento)
                     if (equipos != null) {
-                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha, trabajador))
+                        equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha, trabajador,color))
                     }
                 }while (cusrsor.moveToNext())
 

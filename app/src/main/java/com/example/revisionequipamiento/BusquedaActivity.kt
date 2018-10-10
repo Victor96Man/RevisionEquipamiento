@@ -2,25 +2,22 @@ package com.example.revisionequipamiento
 
 import android.annotation.SuppressLint
 import android.database.Cursor
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.widget.LinearLayout
-import com.example.revisionequipamiento.Adapter.MyAdapterCards
-import com.example.revisionequipamiento.Clases.EquipamientoItem
-import kotlinx.android.synthetic.main.activity_busqueda.*
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import com.example.revisionequipamiento.Adapter.MyAdapterCards
 import com.example.revisionequipamiento.Adapter.MyAdapterEmpty
+import com.example.revisionequipamiento.Clases.EquipamientoItem
 import com.example.revisionequipamiento.Files.BBDDSQLite
+import kotlinx.android.synthetic.main.activity_busqueda.*
 import kotlinx.android.synthetic.main.filtro_dialog.*
-import android.content.DialogInterface
-
-
 
 
 class BusquedaActivity : AppCompatActivity() {
@@ -31,12 +28,14 @@ class BusquedaActivity : AppCompatActivity() {
     var ubicacion :String?= null
     var trabajador :String?= null
     var marca :String?= null
+    var fecha :Int?= null
     var whereNserie :String=""
     var whereFamilia :String=""
     var whereZona :String=""
     var whereUbicacion :String=""
     var whereTrabajador :String=""
     var whereMarca :String=""
+    var whereFecha :String=""
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +84,8 @@ class BusquedaActivity : AppCompatActivity() {
             mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
             //---------------------------------------SPINNER--MARCA----------------------------------------------------
             mAlertDialog.flt_marca_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarMarcas())
+            //---------------------------------------SPINNER--FECHA----------------------------------------------------
+            mAlertDialog.flt_fecha_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fechas_sp))
             //--------------------------------------------APLICAR--------------------------------------------------
             mAlertDialog.flt_aplicar_bt.setOnClickListener{
                 fab_2.isEnabled=true
@@ -94,6 +95,7 @@ class BusquedaActivity : AppCompatActivity() {
                 ubicacion = mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()
                 trabajador = mAlertDialog.flt_trabajador_spnr.selectedItem.toString()
                 marca = mAlertDialog.flt_marca_spnr.selectedItem.toString()
+                fecha = mAlertDialog.flt_fecha_spnr.selectedItemPosition
                 BuscarEquipamiento()
                 mAlertDialog.dismiss()
             }
@@ -287,7 +289,16 @@ class BusquedaActivity : AppCompatActivity() {
         if(marca!=null && marca!=getString(R.string.spnr_marca)){
             whereMarca = "AND t6.nombremarca = '$marca'"
         }
-        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca", null)
+
+        when(fecha){
+            0-> whereFecha=""
+            1-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+7 day') "
+            2-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+1 month') "
+            3-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+3 month') "
+            4-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+6 month') "
+        }
+
+        cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca $whereFecha ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
                 if (cusrsor.moveToFirst()) {
@@ -298,7 +309,8 @@ class BusquedaActivity : AppCompatActivity() {
                     val ubicacion = cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion"))
                     val fecha = cusrsor.getString(cusrsor.getColumnIndex("fecha_proxima_revision"))
                     val trabajador  = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
-                    equipos.add(EquipamientoItem(id_equipamiento, familia, ubicacion, fecha, trabajador))
+                    val color = bbddsqlite.enviarColores(id_equipamiento)
+                    equipos.add(EquipamientoItem(id_equipamiento, familia, ubicacion, fecha, trabajador,color))
                 } while (cusrsor.moveToNext())
 
                 db.close()
@@ -312,6 +324,7 @@ class BusquedaActivity : AppCompatActivity() {
             whereUbicacion=""
             whereTrabajador=""
             whereMarca=""
+            whereFecha=""
         }
     }
 

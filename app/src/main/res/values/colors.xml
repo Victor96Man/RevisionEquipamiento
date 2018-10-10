@@ -9,4 +9,8 @@
     <color name="colorBlanco">#ffffff</color>
     <color name="transparente">#00ffffff</color>
     <color name="GrisTransparente">#e3e7e7e7</color>
+
+    <color name="colorRojo">#D10404</color>
+    <color name="colorVerde">#2EFE2E</color>
+    <color name="colorNaranja">#FC8D07</color>
 </resources>

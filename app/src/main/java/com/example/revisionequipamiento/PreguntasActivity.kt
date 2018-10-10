@@ -3,9 +3,9 @@ package com.example.revisionequipamiento
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -62,6 +62,7 @@ class PreguntasActivity : AppCompatActivity() {
                 if (cusrsor.moveToFirst()) {
                     or.id= cusrsor.getInt(cusrsor.getColumnIndex("id"))
                     or.equipamiento = n_serie
+                    or.estado= cusrsor.getInt(cusrsor.getColumnIndex("estado"))
                     or.enviado= cusrsor.getInt(cusrsor.getColumnIndex("enviado"))
                     or.vp1 = cusrsor.getInt(cusrsor.getColumnIndex("vp1"))
                     or.vp2 = cusrsor.getInt(cusrsor.getColumnIndex("vp2"))
