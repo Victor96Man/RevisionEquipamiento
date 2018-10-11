@@ -424,6 +424,21 @@ val VERSIONBBDD = 4
             return fotoS
         }
 
+        fun miEquipo(n_serie: String):Boolean{
+            var miEquipo = false
+            val db = this.writableDatabase
+            val cusrsor: Cursor
+            cusrsor = db.rawQuery("Select * FROM equipamientos, usuariosZonas, usuarios WHERE equipamientos.n_serie = '${n_serie}' AND equipamientos.id_zona = usuariosZonas.id_zona AND usuariosZonas.id_usuario = usuarios.id", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                    }
+                    miEquipo = true
+                }
+            }
+            return miEquipo
+        }
+
         fun buscarRevision(n_serie: String?): Boolean {
             val db = this.writableDatabase
             val cusrsor: Cursor

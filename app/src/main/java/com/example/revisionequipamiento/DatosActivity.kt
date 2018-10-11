@@ -13,11 +13,11 @@ import android.media.MediaScannerConnection
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.SnapHelper
@@ -37,7 +37,10 @@ import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_datos.*
 import kotlinx.android.synthetic.main.horizontal_scroll_card.*
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -78,8 +81,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         StrictMode.setVmPolicy(builder.build())
 
         //SPINNER
-        val spinnerArrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, resources.getStringArray(R.array.estados_sp))
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item)
+        val spinnerArrayAdapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item , resources.getStringArray(R.array.estados_sp))
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         dt_estado_sp.adapter = spinnerArrayAdapter
         if(MODO == "2"){
             MostrarDatos()

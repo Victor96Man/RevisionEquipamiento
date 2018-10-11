@@ -58,6 +58,7 @@ class EquipamientoActivity : AppCompatActivity() {
         val n_serie = intent.getStringExtra("n_serie")
         supportActionBar?.title = n_serie
 
+
         //Animaciones
         down_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_down)
         up_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_up)
@@ -117,8 +118,10 @@ class EquipamientoActivity : AppCompatActivity() {
             }
         }
         val bbddsqlite = BBDDSQLite(this@EquipamientoActivity)
-        if (bbddsqlite.buscarRevision(n_serie)) {
-            bbddsqlite.close()
+        if(!bbddsqlite.miEquipo(n_serie)){
+            enviarRV_bt.isEnabled = false
+            fab.isEnabled = false
+        }else if (bbddsqlite.buscarRevision(n_serie)) {
             enviarRV_bt.isEnabled = true
             fab.isEnabled = true
             fab.setImageResource(R.drawable.ic_mode_edit)
@@ -130,8 +133,9 @@ class EquipamientoActivity : AppCompatActivity() {
                 startActivity(int)
                 finish()
             }
-            bbddsqlite.close()
         }
+        bbddsqlite.close()
+
 
         enviarRV_bt.setOnClickListener {
             val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

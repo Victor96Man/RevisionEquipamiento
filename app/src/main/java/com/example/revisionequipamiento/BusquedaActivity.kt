@@ -37,7 +37,7 @@ class BusquedaActivity : AppCompatActivity() {
     var whereMarca :String=""
     var whereFecha :String=""
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_busqueda)
@@ -58,34 +58,51 @@ class BusquedaActivity : AppCompatActivity() {
                 fab_2.isEnabled=true
             }
             //---------------------------------------SPINNER--FAMILIA----------------------------------------------------
-            mAlertDialog.flt_familia_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarFamilias())
 
+            val aFamilia = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarFamilias())
+            aFamilia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_familia_spnr.adapter = aFamilia
             //---------------------------------------SPINNER--ZONA----------------------------------------------------
-            mAlertDialog.flt_zona_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarZonas())
+
+            val aZona =ArrayAdapter(this@BusquedaActivity,android.R.layout.simple_spinner_item, BuscarZonas())
+            aZona.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_zona_spnr.adapter = aZona
             mAlertDialog.flt_zona_spnr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    mAlertDialog.flt_ubicacion_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+                    val aUbicacion = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+                    aUbicacion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mAlertDialog.flt_ubicacion_spnr.adapter = aUbicacion
                 }
             }
             //---------------------------------------SPINNER--UBICACION----------------------------------------------------
-            mAlertDialog.flt_ubicacion_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+            val aUbicacion =ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarUbicaciones(mAlertDialog.flt_zona_spnr.selectedItem.toString()))
+            aUbicacion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_ubicacion_spnr.adapter = aUbicacion
             mAlertDialog.flt_ubicacion_spnr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+                    val aTrabajador = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+                    aTrabajador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mAlertDialog.flt_trabajador_spnr.adapter = aTrabajador
                 }
             }
             //---------------------------------------SPINNER--TRABAJADOR----------------------------------------------------
-            mAlertDialog.flt_trabajador_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+            val aTrabajador = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarTrabajadores(mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()))
+            aTrabajador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_trabajador_spnr.adapter = aTrabajador
             //---------------------------------------SPINNER--MARCA----------------------------------------------------
-            mAlertDialog.flt_marca_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarMarcas())
+            val aMarca = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, BuscarMarcas())
+            aMarca.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_marca_spnr.adapter = aMarca
             //---------------------------------------SPINNER--FECHA----------------------------------------------------
-            mAlertDialog.flt_fecha_spnr.adapter = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fechas_sp))
+            val aFecha = ArrayAdapter(this@BusquedaActivity, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.fechas_sp))
+            aFecha.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            mAlertDialog.flt_fecha_spnr.adapter = aFecha
             //--------------------------------------------APLICAR--------------------------------------------------
             mAlertDialog.flt_aplicar_bt.setOnClickListener{
                 fab_2.isEnabled=true
