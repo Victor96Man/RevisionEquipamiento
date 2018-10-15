@@ -21,9 +21,13 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:fabSize="normal"
+        android:hapticFeedbackEnabled="false"
+        android:scaleType="center"
+        android:background="@android:color/transparent"
+        app:backgroundTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_action_filter"
+        app:srcCompat="@drawable/filtros"
         tools:ignore="MissingConstraints" />
 
 

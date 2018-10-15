@@ -227,7 +227,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
         if (posts.size!=4){
             do {
-                val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_action_camera)
+                val icon = BitmapFactory.decodeResource(this.getResources(),R.drawable.foto)
                 posts.add(fotoItem(icon,""))
             }while (posts.size!=4)
         }

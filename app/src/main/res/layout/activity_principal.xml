@@ -51,7 +51,7 @@
         android:layout_height="83dp"
         android:elevation="15dp"
         android:indeterminate="true"
-        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTint="@color/colorBlanco"
         android:indeterminateTintMode="src_atop"
         android:visibility="invisible"
         app:layout_anchor="@+id/include"

@@ -11,8 +11,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.EnviarRevi
@@ -44,8 +42,6 @@ class EquipamientoActivity : AppCompatActivity() {
     var bitacora :String= ""
     var situacion :String= ""
     var fechas_Status = false
-    var down_fechas : Animation? = null
-    var up_fechas : Animation? = null
     val id : Int=0
     var username :String=""
     var contrasena :String=""
@@ -57,11 +53,6 @@ class EquipamientoActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val n_serie = intent.getStringExtra("n_serie")
         supportActionBar?.title = n_serie
-
-
-        //Animaciones
-        down_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_down)
-        up_fechas = AnimationUtils.loadAnimation(application, R.anim.fecha_slide_up)
 
         buscarEquipamiento(n_serie)
 
@@ -124,7 +115,7 @@ class EquipamientoActivity : AppCompatActivity() {
         }else if (bbddsqlite.buscarRevision(n_serie)) {
             enviarRV_bt.isEnabled = true
             fab.isEnabled = true
-            fab.setImageResource(R.drawable.ic_mode_edit)
+            fab.setImageResource(R.drawable.editar)
             fab.setOnClickListener {
                 val int = Intent(this@EquipamientoActivity, PreguntasActivity::class.java)
                 int.putExtra("familia", familia)

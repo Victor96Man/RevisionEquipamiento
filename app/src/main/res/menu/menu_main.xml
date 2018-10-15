@@ -4,7 +4,7 @@
     tools:context="com.example.revisionequipamiento.PrincipalActivity">
     <item
         android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_manage"
+        android:icon="@drawable/ajustes"
         android:orderInCategory="100"
         android:title="ajustes"
         app:showAsAction="ifRoom" />

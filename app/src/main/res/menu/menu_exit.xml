@@ -4,7 +4,7 @@
     tools:context="com.example.revisionequipamiento.DatosActivity">
     <item
         android:id="@+id/salirmenu"
-        android:icon="@drawable/ic_action_exit"
+        android:icon="@drawable/volver"
         android:orderInCategory="100"
         android:title="salir"
         app:showAsAction="ifRoom" />
