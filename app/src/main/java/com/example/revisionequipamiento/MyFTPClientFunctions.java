@@ -31,7 +31,7 @@ public class MyFTPClientFunctions {
             if (FTPReply.isPositiveCompletion(mFTPClient.getReplyCode())) {
                 // login using username & password
                 boolean status = mFTPClient.login(username, password);
-                Toast.makeText(context, "Conectado", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Conectado", Toast.LENGTH_SHORT).show();
                 /*
                  * Set File Transfer Mode
                  *
