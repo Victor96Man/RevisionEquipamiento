@@ -57,9 +57,11 @@
         android:layout_margin="@dimen/fab_margin"
         android:background="@android:color/transparent"
         android:scaleType="center"
-        app:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
+        android:hapticFeedbackEnabled="false"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_action_document" />
+        app:srcCompat="@drawable/nueva_revision" />
 
 </android.support.design.widget.CoordinatorLayout>

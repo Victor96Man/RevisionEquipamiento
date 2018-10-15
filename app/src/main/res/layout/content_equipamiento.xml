@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
-                    app:srcCompat="@drawable/ic_action_calendar_month" />
+                    app:srcCompat="@drawable/fecha" />
 
                 <TextView
                     android:id="@+id/fechas_ddd"

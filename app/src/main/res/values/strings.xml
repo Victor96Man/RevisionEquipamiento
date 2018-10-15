@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Revision de Equipamiento</string>
+    <string name="app_name">Revisión de Equipamiento</string>
 
     <!-- Titulos de Pantallas-->
     <string name="title_activity_main">Revisiones</string>
@@ -63,7 +63,7 @@
     <string name="n_serie">Nºserie</string>
     <string name="spnr_familia">----Familia----</string>
     <string name="spnr_zona">----Zona----</string>
-    <string name="spnr_ubicacion">----Ubicacion----</string>
+    <string name="spnr_ubicacion">----Ubicación----</string>
     <string name="spnr_trabajador">----Trabajador----</string>
     <string name="spnr_marca">----Marca----</string>
     <string-array name="fechas_sp">

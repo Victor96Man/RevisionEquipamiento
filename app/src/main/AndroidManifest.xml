@@ -63,6 +63,7 @@
         <activity
             android:name=".FirmaActivity"
             android:label="@string/title_activity_Firma"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
 
         <activity android:name=".AjustesActivity"
