@@ -80,6 +80,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
 
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
         //SPINNER
         val spinnerArrayAdapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item , resources.getStringArray(R.array.estados_sp))
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -404,7 +407,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
 
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-                    val path = saveImage(bitmap)
+                    val resizeBitmap: Bitmap
+                    resizeBitmap = redimensionarImagenMaximo(bitmap, bitmap.getWidth() / 3f, bitmap.getHeight() / 3f)
+                    val path = saveImage(resizeBitmap)
 
                     when (positionGalleryElement) {
                         0 -> {
@@ -446,7 +451,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                             }
                         }
                     }
-                        imagen!!.setImageBitmap(bitmap)
+                        imagen!!.setImageBitmap(resizeBitmap)
 
                     } catch (e: IOException) {
                         e.printStackTrace()

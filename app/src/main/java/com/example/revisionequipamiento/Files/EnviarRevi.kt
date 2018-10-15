@@ -6,6 +6,7 @@ import android.os.AsyncTask
 import android.widget.Toast
 import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
+import com.example.revisionequipamiento.MyFTPClientFunctions
 import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
@@ -134,7 +135,17 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
     val jsonobject = JSONObject(jsonString)
     val bbddsqlite = BBDDSQLite(context)
     val db = bbddsqlite.writableDatabase
+    val ftp = MyFTPClientFunctions()
+
     if(jsonobject.getInt("code")==1){
+        var idReviRec = jsonobject.getString("id_revision")
+        ftp.ftpConnect("ftp.mjhudesings.com","u175819998.terminalesemproacsa", "innovate", 21, context)
+        var fotos = devuelveFotosRevision(idRevi,context)
+
+        for(i in 0 until fotos.size){
+
+            ftp.ftpUpload(fotos.get(i).ruta,idReviRec+fotos.get(i).nomDes,"/",context)
+        }
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
         db.delete("fotos", "id_revision = '$idRevi'", null)
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
