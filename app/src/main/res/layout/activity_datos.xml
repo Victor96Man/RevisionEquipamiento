@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -74,20 +75,23 @@
                 layout="@layout/horizontal_scroll_card"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:background="@color/colorBlanco"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingStart="8dp"
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            android:baselineAligned="false">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -102,19 +106,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints=""
-                    android:ems="10"
-                    android:inputType="textPersonName"
+                    android:ems="20"
+                    android:inputType="textMultiLine"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
+                    android:paddingEnd="10dp"/>
 
-                <Button
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
                     android:id="@+id/dt_objecionesFirma_bt"
-                    style="@style/ButtonNew"
+                    style="@style/ButtonFirma"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:text="@string/firmar" />
+                    android:contentDescription="@string/firmar"
+                    app:srcCompat="@drawable/firma_copia"
+                    tools:enabled="false" />
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -122,15 +137,17 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:background="@color/colorBlanco"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingStart="8dp"
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            android:baselineAligned="false">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
@@ -144,17 +161,27 @@
                     android:id="@+id/dt_peticiones_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autofillHints=""
                     android:ems="20"
                     android:inputType="textMultiLine"
                     android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:autofillHints="" />
-                <Button
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageButton
                     android:id="@+id/dt_UsuarioFirma_bt"
-                    style="@style/ButtonNew"
+                    style="@style/ButtonFirma"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/firmar" />
+                    android:contentDescription="@string/firmar"
+                    app:srcCompat="@drawable/firma_copia"
+                    tools:enabled="false" />
             </LinearLayout>
         </LinearLayout>
 
@@ -171,7 +198,7 @@
             <Button
                 android:id="@+id/dt_guardar_bt"
                 style="@style/ButtonNew"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/Guardar" />
@@ -179,5 +206,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </android.support.v4.widget.NestedScrollView>

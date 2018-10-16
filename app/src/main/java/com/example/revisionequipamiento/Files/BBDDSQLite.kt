@@ -143,13 +143,13 @@ val VERSIONBBDD = 4
 
         fun insertUser(user : Usuario){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",user.id)
             cv.put("username",user.username)
             cv.put("password",user.password)
             cv.put("nombre",user.nombre)
             cv.put("email",user.email)
-            var result = db.insert("usuarios",null,cv)
+            val result = db.insert("usuarios",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error usuario ${user.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -160,7 +160,7 @@ val VERSIONBBDD = 4
 
         fun updateContrasena(contrasena : String){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("password",contrasena)
             db.update("usuarios", cv, null, null)
             db.close()
@@ -168,10 +168,10 @@ val VERSIONBBDD = 4
 
         fun insertMarca(marca : Marca){
             val db = this.writableDatabase
-            var cv = ContentValues()
+            val cv = ContentValues()
             cv.put("id",marca.id)
             cv.put("nombremarca",marca.nombre)
-            var result = db.insert("marcas",null,cv)
+            val result = db.insert("marcas",null,cv)
             if(result == -1.toLong()){
                 Toast.makeText(context,"Error marca ${marca.nombre}", Toast.LENGTH_SHORT).show()
             }else{
@@ -298,7 +298,7 @@ val VERSIONBBDD = 4
         }
 
         fun insertRevision(revision : RevisionObjeto) :Long{
-            var result :Long = 7
+            val result :Long
             if (buscarRevision(revision.equipamiento)){
                 updateRevision(revision)
                 result = revision.id.toLong()
@@ -404,7 +404,7 @@ val VERSIONBBDD = 4
         fun updateFoto(foto : Foto) :Boolean{
             val db = this.writableDatabase
             val cusrsor: Cursor
-            var fotoS :Boolean = false
+            var fotoS = false
             cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= ${foto.idRevision} AND fotos.nomDes='${foto.nomDes}'", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
@@ -442,7 +442,7 @@ val VERSIONBBDD = 4
         fun buscarRevision(n_serie: String?): Boolean {
             val db = this.writableDatabase
             val cusrsor: Cursor
-            var revision :Boolean = false
+            var revision = false
             cusrsor = db.rawQuery("Select * FROM revisiones WHERE revisiones.id_equipamiento= '${n_serie}'", null)
             if (cusrsor != null) {
                 if (cusrsor.count > 0) {
@@ -455,7 +455,7 @@ val VERSIONBBDD = 4
         }
 
         fun enviarColores(n_serie: String):Int{
-            var color:Int = 3
+            var color = 3
             val db = this.writableDatabase
             val cusrsor: Cursor
             cusrsor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND estado = 2", null)

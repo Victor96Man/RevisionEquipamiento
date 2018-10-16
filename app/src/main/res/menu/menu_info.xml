@@ -5,6 +5,6 @@
         android:id="@+id/action_info"
         android:icon="@drawable/informacion"
         android:orderInCategory="100"
-        android:title="info"
+        android:title="@string/info"
         app:showAsAction="ifRoom" />
 </menu>

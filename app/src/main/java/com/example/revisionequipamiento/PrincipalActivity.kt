@@ -25,6 +25,7 @@ import com.example.revisionequipamiento.Fragments.Reparacion
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
+import kotlinx.android.synthetic.main.progressbar.*
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -108,12 +109,12 @@ class PrincipalActivity : AppCompatActivity() {
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
         override fun onPreExecute() {
             super.onPreExecute()
-            MyprogressBar2.visibility = View.VISIBLE
+            progressBarInc.visibility = View.VISIBLE
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
         override fun doInBackground(vararg url: String?): String {
-            var text : String
+            val text : String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
             try {
                 connection.connect()
@@ -135,7 +136,7 @@ class PrincipalActivity : AppCompatActivity() {
                 val tab = tab_layout.getTabAt(i)
                 tab!!.customView = pagerAdapter.getTabView(i)
             }
-            MyprogressBar2.visibility = View.INVISIBLE
+            progressBarInc.visibility = View.INVISIBLE
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             Toast.makeText(this@PrincipalActivity,getString(R.string.actualizar), Toast.LENGTH_SHORT).show()
         }
@@ -225,8 +226,8 @@ class PrincipalActivity : AppCompatActivity() {
     }
 
     fun ActualizarBD() {
-        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var networkInfo = cm.activeNetworkInfo
+        val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = cm.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected) {
             val bbddsqlite = BBDDSQLite(this)
             val db = bbddsqlite.writableDatabase

@@ -56,24 +56,27 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView style="@style/textNegro"
+                        <TextView
                             android:id="@+id/pregunta1Si"
+                            style="@style/textNegro"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/si" />
 
-                        <TextView style="@style/textNegro"
+                        <TextView
                             android:id="@+id/pregunta1No"
+                            style="@style/textNegro"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/no" />
 
-                        <TextView style="@style/textNegro"
+                        <TextView
                             android:id="@+id/pregunta1Na"
+                            style="@style/textNegro"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="0.2"

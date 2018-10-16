@@ -6,6 +6,6 @@
         android:id="@+id/salirmenu"
         android:icon="@drawable/volver"
         android:orderInCategory="100"
-        android:title="salir"
+        android:title="@string/salir"
         app:showAsAction="ifRoom" />
 </menu>

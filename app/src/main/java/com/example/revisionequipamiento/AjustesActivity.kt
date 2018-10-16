@@ -33,14 +33,13 @@ class AjustesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ajustes)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var pInfo: PackageInfo? = null
-        pInfo = packageManager.getPackageInfo(packageName, 0)
+        val pInfo: PackageInfo? = packageManager.getPackageInfo(packageName, 0)
         val versionS = pInfo!!.versionName
-        version_tx.text="Versión: $versionS"
+        version_tx.text= getString(R.string.version) + " " + versionS
         val username = SelectUsuario()
         aj_cambioContra_bt.setOnClickListener { _ ->
             aj_cambioContra_bt.isEnabled=false
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.contrasena_dialog, null)
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.contrasena_dialog,null)
             //AlertDialogBuilder
 
             val mBuilder = AlertDialog.Builder(this)
@@ -52,17 +51,17 @@ class AjustesActivity : AppCompatActivity() {
             mAlertDialog.setCanceledOnTouchOutside(false)
 
             mAlertDialog.aj_aceptar_bt.setOnClickListener{
-                val contraseñaA = mAlertDialog.aj_contraActual_edt.text.toString()
-                val contraseñaN = mAlertDialog.aj_contraNueva_edt.text.toString()
-                val contraseñaNR = mAlertDialog.aj_contraNuevaR_edt.text.toString()
+                val contrasenaA = mAlertDialog.aj_contraActual_edt.text.toString()
+                val contrasenaN = mAlertDialog.aj_contraNueva_edt.text.toString()
+                val contrasenaNR = mAlertDialog.aj_contraNuevaR_edt.text.toString()
                 if (comprobarInternet()) {
-                    if (contraseñaA != "") {
-                        if (contraseñaN != "") {
-                            if (contraseñaNR != "") {
-                                if (contraseñaNR ==contraseñaN) {
-                                    if(Password_patter.matcher(contraseñaN).matches()){
+                    if (contrasenaA != "") {
+                        if (contrasenaN != "") {
+                            if (contrasenaNR != "") {
+                                if (contrasenaNR ==contrasenaN) {
+                                    if(Password_patter.matcher(contrasenaN).matches()){
                                         val urlInicio = "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
-                                        AsyncTaskHandleJSON(username, contraseñaA, contraseñaN).execute(urlInicio)
+                                        AsyncTaskHandleJSON(username, contrasenaA, contrasenaN).execute(urlInicio)
                                         mAlertDialog.dismiss()
                                         aj_cambioContra_bt.isEnabled=true
                                     }else{
@@ -106,7 +105,7 @@ class AjustesActivity : AppCompatActivity() {
         val bbddsqlite = BBDDSQLite(this)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
-        var username :String=""
+        var username =""
         cusrsor = db.rawQuery("SELECT username FROM usuarios", null)
         if (cusrsor != null) {
             if (cusrsor.count > 0) {
@@ -158,8 +157,8 @@ class AjustesActivity : AppCompatActivity() {
     }
 
     private fun comprobarInternet():Boolean {
-        var cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        var networkInfo = cm.activeNetworkInfo
+        val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = cm.activeNetworkInfo
         if (networkInfo != null && networkInfo.isConnected){
             return true
         }
@@ -167,7 +166,6 @@ class AjustesActivity : AppCompatActivity() {
     }
 
     fun POST(url: String, usuario:String, contrasenaA: String,  contrasenaN: String): String {
-        var inputStream: InputStream? = null
         var result = ""
         try {
 
@@ -177,8 +175,6 @@ class AjustesActivity : AppCompatActivity() {
             // 2. make POST request to the given URL
             val httpPost = HttpPost(url)
 
-            var json = ""
-
             // 3. build jsonObject
             val jsonObject = JSONObject()
             jsonObject.accumulate("usuario", usuario)
@@ -187,17 +183,16 @@ class AjustesActivity : AppCompatActivity() {
             //jsonObject.accumulate("twitter", person.getTwitter());
 
             // 4. convert JSONObject to JSON to String
-            json = jsonObject.toString()
+            val json = jsonObject.toString()
 
             // ** Alternative way to convert Person object to JSON string usin Jackson Lib
             // ObjectMapper mapper = new ObjectMapper();
             // json = mapper.writeValueAsString(person);
 
             // 5. set json to StringEntity
-            val se = StringEntity(json)
 
             // 6. set httpPost Entity
-            httpPost.entity = se
+            httpPost.entity = StringEntity(json)
 
             // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json")
@@ -207,7 +202,7 @@ class AjustesActivity : AppCompatActivity() {
             val httpResponse = httpclient.execute(httpPost)
 
             // 9. receive response as inputStream
-            inputStream = httpResponse.entity.content
+            val inputStream = httpResponse.entity.content
 
             // 10. convert inputstream to string
             if (inputStream != null)

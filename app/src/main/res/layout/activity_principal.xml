@@ -34,6 +34,7 @@
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:hapticFeedbackEnabled="false"
+        app:elevation="2dp"
         android:scaleType="center"
         android:src="@drawable/menu"
         app:backgroundTint="@android:color/transparent"
@@ -45,17 +46,9 @@
         layout="@layout/frame_fab"
         tools:ignore="MissingConstraints" />
 
-    <ProgressBar
-        android:id="@+id/MyprogressBar2"
-        android:layout_width="match_parent"
-        android:layout_height="83dp"
-        android:elevation="15dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/colorBlanco"
-        android:indeterminateTintMode="src_atop"
-        android:visibility="invisible"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="right|center" />
+    <include
+        android:id="@+id/include3"
+        layout="@layout/progressbar"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

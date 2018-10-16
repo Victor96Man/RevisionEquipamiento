@@ -9,7 +9,7 @@
         android:id="@+id/custom_text"
         android:background="?attr/selectableItemBackground"
         android:gravity="center"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textColor="#ffffff"
         android:singleLine="true"/>
 

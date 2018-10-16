@@ -11,80 +11,77 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/textView"
+            style="@style/textNegro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/aj_infoContraseña_tx" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                style="@style/textNegro"
+            <EditText
+                android:id="@+id/aj_contraActual_edt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aj_infoContraseña_tx" />
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:hint="@string/aj_contraActual_edt"
+                android:inputType="textPassword"
+                android:autofillHints="" />
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/aj_contraNueva_edt"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:hint="@string/aj_contraNueva_edt"
+                android:inputType="textPassword"
+                android:autofillHints="" />
 
-                <EditText
-                    android:id="@+id/aj_contraActual_edt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:ems="10"
-                    android:hint="@string/aj_contraActual_edt"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/aj_contraNueva_edt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:ems="10"
-                    android:hint="@string/aj_contraNueva_edt"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/aj_contraNuevaR_edt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:ems="10"
-                    android:hint="@string/aj_contraNuevaR_edt"
-                    android:inputType="textPassword" />
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/aj_contraNuevaR_edt"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="10"
+                android:hint="@string/aj_contraNuevaR_edt"
+                android:inputType="textPassword"
+                android:autofillHints="" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/aj_cancelar_bt"
-                    style="@style/ButtonNew"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/cancelar" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/aj_aceptar_bt"
-                    style="@style/ButtonNew"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/aceptar" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/aj_cancelar_bt"
+                style="@style/ButtonNew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancelar" />
+
+            <Button
+                android:id="@+id/aj_aceptar_bt"
+                style="@style/ButtonNew"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/aceptar" />
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.example.revisionequipamiento.Files.ParseoFile
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.email_dialog.*
+import kotlinx.android.synthetic.main.progressbar.*
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
@@ -104,7 +105,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onPreExecute() {
             super.onPreExecute()
 
-            MyprogressBar.visibility = View.VISIBLE
+            progressBarInc.visibility = View.VISIBLE
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
@@ -126,16 +127,16 @@ class LoginActivity : AppCompatActivity() {
         val codigo = jsonobject.getInt("codigo")
         if(codigo==2) {
             Toast.makeText(this@LoginActivity, getString(R.string.loginError), Toast.LENGTH_LONG).show()
-            MyprogressBar.visibility = View.INVISIBLE
+            progressBarInc.visibility = View.INVISIBLE
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
         if(codigo==1){
             val usuarios= jsonobject.getJSONArray("usuarios")
             val jsonobject2 = usuarios.getJSONObject(0)
             val username = jsonobject2.getString("username")
-            val contraseña = jsonobject2.getString("password")
+            val contrasena = jsonobject2.getString("password")
             id = jsonobject2.getString("id")
-            val urlTodo= "${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contraseña"
+            val urlTodo= "${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena"
             AsyncTaskHandleJSON2().execute(urlTodo)
 
         }
@@ -168,36 +169,33 @@ class LoginActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            MyprogressBar.visibility = View.INVISIBLE
+            progressBarInc.visibility = View.INVISIBLE
             ParseoFile(result, this@LoginActivity,1)
             startActivity(Intent(applicationContext, PrincipalActivity::class.java))
             finish()
         }
     }
     fun POST(url: String, usuario:String, contrasena: String): String {
-        var inputStream: InputStream? = null
-        var result = ""
         try {
             val httpclient = DefaultHttpClient()
             val httpPost = HttpPost(url)
-            var json = ""
             val jsonObject = JSONObject()
             jsonObject.accumulate("usuario", usuario)
             jsonObject.accumulate("contrasena", contrasena)
-            json = jsonObject.toString()
+            val json = jsonObject.toString()
             val se = StringEntity(json)
             httpPost.entity = se
             httpPost.setHeader("Accept", "application/json")
             httpPost.setHeader("Content-type", "application/json")
             val httpResponse = httpclient.execute(httpPost)
-            inputStream = httpResponse.entity.content
+            val inputStream = httpResponse.entity.content
             if (inputStream != null)
-                result = convertInputStreamToString(inputStream)
+                return  convertInputStreamToString(inputStream)
             else
-                result = "Did not work!"
+                return  "Did not work!"
         } catch (e: Exception) {
+            return "Did not work!"
         }
-        return result
     }
 
     fun convertInputStreamToString(inputStream: InputStream): String {
@@ -243,27 +241,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun POST3(url: String, email: String): String {
-        var inputStream: InputStream? = null
-        var result = ""
         try {
             val httpclient = DefaultHttpClient()
             val httpPost = HttpPost(url)
-            var json = ""
             val jsonObject = JSONObject()
             jsonObject.accumulate("email", email)
-            json = jsonObject.toString()
-            val se = StringEntity(json)
-            httpPost.entity = se
+            val json = jsonObject.toString()
+            httpPost.entity = StringEntity(json)
             httpPost.setHeader("Accept", "application/json")
             httpPost.setHeader("Content-type", "application/json")
             val httpResponse = httpclient.execute(httpPost)
-            inputStream = httpResponse.entity.content
+            val inputStream = httpResponse.entity.content
             if (inputStream != null)
-                result = convertInputStreamToString(inputStream)
+                return convertInputStreamToString(inputStream)
             else
-                result = "Did not work!"
+                return "Did not work!"
         } catch (e: Exception) {
+            return "Did not work!"
         }
-        return result
+
     }
 }

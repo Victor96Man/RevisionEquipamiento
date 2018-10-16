@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -22,14 +22,14 @@
         <item name="android:paddingBottom">10dp</item>
     </style>
     <style name="TextAppearance.AppCompat.TitleCustom">
-        <item name="android:textSize">40dp</item>
+        <item name="android:textSize">40sp</item>
 
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="textBlancoNegritaMini">
         <item name="android:textColor">@color/colorBlanco</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
         <item name="android:textStyle">bold</item>
@@ -37,30 +37,30 @@
 
     <style name="textBlanco">
         <item name="android:textColor">@color/colorBlanco</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="textBlancoNegrita">
         <item name="android:textColor">@color/colorBlanco</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textBlancoNegritaPlus">
         <item name="android:textColor">@color/colorBlanco</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
 
     <style name="textNegro">
         <item name="android:textColor">@color/colorNegro</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="textNegroNegritaMini">
         <item name="android:textColor">@color/colorNegro</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
         <item name="android:textStyle">bold</item>
@@ -68,38 +68,42 @@
 
     <style name="textNegroNegrita">
         <item name="android:textColor">@color/colorNegro</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textNegroNegritaPlus">
         <item name="android:textColor">@color/colorNegro</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
 
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="textAzul">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="ButtonNew">
         <item name="android:layout_margin">7dp</item>
         <item name="android:maxHeight">45dp</item>
         <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Widget.Button.Colored</item>
     </style>
 
+    <style name="ButtonFirma">
+        <item name="android:background">@color/transparente</item>
+    </style>
+
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:padding">8dp</item>
     </style>
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">25sp</item>
         <item name="android:padding">8dp</item>
         <item name="android:layout_height">?android:attr/listPreferredItemHeight</item>
         <item name="android:layout_width">match_parent</item>

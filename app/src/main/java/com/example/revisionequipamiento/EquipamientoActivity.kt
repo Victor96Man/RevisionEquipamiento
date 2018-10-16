@@ -18,6 +18,7 @@ import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_equipamiento.*
 import kotlinx.android.synthetic.main.buttons_equipamiento.*
 import kotlinx.android.synthetic.main.content_equipamiento.*
+import kotlinx.android.synthetic.main.progressbar.*
 import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
@@ -154,7 +155,7 @@ class EquipamientoActivity : AppCompatActivity() {
     }
 
     fun cambiarFecha(fecha :String):String{
-        val fecha2 = fecha!!.substring(8,10)+"-"+fecha!!.substring(5,7)+"-"+fecha!!.substring(0,4)
+        val fecha2 = fecha.substring(8,10)+"-"+fecha.substring(5,7)+"-"+fecha.substring(0,4)
         return fecha2
     }
 
@@ -184,10 +185,11 @@ class EquipamientoActivity : AppCompatActivity() {
             super.onPreExecute()
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            progressBarInc.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg url: String?): String {
-            var text: String
+            val text: String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
             try {
                 connection.connect()
@@ -202,6 +204,7 @@ class EquipamientoActivity : AppCompatActivity() {
             super.onPostExecute(result)
             ParseoFile(result, this@EquipamientoActivity,2)
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            progressBarInc.visibility = View.INVISIBLE
             finish()
         }
     }
@@ -217,7 +220,7 @@ class EquipamientoActivity : AppCompatActivity() {
 
     inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
         override fun doInBackground(vararg url: String?): String {
-            var text: String
+            val text: String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
             try {
                 connection.connect()

@@ -26,6 +26,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.example.revisionequipamiento.Adapter.PostsAdapter
@@ -37,6 +38,7 @@ import com.example.revisionequipamiento.Files.EnviarRevi
 import com.example.revisionequipamiento.Files.ParseoFile
 import kotlinx.android.synthetic.main.activity_datos.*
 import kotlinx.android.synthetic.main.horizontal_scroll_card.*
+import kotlinx.android.synthetic.main.progressbar.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -76,6 +78,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         MODO = intent.getStringExtra("MODO")
         familia = intent.getStringExtra("familia")
+        val dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
 
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
@@ -94,7 +97,10 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
         ComprobarSiFirmado()
 
-        val dt_objeciones_edit = findViewById<EditText>(R.id.dt_objeciones_edit)
+
+        if (dt_objeciones_edit.text.toString()==""){
+            dt_objecionesFirma_bt.isEnabled=false
+        }
         dt_objeciones_edit.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -113,49 +119,52 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = PostsAdapter(this@DatosActivity,sacarFotosObjeto(or.fotos))
 
-        val snapHelper: SnapHelper = LinearSnapHelper() as SnapHelper
+        val snapHelper: SnapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)
 
         dt_guardar_bt.setOnClickListener{
 
             if (dt_estado_sp.selectedItemPosition!=0) {
                 if (or.firma!="") {
-                    dt_UsuarioFirma_bt.setError(null)
-                    guardar()
+                    if(!dt_objecionesFirma_bt.isEnabled) {
+                        guardar()
 
-                    val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                    builder.setTitle(getString(R.string.enviarTitulo))
-                    builder.setMessage(getString(R.string.enviarInfo))
-                    builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
-                        val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                        val networkInfo = cm.activeNetworkInfo
-                        if (networkInfo != null && networkInfo.isConnected) {
-                            //println(or.toString().replace("'","\""))
-                            val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                            EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
-                            or.volveranull()
-                            actualizarBD()
+                        val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                        builder.setTitle(getString(R.string.enviarTitulo))
+                        builder.setMessage(getString(R.string.enviarInfo))
+                        builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
+                            val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                            val networkInfo = cm.activeNetworkInfo
+                            if (networkInfo != null && networkInfo.isConnected) {
+                                //println(or.toString().replace("'","\""))
+                                val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                                EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
+                                or.volveranull()
+                                actualizarBD()
 
 
-                        } else {
-                            val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                            builder.setTitle(getString(R.string.noInternet))
-                            builder.setMessage(getString(R.string.noInternetInfo))
-                            builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
+                            } else {
+                                val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                                builder.setTitle(getString(R.string.noInternet))
+                                builder.setMessage(getString(R.string.noInternetInfo))
+                                builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
 
+                                }
+                                val dialog: android.support.v7.app.AlertDialog = builder.create()
+                                dialog.show()
                             }
-                            val dialog: android.support.v7.app.AlertDialog = builder.create()
-                            dialog.show()
-                        }
 
+                        }
+                        builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        val dialog = builder.create()
+                        dialog.show()
+                    }else{
+                        Toast.makeText(this@DatosActivity,getString(R.string.noFirmadoT),Toast.LENGTH_SHORT).show()
                     }
-                    builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    val dialog = builder.create()
-                    dialog.show()
                 } else {
-                    dt_UsuarioFirma_bt.setError("")
+                    Toast.makeText(this@DatosActivity,getString(R.string.noFirmado),Toast.LENGTH_SHORT).show()
                 }
             }else{
                 val errorText :TextView = dt_estado_sp.getSelectedView() as TextView
@@ -345,7 +354,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val pictureDialog = AlertDialog.Builder(this@DatosActivity)
         pictureDialog.setTitle(getString(R.string.seleccionFoto))
         val pictureDialogItems = arrayOf(getString(R.string.seleccionFotoGaleria), getString(R.string.seleccionFotoCamara))
-        pictureDialog.setItems(pictureDialogItems) { dialog, which ->
+        pictureDialog.setItems(pictureDialogItems) { _, which ->
             when (which) {
                 0 -> choosePhotoFromGallary(position)
                 1 -> takePhotoFromCamera(position)
@@ -361,13 +370,12 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val timeStamp: String
         val imageFileName: String
         val storageDir: File
-        var image: File? = null
 
         timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         imageFileName = "JPEG_" + timeStamp + "_"
         storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES)
-        image = File.createTempFile(
+        val image = File.createTempFile(
                 imageFileName, // prefix
                 ".jpg", // suffix
                 storageDir      // directory
@@ -390,8 +398,8 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
         //Toast.makeText(this@DatosActivity, "Camera"+position, Toast.LENGTH_SHORT).show()
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile))
+        intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1)
         positionCameraElement = position
         startActivityForResult(intent, CAMERA)
 
@@ -467,7 +475,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                 try {
                     if (mCurrentPhotoPath != null) {
 
-                        bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
+                        bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath))
                         resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
                         val path = saveImage(resizeBitmap)
 
@@ -549,7 +557,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     fun saveImage(myBitmap: Bitmap): String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        var ruta :String =""
+        var ruta =""
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
@@ -615,6 +623,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             super.onPreExecute()
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            progressBarInc.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg url: String?): String {
@@ -633,6 +642,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             super.onPostExecute(result)
             ParseoFile(result, this@DatosActivity,2)
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            progressBarInc.visibility = View.INVISIBLE
             or.volveranull()
             finish()
         }
@@ -649,12 +659,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
     }
 
-    fun cambiarStyle(button :Button){
-        button.text = getString(R.string.firmado)
-        button.setBackgroundColor(resources.getColor(R.color.GrisTransparente))
-        button.setTextColor(resources.getColor(R.color.colorPrimary))
+    fun cambiarStyle(button :ImageButton){
+        button.setImageResource(R.drawable.firma)
         button.isEnabled=false
-        button.setError(null)
     }
 
     //***************************************OnBACK Y OnRESTAR**************************************

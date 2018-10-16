@@ -82,7 +82,7 @@ private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Fot
     val bbddsqlite = BBDDSQLite(context)
     val db = bbddsqlite.writableDatabase
     val cusrsor: Cursor
-    var fotos : ArrayList<Foto>
+    val fotos : ArrayList<Foto>
 
     cusrsor = db.rawQuery("Select * FROM fotos WHERE fotos.id_revision= '${idRevision}'", null)
     fotos = ArrayList<Foto>()
@@ -138,11 +138,11 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
     val ftp = MyFTPClientFunctions()
 
     if(jsonobject.getInt("code")==1){
-        var idReviRec = jsonobject.getString("id_revision")
+        val idReviRec = jsonobject.getString("id_revision")
         //ftp.ftpConnect("ftp.mjhudesings.com","u175819998.terminalesemproacsa", "innovate", 21, context)
         ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.terminalesemproacsa", "fTlmPjiSByQ4o", 21, context)
 
-        var fotos = devuelveFotosRevision(idRevi,context)
+        val fotos = devuelveFotosRevision(idRevi,context)
 
         for(i in 0 until fotos.size){
 
@@ -159,25 +159,19 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
 }
 
 private fun POST(url: String, revision: RevisionObjeto): String {
-    var inputStream: InputStream? = null
-    var result = ""
     val httpclient = DefaultHttpClient()
     val httpPost = HttpPost(url)
     val json = revision.toString().replace("'","\"")
-    println(revision.toString().replace("'","\""))
-    val se = StringEntity(json)
-    httpPost.entity = se as HttpEntity?
+    httpPost.entity = StringEntity(json)
     httpPost.setHeader("Accept", "application/json")
     httpPost.setHeader("Content-type", "application/json")
     val httpResponse = httpclient.execute(httpPost)
-    inputStream = httpResponse.entity.content
+    val inputStream = httpResponse.entity.content
     if (inputStream != null) {
-        result = convertInputStreamToString(inputStream)
+        return convertInputStreamToString(inputStream)
     }else{
-        result = "{\"message\": \"Algo salió mal.\", \"code\": -9}"
+        return "{\"message\": \"Algo salió mal.\", \"code\": -9}"
     }
-
-    return result
 }
 
 private fun convertInputStreamToString(inputStream: InputStream): String {

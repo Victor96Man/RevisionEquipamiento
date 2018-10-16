@@ -33,6 +33,7 @@
     <string name="aj_contraActual_edt">Contraseña Actual</string>
     <string name="aj_contraNueva_edt">Contraseña Nueva</string>
     <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
+    <string name="version">Versión:</string>
 
     <!-- Pantalla Equipamiento -->
     <string name="eqpTrabajador">Trabajador:</string>
@@ -98,7 +99,7 @@
 
     <!-- URLS-->
     <!--<string name="URL">http://emproacsa.mjhudesings.com/</string>-->
-    <string name="URL">http://emproacsa-revisionequipamientos.com/</string>
+    <string name="URL">https://emproacsa-revisionequipamientos.com/</string>
     <string name="URLinicio">slim/login</string>
     <string name="URLemail">slim/email</string>
     <string name="URLtodo">slim/todo/</string>
@@ -142,13 +143,13 @@
     <string name="contraseñaOK">Contraseña Actualizada</string>
     <string name="emailOK">Se te ha enviado un email</string>
     <string name="emailError">Email no encontrado</string>
+    <string name="noFirmado">No firmado</string>
+    <string name="noFirmadoT">Trabajador no firmado</string>
 
     <!-- Buttons -->
     <string name="descarga_revi_bt">Descargar</string>
     <string name="enviarRV_bt">Enviar</string>
     <string name="siguiente">Siguiente</string>
-    <string name="firmar">Firmar</string>
-    <string name="firmado">Firmado</string>
     <string name="Guardar">Guardar</string>
     <string name="borrar">Borrar</string>
 
@@ -157,5 +158,10 @@
     <string name="err_campoNoIgual">Los campo no concuerdan</string>
     <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minuscula, una mayuscula, un numero y un caracter especial</string>
     <string name="err_NoEstado">Debes elegir un estado</string>
+    <string name="firmar">Firmar</string>
+    <string name="foto">foto</string>
+    <string name="ajustes">ajustes</string>
+    <string name="info">info</string>
+    <string name="salir">salir</string>
 
 </resources>

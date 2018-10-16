@@ -73,7 +73,7 @@
             <Button
                 android:id="@+id/flt_cancelar_bt"
                 style="@style/ButtonNew"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/cancelar" />
@@ -81,7 +81,7 @@
             <Button
                 android:id="@+id/flt_aplicar_bt"
                 style="@style/ButtonNew"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/aplicar" />
