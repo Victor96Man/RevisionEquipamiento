@@ -139,7 +139,9 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
 
     if(jsonobject.getInt("code")==1){
         var idReviRec = jsonobject.getString("id_revision")
-        ftp.ftpConnect("ftp.mjhudesings.com","u175819998.terminalesemproacsa", "innovate", 21, context)
+        //ftp.ftpConnect("ftp.mjhudesings.com","u175819998.terminalesemproacsa", "innovate", 21, context)
+        ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.terminalesemproacsa", "fTlmPjiSByQ4o", 21, context)
+
         var fotos = devuelveFotosRevision(idRevi,context)
 
         for(i in 0 until fotos.size){

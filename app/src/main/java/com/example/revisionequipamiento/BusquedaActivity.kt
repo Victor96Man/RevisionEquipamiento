@@ -108,7 +108,7 @@ class BusquedaActivity : AppCompatActivity() {
                 fab_2.isEnabled=true
                 nserie= mAlertDialog.flt_nserie_edit.text.toString()
                 familia = mAlertDialog.flt_familia_spnr.selectedItem.toString()
-                zona = mAlertDialog.flt_zona_spnr.selectedItem.toString()
+                zona = "'"+mAlertDialog.flt_zona_spnr.selectedItem.toString()+"'"
                 ubicacion = mAlertDialog.flt_ubicacion_spnr.selectedItem.toString()
                 trabajador = mAlertDialog.flt_trabajador_spnr.selectedItem.toString()
                 marca = mAlertDialog.flt_marca_spnr.selectedItem.toString()
@@ -291,7 +291,7 @@ class BusquedaActivity : AppCompatActivity() {
             whereFamilia = "AND t2.nombrefamilia = '$familia'"
         }
 
-        if(zona!=null && zona!=getString(R.string.spnr_zona)){
+        if(zona!=null && zona!="'${getString(R.string.spnr_zona)}'"){
             whereZona += "AND t3.nombrezona in ($zona)"
         }
 
@@ -314,6 +314,7 @@ class BusquedaActivity : AppCompatActivity() {
             3-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+3 month') "
             4-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+6 month') "
         }
+        println("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca $whereFecha ORDER BY t1.fecha_proxima_revision asc")
 
         cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca $whereFecha ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {

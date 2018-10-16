@@ -97,7 +97,8 @@
     <string name="firmeaqui">Firme aqui:</string>
 
     <!-- URLS-->
-    <string name="URL">http://emproacsa.mjhudesings.com/</string>
+    <!--<string name="URL">http://emproacsa.mjhudesings.com/</string>-->
+    <string name="URL">http://emproacsa-revisionequipamientos.com/</string>
     <string name="URLinicio">slim/login</string>
     <string name="URLemail">slim/email</string>
     <string name="URLtodo">slim/todo/</string>
