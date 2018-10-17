@@ -29,15 +29,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PrincipalActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_main"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBarTheme" />
+        <activity
+            android:name=".PrincipalActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EquipamientoActivity"
             android:configChanges="orientation|keyboardHidden"

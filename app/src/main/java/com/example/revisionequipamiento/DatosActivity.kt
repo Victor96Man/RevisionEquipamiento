@@ -625,7 +625,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         }
 
         override fun doInBackground(vararg url: String?): String {
-            var text: String
+            val text: String
             val connection = URL(url[0]).openConnection() as HttpURLConnection
             try {
                 connection.connect()
