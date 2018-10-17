@@ -5,7 +5,7 @@
     <string name="title_activity_main">Revisiones</string>
     <string name="title_activity_Pregunta">Preguntas</string>
     <string name="title_activity_Busqueda">Buscar Equipamiento</string>
-    <string name="title_activity_Datos">Datos</string>
+    <string name="title_activity_Datos">Estado</string>
     <string name="title_activity_Firma">Firma</string>
     <string name="title_activity_Ajustes">Ajustes</string>
 
@@ -29,7 +29,7 @@
     <!-- Pantalla Ajustes -->
     <string name="aj_cambiarContra_bt">Cambiar Contraseña</string>
     <string name="aj_cambiarContra_tx">Cambiar de contraseña</string>
-    <string name="aj_infoContraseña_tx">Introduce tú actual contraseña y la nueva.</string>
+    <string name="aj_infoContraseña_tx">Introduce tu actual contraseña y la nueva.</string>
     <string name="aj_contraActual_edt">Contraseña Actual</string>
     <string name="aj_contraNueva_edt">Contraseña Nueva</string>
     <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
@@ -49,7 +49,7 @@
     <string name="eq_fechaPR_tx">Próxima revisión:</string>
     <string name="eq_fechaR_tx">Última revisión:</string>
     <string name="eq_fechaC_tx">Adquisición:</string>
-    <string name="eq_fechaPF_tx">Funcionamíneto:</string>
+    <string name="eq_fechaPF_tx">Funcionamiento:</string>
     <string name="eq_fechaCaducidad_tx">Caducidad:</string>
     <string name="eq_fechaBaja_tx">Baja:</string>
     <string name="estadoBien">Aceptable</string>
@@ -95,11 +95,11 @@
     </string-array>
 
     <!-- Pantalla Firma -->
-    <string name="firmeaqui">Firme aqui:</string>
+    <string name="firmeaqui">Firme aquí:</string>
 
     <!-- URLS-->
     <!--<string name="URL">http://emproacsa.mjhudesings.com/</string>-->
-    <string name="URL">https://emproacsa-revisionequipamientos.com/</string>
+    <string name="URL">https://www.emproacsa-revisionequipamientos.com/</string>
     <string name="URLinicio">slim/login</string>
     <string name="URLemail">slim/email</string>
     <string name="URLtodo">slim/todo/</string>
@@ -121,19 +121,19 @@
     <string name="noInternet">No tienes Internet</string>
     <string name="noInternetInfo">No puedes enviar o recibir datos si no tienes internet en tu dispositivo.</string>
     <string name="cerrarSesion">¿Cerrar Sesion?</string>
-    <string name="cerrarSesionInfo">Los datos almacenados en su teléfono se borrarán.</string>
-    <string name="salirNoGuardar">¿Seguro que quiere salir?</string>
-    <string name="salirNoGuardarInfo">Se perderan los datos si no han sido guardados.</string>
+    <string name="cerrarSesionInfo">Los datos almacenados en su dispositivo se borrarán.</string>
+    <string name="salirNoGuardar">¿Seguro que quieres salir?</string>
+    <string name="salirNoGuardarInfo">Se perderán los datos si no han sido guardados.</string>
     <string name="aceptar">Aceptar</string>
     <string name="cancelar">Cancelar</string>
     <string name="aplicar">Aplicar</string>
     <string name="seleccionFoto">Selecciona</string>
-    <string name="seleccionFotoGaleria">Galeria</string>
-    <string name="seleccionFotoCamara">Camara</string>
+    <string name="seleccionFotoGaleria">Galería</string>
+    <string name="seleccionFotoCamara">Cámara</string>
     <string name="enviarTitulo">Enviar Revisión</string>
     <string name="enviarInfo">¿Quieres enviar la revisión directamente?</string>
     <string name="lg_tituloEmail">Introduce tu email</string>
-    <string name="lg_infoEmail">Recibiras un email con un enlace para recuperar tu contraseña</string>
+    <string name="lg_infoEmail">Recibirás un email con un enlace para recuperar tu contraseña</string>
     <string name="lg_email_hint">Email</string>
 
     <!-- Toast -->
@@ -152,16 +152,16 @@
     <string name="siguiente">Siguiente</string>
     <string name="Guardar">Guardar</string>
     <string name="borrar">Borrar</string>
-
-    <!-- Errores -->
-    <string name="err_campoVacio">Campo vacio</string>
-    <string name="err_campoNoIgual">Los campo no concuerdan</string>
-    <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minuscula, una mayuscula, un numero y un caracter especial</string>
-    <string name="err_NoEstado">Debes elegir un estado</string>
-    <string name="firmar">Firmar</string>
     <string name="foto">foto</string>
     <string name="ajustes">ajustes</string>
     <string name="info">info</string>
     <string name="salir">salir</string>
+
+    <!-- Errores -->
+    <string name="err_campoVacio">Campo vacío</string>
+    <string name="err_campoNoIgual">Los campos no concuerdan</string>
+    <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minúscula, una mayúscula, un número y un caracter especial</string>
+    <string name="err_NoEstado">Debes elegir un estado</string>
+    <string name="firmar">Firmar</string>
 
 </resources>

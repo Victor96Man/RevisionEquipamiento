@@ -547,11 +547,9 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val matrix = Matrix()
         // resize the bit map
         matrix.postScale(scaleWidth, scaleHeight)
-        matrix.preRotate(90f)
         // recreate the new Bitmap
         return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false)
     }
-
 
 
     fun saveImage(myBitmap: Bitmap): String {

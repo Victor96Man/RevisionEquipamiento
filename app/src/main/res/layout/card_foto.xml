@@ -38,6 +38,8 @@
                     android:layout_height="match_parent"
                     android:background="@color/transparente"
                     android:contentDescription="@string/foto"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     app:srcCompat="@drawable/foto" />
             </LinearLayout>
 
