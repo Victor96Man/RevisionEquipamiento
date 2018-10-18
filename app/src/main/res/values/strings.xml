@@ -41,7 +41,7 @@
     <string name="eq_zona_tx">Zona:</string>
     <string name="eq_ubicacion_tx">Ubicación:</string>
     <string name="eq_estado_tx">Estado:</string>
-    <string name="eq_idreemplaza_tx">Id reemplaza:</string>
+    <string name="eq_idreemplaza_tx">Nºserie reemplaza:</string>
     <string name="eq_situacion_tx">Situación:</string>
     <string name="eq_referenciaN_tx">Referencia Normativa:</string>
     <string name="eq_bitacora_tx">Histórico:</string>
