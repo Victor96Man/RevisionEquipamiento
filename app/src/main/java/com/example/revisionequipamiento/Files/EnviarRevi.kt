@@ -7,7 +7,6 @@ import android.widget.Toast
 import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.MyFTPClientFunctions
-import org.apache.http.HttpEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
@@ -153,7 +152,6 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
         //
     }else{
-        println(jsonobject.getString("message"))
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
     }
 }

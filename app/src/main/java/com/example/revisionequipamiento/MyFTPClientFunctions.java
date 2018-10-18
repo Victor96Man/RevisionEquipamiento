@@ -6,11 +6,9 @@ import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 public class MyFTPClientFunctions {
 
@@ -47,7 +45,6 @@ public class MyFTPClientFunctions {
             }
         } catch (Exception e) {
             Log.d(TAG, "Error: could not connect to host " + host);
-            System.out.println("Error: no se pudo conectar con el servidor " + host+" ("+e+")");
             Toast.makeText(context, "Error: no se pudo conectar con el servidor " + host+" ("+e+")", Toast.LENGTH_SHORT).show();
         }
 
@@ -55,7 +52,7 @@ public class MyFTPClientFunctions {
     }
 
     // Method to disconnect from FTP server:
-
+/*
     public boolean ftpDisconnect() {
         try {
             mFTPClient.logout();
@@ -115,7 +112,6 @@ public class MyFTPClientFunctions {
             }
             return fileList;
         } catch (Exception e) {
-            e.printStackTrace();
             return fileList;
         }
     }
@@ -154,7 +150,6 @@ public class MyFTPClientFunctions {
             boolean status = mFTPClient.deleteFile(filePath);
             return status;
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return false;
@@ -174,12 +169,13 @@ public class MyFTPClientFunctions {
     }
 
     // Method to download a file from FTP server:
-
-    /**
+*/
+    /*
      * mFTPClient: FTP client connection object (see FTP connection example)
      * srcFilePath: path to the source file in FTP server desFilePath: path to
      * the destination file to be saved in sdcard
      */
+    /*
     public boolean ftpDownload(String srcFilePath, String desFilePath) {
         boolean status = false;
         try {
@@ -195,7 +191,7 @@ public class MyFTPClientFunctions {
 
         return status;
     }
-
+*/
     // Method to upload a file to FTP server:
 
     /**
@@ -219,7 +215,6 @@ public class MyFTPClientFunctions {
 
             return status;
         } catch (Exception e) {
-            e.printStackTrace();
             Log.d(TAG, "upload failed: " + e);
         }
 

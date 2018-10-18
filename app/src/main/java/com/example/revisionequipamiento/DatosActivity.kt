@@ -136,7 +136,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                             val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                             val networkInfo = cm.activeNetworkInfo
                             if (networkInfo != null && networkInfo.isConnected) {
-                                //println(or.toString().replace("'","\""))
                                 val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
                                 EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
                                 or.volveranull()
@@ -462,7 +461,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                         imagen!!.setImageBitmap(resizeBitmap)
 
                     } catch (e: IOException) {
-                        e.printStackTrace()
                         Toast.makeText(this@DatosActivity, "Algo a Fallado!", Toast.LENGTH_SHORT).show()
                     }
 
@@ -532,7 +530,6 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
                 }
             }
         }
@@ -581,7 +578,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
             return f.getAbsolutePath()
         } catch (e1: IOException) {
-            e1.printStackTrace()
+
         }
 
         return ruta

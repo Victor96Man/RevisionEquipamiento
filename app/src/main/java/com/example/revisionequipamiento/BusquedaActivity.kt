@@ -314,7 +314,6 @@ class BusquedaActivity : AppCompatActivity() {
             3-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+3 month') "
             4-> whereFecha="AND t1.fecha_proxima_revision <= date('now','+6 month') "
         }
-        println("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca $whereFecha ORDER BY t1.fecha_proxima_revision asc")
 
         cusrsor = db.rawQuery("SELECT t1.*, t2.nombrefamilia as nombrefamilia, t4.nombreubicacion as nombreubicacion, (SELECT nombretrabajador FROM trabajadores WHERE id=t1.id_trabajador) as nombretrabajador FROM equipamientos as t1, familias as t2, zonas as t3, ubicaciones as t4, marcas as t6 WHERE t1.id_familia = t2.id AND t1.id_zona = t3.id AND t1.id_ubicacion = t4.id AND t1.id_marca = t6.id $whereNserie $whereFamilia $whereZona $whereUbicacion $whereTrabajador $whereMarca $whereFecha ORDER BY t1.fecha_proxima_revision asc", null)
         if (cusrsor != null) {
