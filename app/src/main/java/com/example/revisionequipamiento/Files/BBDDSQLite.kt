@@ -466,7 +466,7 @@ val VERSIONBBDD = 4
                     color = 0 //Color Negro
                 } else {
                     val cursor: Cursor
-                    cursor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision > date('now') AND fecha_proxima_revision <= date('now','+10 days')", null)
+                    cursor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision >= date('now') AND fecha_proxima_revision <= date('now','+10 days')", null)
                     if (cursor != null) {
                         if (cursor.count > 0) {
                             if (cursor.moveToFirst()) {
