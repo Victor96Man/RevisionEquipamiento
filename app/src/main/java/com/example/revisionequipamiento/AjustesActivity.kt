@@ -5,13 +5,10 @@ import android.content.pm.PackageInfo
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.support.v7.app.AppCompatActivity
+import android.view.*
 import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import kotlinx.android.synthetic.main.activity_ajustes.*
@@ -90,8 +87,25 @@ class AjustesActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.acerca_de, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
+
+            R.id.action_acercade -> {
+                val mDialogView = LayoutInflater.from(this@AjustesActivity).inflate(R.layout.acerca_de_dialog,null)
+                //AlertDialogBuilder
+                val mBuilder = AlertDialog.Builder(this)
+                        .setView(mDialogView)
+                //show dialog
+                mBuilder.show()
+                return true
+            }
             android.R.id.home -> {
                 onBackPressed()
                 return true

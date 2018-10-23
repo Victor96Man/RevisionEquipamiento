@@ -23,7 +23,6 @@ import android.support.v7.widget.LinearSnapHelper
 import android.support.v7.widget.SnapHelper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -556,14 +555,14 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         // have the object build the directory structure, if needed.
-        Log.d("fee", wallpaperDirectory.toString())
+
         if (!wallpaperDirectory.exists()) {
 
             wallpaperDirectory.mkdirs()
         }
 
         try {
-            Log.d("heel", wallpaperDirectory.toString())
+
             val f = File(wallpaperDirectory, ((Calendar.getInstance()
                     .getTimeInMillis()).toString() + ".jpg"))
             f.createNewFile()
@@ -574,7 +573,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     arrayOf("image/jpeg"), null)
             fo.close()
             ruta = f.getAbsolutePath()
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
+
 
             return f.getAbsolutePath()
         } catch (e1: IOException) {

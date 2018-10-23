@@ -1,7 +1,6 @@
 package com.example.revisionequipamiento;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.apache.commons.net.ftp.FTP;
@@ -44,7 +43,7 @@ public class MyFTPClientFunctions {
                 return status;
             }
         } catch (Exception e) {
-            Log.d(TAG, "Error: could not connect to host " + host);
+
             Toast.makeText(context, "Error: no se pudo conectar con el servidor " + host+" ("+e+")", Toast.LENGTH_SHORT).show();
         }
 
@@ -215,7 +214,6 @@ public class MyFTPClientFunctions {
 
             return status;
         } catch (Exception e) {
-            Log.d(TAG, "upload failed: " + e);
         }
 
         return status;
