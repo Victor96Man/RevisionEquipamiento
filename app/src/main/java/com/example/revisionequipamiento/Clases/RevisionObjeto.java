@@ -337,6 +337,29 @@ public class RevisionObjeto {
         return json;
     }
 
+    public String toString2() {
+        String json ="{'revision':{'id':'"+id+"', 'equipamiento':'"+equipamiento+"', 'usuario':"+usuario+", 'fR':'"+fR+"', 'estado':"+estado+", 'enviado':"+enviado+", 'vp1':"+vp1+", 'vp2':"+vp2+", 'vp3':"+vp3+", 'vp4':"+vp4+", 'vp5':"+vp5+", 'vp6':"+vp6+", 'vp7':"+vp7+", 'vp8':"+vp8+", 'vp9':"+vp9+", 'vp10':"+vp10+", 'obp1':'"+obp1+"', 'obp2':'"+obp2+"', 'obp3':'"+obp3+"', 'obp4':'"+obp4+"', 'obp5':'"+obp5+"', 'obp6':'"+obp6+"', 'obp7':'"+obp7+"', 'obp8':'"+obp8+"', 'obp9':'"+obp9+"', 'obp10':'"+obp10+"', 'firma':'', 'firmaT':'', 'objeciones':'"+objecione+"', 'peticiones':'"+peticiones+"','fotos':[";
+        if(fotos.size() >0) {
+            for (int i = 0; i < fotos.size(); i++) {
+                if(i+1 != fotos.size()) {
+                    json = json + fotos.get(i).toString()+",";
+                }else{
+                    json = json + fotos.get(i).toString();
+                }
+            }
+        }else{
+
+        }
+
+
+        json=json+"]}}";
+
+
+
+
+        return json;
+    }
+
 
 
 }

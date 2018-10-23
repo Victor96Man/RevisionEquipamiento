@@ -85,7 +85,7 @@
     <!-- Pantalla Datos -->
     <string name="dt_fotos_tx">Fotos</string>
     <string name="dt_objecione_tx">Objeciones del Trabajador:</string>
-    <string name="dt_peticiones_tx">Peticiones/Observaciones:</string>
+    <string name="dt_peticiones_tx">Firma y observaciones del usuario:</string>
     <string name="dt_estado_tx">Estado:</string>
     <string-array name="estados_sp">
         <item>-----------</item>

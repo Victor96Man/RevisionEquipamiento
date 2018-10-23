@@ -95,6 +95,7 @@ private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Fot
                         cusrsor.getString(cusrsor.getColumnIndex("ruta")),
                         cusrsor.getString(cusrsor.getColumnIndex("nomdes")),
                         cusrsor.getString(cusrsor.getColumnIndex("observacion")))
+                println(foto)
                 fotos.add(foto)
             }while (cusrsor.moveToNext())
             db.close()
@@ -114,12 +115,14 @@ private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,idRe
     val context = context
     val n_serie = n_serie
     val idRevision =idRevi
+
     override fun onPreExecute() {
         super.onPreExecute()
 
     }
 
     override fun doInBackground(vararg url: String): String {
+
         return POST(url[0], rev)
 
     }
@@ -135,6 +138,8 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
     val bbddsqlite = BBDDSQLite(context)
     val db = bbddsqlite.writableDatabase
     val ftp = MyFTPClientFunctions()
+
+    print(jsonString)
 
     if(jsonobject.getInt("code")==1){
         val idReviRec = jsonobject.getString("id_revision")
