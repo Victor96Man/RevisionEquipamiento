@@ -155,13 +155,14 @@
     <string name="foto">foto</string>
     <string name="ajustes">ajustes</string>
     <string name="info">info</string>
+    <string name="acercade">Acerca de</string>
     <string name="salir">salir</string>
+    <string name="firmar">Firmar</string>
 
     <!-- Errores -->
     <string name="err_campoVacio">Campo vacío</string>
     <string name="err_campoNoIgual">Los campos no concuerdan</string>
     <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minúscula, una mayúscula, un número y un caracter especial</string>
     <string name="err_NoEstado">Debes elegir un estado</string>
-    <string name="firmar">Firmar</string>
 
 </resources>
