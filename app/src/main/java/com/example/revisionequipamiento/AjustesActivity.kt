@@ -24,7 +24,7 @@ import java.io.InputStreamReader
 import java.util.regex.Pattern
 
 class AjustesActivity : AppCompatActivity() {
-    val Password_patter :Pattern = Pattern.compile("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\$@\$!#%*?&])([A-Za-z\\d\$@\$!%*?&]|[^ ]){8,16}\$/")
+    val Password_patter :Pattern = Pattern.compile("^(?=.*\\d)(?=.*[\\u0021-\\u002b\\u003c-\\u0040])(?=.*[A-Z])(?=.*[a-z])\\S{8,16}\$/")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ajustes)
@@ -56,6 +56,7 @@ class AjustesActivity : AppCompatActivity() {
                         if (contrasenaN != "") {
                             if (contrasenaNR != "") {
                                 if (contrasenaNR ==contrasenaN) {
+                                    var resultexp =Password_patter.matcher(contrasenaN).matches()
                                     if(Password_patter.matcher(contrasenaN).matches()){
                                         val urlInicio = "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
                                         AsyncTaskHandleJSON(username, contrasenaA, contrasenaN).execute(urlInicio)
@@ -90,7 +91,7 @@ class AjustesActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.acerca_de, menu) 
+        menuInflater.inflate(R.menu.acerca_de, menu)
         return true
     }
 
