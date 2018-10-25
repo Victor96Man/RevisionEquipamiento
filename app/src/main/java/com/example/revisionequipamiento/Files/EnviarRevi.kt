@@ -139,7 +139,7 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
     val db = bbddsqlite.writableDatabase
     val ftp = MyFTPClientFunctions()
 
-    print(jsonString)
+
 
     if(jsonobject.getInt("code")==1){
         val idReviRec = jsonobject.getString("id_revision")
