@@ -130,21 +130,25 @@ class EquipamientoActivity : AppCompatActivity() {
 
 
         enviarRV_bt.setOnClickListener {
-            val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo = cm.activeNetworkInfo
-            if (networkInfo != null && networkInfo.isConnected) {
-                val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
-                actualizarBD()
-            }else{
-                val builder = android.support.v7.app.AlertDialog.Builder(this@EquipamientoActivity)
-                builder.setTitle(getString(R.string.noInternet))
-                builder.setMessage(getString(R.string.noInternetInfo))
-                builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
+            if(logeado()){
+                val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val networkInfo = cm.activeNetworkInfo
+                if (networkInfo != null && networkInfo.isConnected) {
+                    val urlInsert = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                    EnviarRevi(n_serie, urlInsert, this@EquipamientoActivity)
+                    actualizarBD()
+                }else{
+                    val builder = android.support.v7.app.AlertDialog.Builder(this@EquipamientoActivity)
+                    builder.setTitle(getString(R.string.noInternet))
+                    builder.setMessage(getString(R.string.noInternetInfo))
+                    builder.setNeutralButton(getString(R.string.aceptar)){_,_ ->
 
+                    }
+                    val dialog: android.support.v7.app.AlertDialog = builder.create()
+                    dialog.show()
                 }
-                val dialog: android.support.v7.app.AlertDialog = builder.create()
-                dialog.show()
+            }else{
+              Toast.makeText(this@EquipamientoActivity,getString(R.string.errorSesion),Toast.LENGTH_LONG).show()
             }
         }
 
@@ -311,5 +315,21 @@ class EquipamientoActivity : AppCompatActivity() {
         fab.isEnabled=true
     }
 
+    //***************************************CONTROL LOGIN********************************************
+    private fun logeado():Boolean {
+        //consulta a la bbdd
+        var login= false
+        val bbddsqlite = BBDDSQLite(this)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                login= true
+            }
+        }
+        db.close()
+        return login
+    }
 
 }

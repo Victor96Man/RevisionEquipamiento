@@ -145,6 +145,7 @@
     <string name="emailError">Email no encontrado</string>
     <string name="noFirmado">No firmado</string>
     <string name="noFirmadoT">Trabajador no firmado</string>
+    <string name="errorSesion">Error al enviar, por favor reinicie la sesión</string>
 
     <!-- Buttons -->
     <string name="descarga_revi_bt">Descargar</string>

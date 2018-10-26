@@ -132,26 +132,26 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                         builder.setTitle(getString(R.string.enviarTitulo))
                         builder.setMessage(getString(R.string.enviarInfo))
                         builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
-                            val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                            val networkInfo = cm.activeNetworkInfo
-                            if (networkInfo != null && networkInfo.isConnected) {
-                                val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
-                                EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
-                                or.volveranull()
-                                actualizarBD()
-
-
-                            } else {
-                                val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
-                                builder.setTitle(getString(R.string.noInternet))
-                                builder.setMessage(getString(R.string.noInternetInfo))
-                                builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
-
+                            if (logeado()) {
+                                val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                                val networkInfo = cm.activeNetworkInfo
+                                if (networkInfo != null && networkInfo.isConnected) {
+                                    val urlInsertRev = "${getString(R.string.URL)}${getString(R.string.URLinsert)}"
+                                    EnviarRevi(or.equipamiento, urlInsertRev, this@DatosActivity)
+                                    or.volveranull()
+                                    actualizarBD()
+                                } else {
+                                    val builder = android.support.v7.app.AlertDialog.Builder(this@DatosActivity)
+                                    builder.setTitle(getString(R.string.noInternet))
+                                    builder.setMessage(getString(R.string.noInternetInfo))
+                                    builder.setNeutralButton(getString(R.string.aceptar)) { _, _ ->
+                                    }
+                                    val dialog: android.support.v7.app.AlertDialog = builder.create()
+                                    dialog.show()
                                 }
-                                val dialog: android.support.v7.app.AlertDialog = builder.create()
-                                dialog.show()
+                            }else{
+                                Toast.makeText(this@DatosActivity,getString(R.string.errorSesion),Toast.LENGTH_LONG).show()
                             }
-
                         }
                         builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
                             dialog.dismiss()
@@ -641,7 +641,22 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             finish()
         }
     }
-
+    //***************************************CONTROL LOGIN********************************************
+    private fun logeado():Boolean {
+        //consulta a la bbdd
+        var login= false
+        val bbddsqlite = BBDDSQLite(this)
+        val db = bbddsqlite.writableDatabase
+        val cusrsor: Cursor
+        cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+        if (cusrsor != null) {
+            if (cusrsor.count > 0) {
+                login= true
+            }
+        }
+        db.close()
+        return login
+    }
     //***************************************CONTROL FIRMAS*******************************************
     fun ComprobarSiFirmado() {
         if (or.firma!="") {

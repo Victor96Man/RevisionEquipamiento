@@ -1,24 +1,24 @@
 package com.example.revisionequipamiento
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.provider.Settings
 import android.Manifest.permission.*
-import android.support.design.widget.Snackbar
-import kotlinx.android.synthetic.main.activity_splash_screen.*
-import java.util.*
-import android.os.Build
 import android.annotation.TargetApi
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
-import android.view.View
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.provider.Settings
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.onesignal.OSNotification
 import com.onesignal.OneSignal
+import kotlinx.android.synthetic.main.activity_splash_screen.*
+import java.util.*
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -157,11 +157,9 @@ class SplashScreenActivity : AppCompatActivity() {
         override fun notificationReceived(notification: OSNotification?) {
             val data = notification!!.payload.additionalData
             val customKey: Int
-            println("me ejecuto o no?")
             if (data != null) {
                 customKey = data.optInt("cerrarSesion", 0)
                 if (customKey != null){
-                    println("Datos adicionales: "+customKey)
                     if(customKey == 1){
                         val bbddsqlite = BBDDSQLite(ctx)
                         val db = bbddsqlite.writableDatabase
@@ -171,6 +169,7 @@ class SplashScreenActivity : AppCompatActivity() {
                             db.delete(table, null, null)
                         }
                         db.close()
+                        System.exit(0)
                     }
                 }
 
