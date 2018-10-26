@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.example.revisionequipamiento.Files.ParseoFile
+import com.onesignal.OSNotification
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.email_dialog.*
@@ -157,11 +159,7 @@ class LoginActivity : AppCompatActivity() {
                 text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
             }finally {
                 connection.disconnect()
-                // OneSignal Initialization
-                OneSignal.startInit(this@LoginActivity)
-                        .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
-                        .unsubscribeWhenNotificationsAreDisabled(true)
-                        .init()
+
                 OneSignal.sendTag(getString(R.string.user_id), id)
             }
             return text
@@ -261,4 +259,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+
+
 }

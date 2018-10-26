@@ -138,7 +138,7 @@ val VERSIONBBDD = 4
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
             context.deleteDatabase(DATABASE_NAME)
-            BBDDSQLite(context)
+            BBDDSQLite(context).onCreate(db)
         }
 
         fun insertUser(user : Usuario){

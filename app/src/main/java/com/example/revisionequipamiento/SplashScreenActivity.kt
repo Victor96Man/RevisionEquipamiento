@@ -11,11 +11,14 @@ import kotlinx.android.synthetic.main.activity_splash_screen.*
 import java.util.*
 import android.os.Build
 import android.annotation.TargetApi
+import android.content.Context
 import android.database.Cursor
 import android.view.View
 import android.net.Uri
 import android.support.v7.app.AlertDialog
 import com.example.revisionequipamiento.Files.BBDDSQLite
+import com.onesignal.OSNotification
+import com.onesignal.OneSignal
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -26,7 +29,12 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-
+        // OneSignal Initialization
+        OneSignal.startInit(this@SplashScreenActivity)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .setNotificationReceivedHandler (ExampleNotificationReceivedHandler(this@SplashScreenActivity))
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init()
 
         if (mayRequestStoragePermission()) {
             Timer().schedule(object : TimerTask() {
@@ -142,5 +150,33 @@ class SplashScreenActivity : AppCompatActivity() {
         }
         db.close()
         return login
+    }
+
+    class ExampleNotificationReceivedHandler(context: Context) : OneSignal.NotificationReceivedHandler {
+        val ctx = context
+        override fun notificationReceived(notification: OSNotification?) {
+            val data = notification!!.payload.additionalData
+            val customKey: Int
+            println("me ejecuto o no?")
+            if (data != null) {
+                customKey = data.optInt("cerrarSesion", 0)
+                if (customKey != null){
+                    println("Datos adicionales: "+customKey)
+                    if(customKey == 1){
+                        val bbddsqlite = BBDDSQLite(ctx)
+                        val db = bbddsqlite.writableDatabase
+                        val tables = arrayOf<String>("usuarios", "fotos","marcas","zonas","trabajadores","usuariosZonas","familias","equipamientos","revisiones","ubicaciones")
+                        OneSignal.sendTag(ctx.resources.getString(R.string.user_id), "0")
+                        for (table in tables) {
+                            db.delete(table, null, null)
+                        }
+                        db.close()
+                    }
+                }
+
+                //Log.i("OneSignalExample", "customkey set with value: " + customKey);
+            }
+        }
+
     }
 }
