@@ -33,6 +33,7 @@
     <string name="aj_contraActual_edt">Contraseña Actual</string>
     <string name="aj_contraNueva_edt">Contraseña Nueva</string>
     <string name="aj_contraNuevaR_edt">Repetir Contraseña </string>
+    <string name="aj_bRevisiones_bt" >Borrar Revisiones Guardadas</string>
     <string name="version">Versión:</string>
 
     <!-- Pantalla Equipamiento -->
@@ -135,6 +136,9 @@
     <string name="lg_tituloEmail">Introduce tu email</string>
     <string name="lg_infoEmail">Recibirás un email con un enlace para recuperar tu contraseña</string>
     <string name="lg_email_hint">Email</string>
+    <string name="aj_bRevi">¿Borrar Revisiones?</string>
+    <string name="aj_bReviInfo">Todos los datos de las revisiones realizadas se borraran.</string>
+
 
     <!-- Toast -->
     <string name="loginError">Usuario o contraseña no válidos</string>
@@ -160,10 +164,12 @@
     <string name="salir">salir</string>
     <string name="firmar">Firmar</string>
 
+
     <!-- Errores -->
     <string name="err_campoVacio">Campo vacío</string>
     <string name="err_campoNoIgual">Los campos no concuerdan</string>
     <string name="err_campoPSW">La contraseña debe contener entre 8 y 16 caracteres con una minúscula, una mayúscula, un número y un caracter especial</string>
     <string name="err_NoEstado">Debes elegir un estado</string>
+
 
 </resources>

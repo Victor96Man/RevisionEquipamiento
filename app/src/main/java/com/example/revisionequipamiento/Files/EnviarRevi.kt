@@ -110,21 +110,15 @@ private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Fot
     return fotos
 }
 
-private  class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,idRevi : Int, context :Context): AsyncTask<String, String, String>() {
+private class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,idRevi : Int, context :Context): AsyncTask<String, String, String>() {
     var rev = revision
     val context = context
     val n_serie = n_serie
     val idRevision =idRevi
 
-    override fun onPreExecute() {
-        super.onPreExecute()
-
-    }
-
     override fun doInBackground(vararg url: String): String {
 
         return POST(url[0], rev)
-
     }
 
     override fun onPostExecute(result: String?) {
@@ -154,6 +148,7 @@ private fun handleJson(jsonString: String? ,n_serie: String,idRevi: Int,context:
         }
         db.delete("revisiones", "id_equipamiento= '$n_serie'", null)
         db.delete("fotos", "id_revision = '$idRevi'", null)
+        db.close()
         Toast.makeText(context,jsonobject.getString("message"),Toast.LENGTH_SHORT).show()
         //
     }else{

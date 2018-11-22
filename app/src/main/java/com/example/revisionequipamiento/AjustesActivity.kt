@@ -32,11 +32,11 @@ class AjustesActivity : AppCompatActivity() {
 
         val pInfo: PackageInfo? = packageManager.getPackageInfo(packageName, 0)
         val versionS = pInfo!!.versionName
-        version_tx.text= getString(R.string.version) + " " + versionS
+        version_tx.text = getString(R.string.version) + " " + versionS
         val username = SelectUsuario()
         aj_cambioContra_bt.setOnClickListener { _ ->
-            aj_cambioContra_bt.isEnabled=false
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.contrasena_dialog,null)
+            aj_cambioContra_bt.isEnabled = false
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.contrasena_dialog, null)
             //AlertDialogBuilder
 
             val mBuilder = AlertDialog.Builder(this)
@@ -47,7 +47,7 @@ class AjustesActivity : AppCompatActivity() {
             mAlertDialog.setCancelable(false)
             mAlertDialog.setCanceledOnTouchOutside(false)
 
-            mAlertDialog.aj_aceptar_bt.setOnClickListener{
+            mAlertDialog.aj_aceptar_bt.setOnClickListener {
                 val contrasenaA = mAlertDialog.aj_contraActual_edt.text.toString()
                 val contrasenaN = mAlertDialog.aj_contraNueva_edt.text.toString()
                 val contrasenaNR = mAlertDialog.aj_contraNuevaR_edt.text.toString()
@@ -55,37 +55,55 @@ class AjustesActivity : AppCompatActivity() {
                     if (contrasenaA != "") {
                         if (contrasenaN != "") {
                             if (contrasenaNR != "") {
-                                if (contrasenaNR ==contrasenaN) {
-                                    var resultexp =Password_patter.matcher(contrasenaN).matches()
-                                    if(Password_patter.matcher(contrasenaN).matches()){
+                                if (contrasenaNR == contrasenaN) {
+                                    var resultexp = Password_patter.matcher(contrasenaN).matches()
+                                    if (Password_patter.matcher(contrasenaN).matches()) {
                                         val urlInicio = "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
                                         AsyncTaskHandleJSON(username, contrasenaA, contrasenaN).execute(urlInicio)
                                         mAlertDialog.dismiss()
-                                        aj_cambioContra_bt.isEnabled=true
-                                    }else{
+                                        aj_cambioContra_bt.isEnabled = true
+                                    } else {
                                         mAlertDialog.aj_contraNueva_edt.setError(getString(R.string.err_campoPSW))
                                     }
-                                }else{
+                                } else {
                                     mAlertDialog.aj_contraNuevaR_edt.setError(getString(R.string.err_campoNoIgual))
                                 }
-                            }else{
+                            } else {
                                 mAlertDialog.aj_contraNuevaR_edt.setError(getString(R.string.err_campoVacio))
                             }
-                        }else{
+                        } else {
                             mAlertDialog.aj_contraNueva_edt.setError(getString(R.string.err_campoVacio))
                         }
-                    }else{
+                    } else {
                         mAlertDialog.aj_contraActual_edt.setError(getString(R.string.err_campoVacio))
                     }
-                }else{
-                    Toast.makeText(this@AjustesActivity,getString(R.string.noInternetInfo),Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@AjustesActivity, getString(R.string.noInternetInfo), Toast.LENGTH_SHORT).show()
                 }
             }
 
-            mAlertDialog.aj_cancelar_bt.setOnClickListener{
+            mAlertDialog.aj_cancelar_bt.setOnClickListener {
                 mAlertDialog.dismiss()
-                aj_cambioContra_bt.isEnabled=true
+                aj_cambioContra_bt.isEnabled = true
             }
+        }
+
+        aj_bRevi_bt.setOnClickListener {
+
+            val builder = AlertDialog.Builder(this@AjustesActivity)
+            builder.setTitle(getString(R.string.aj_bRevi))
+            builder.setMessage(getString(R.string.aj_bReviInfo))
+            builder.setPositiveButton(getString(R.string.aceptar)) { _, _ ->
+                val bbddsqlite = BBDDSQLite(this@AjustesActivity)
+                val db = bbddsqlite.writableDatabase
+                db.delete("revisiones", null, null)
+                db.close()
+            }
+            builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         }
     }
 
