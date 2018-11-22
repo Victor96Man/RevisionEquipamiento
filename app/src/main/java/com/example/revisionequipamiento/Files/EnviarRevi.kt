@@ -167,7 +167,7 @@ private fun POST(url: String, revision: RevisionObjeto): String {
     val json = revision.toString().replace("'","\"")
     httpPost.entity = StringEntity(json)
     httpPost.setHeader("Accept", "application/json")
-    httpPost.setHeader("Content-type", "application/json")
+    httpPost.setHeader("Content-type", "application/json; charset=utf-8")
     val httpResponse = httpclient.execute(httpPost)
     val inputStream = httpResponse.entity.content
     if (inputStream != null) {
