@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.database.Cursor
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
 import kotlinx.android.synthetic.main.progressbar.*
 import org.json.JSONArray
+import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -43,7 +45,6 @@ class PrincipalActivity : AppCompatActivity() {
     var hide_fab_3 : Animation? = null
     var username :String=""
     var contrasena :String=""
-    val directorioexterno = Environment.getExternalStorageDirectory()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -350,7 +351,6 @@ class PrincipalActivity : AppCompatActivity() {
         val jsonobject = jsonarray.getJSONObject(0)
         val codigo = jsonobject.getInt("code")
         val mensaje = jsonobject.getString("message")
-        val ruta = jsonobject.getString("ruta")
         val version = jsonobject.getString("version")
 
 
@@ -361,8 +361,14 @@ class PrincipalActivity : AppCompatActivity() {
             builder.setPositiveButton(getString(R.string.aceptar)) {
                 _, _ ->
                 val ftp = MyFTPClientFunctions()
-                ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.terminalesemproacsa", "fTlmPjiSByQ4o", 21, context)
-                ftp.ftpDownload(ruta,"$directorioexterno/Download/Equipamineto-$version.apk",this@PrincipalActivity)
+                val nombreApk :String = "Equipamiento-${version}v.apk"
+                val nombreRuta :String = "${Environment.getExternalStorageDirectory()}/Download/$nombreApk"
+                ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.descargas", "385aaO0w3CPK7xOI8p", 21, context)
+                ftp.ftpDownload(nombreApk,nombreRuta,this@PrincipalActivity)
+               /* val file :File = File(nombreRuta)
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                startActivity(intent)*/
             }
             builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
                 dialog.dismiss()
