@@ -132,8 +132,6 @@ val VERSIONBBDD = 4
             db?.execSQL(CreateTableFamilias)
             db?.execSQL(CreateTableEquipamientos)
             db?.execSQL(CreateTableRevisiones)
-
-
         }
 
         override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

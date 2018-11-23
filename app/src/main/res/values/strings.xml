@@ -108,6 +108,7 @@
     <string name="URLinsert">slim/insertrevision</string>
     <string name="URLCompruebaDescargaPDF">slim/compruebaRevision/</string>
     <string name="URLDescargaPDF">slim/descargarpdf/</string>
+    <string name="URLversion">slim/descargarversion/</string>
 
     <!-- CardView -->
     <string name="familiaCard">Familia:</string>
@@ -138,6 +139,7 @@
     <string name="lg_email_hint">Email</string>
     <string name="aj_bRevi">¿Borrar Revisiones?</string>
     <string name="aj_bReviInfo">Todos los datos de las revisiones realizadas se borraran.</string>
+    <string name="nuevaV">Descargar nueva Versión</string>
 
 
     <!-- Toast -->

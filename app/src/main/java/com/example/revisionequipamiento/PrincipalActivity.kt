@@ -2,6 +2,7 @@ package com.example.revisionequipamiento
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
@@ -26,6 +27,7 @@ import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
 import kotlinx.android.synthetic.main.progressbar.*
+import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -53,7 +55,10 @@ class PrincipalActivity : AppCompatActivity() {
             val tab = tab_layout.getTabAt(i)
             tab!!.customView = pagerAdapter.getTabView(i)
         }
-
+        val pInfo: PackageInfo? = packageManager.getPackageInfo(packageName, 0)
+        val versionS = pInfo!!.versionName
+        val urlversion = "${getString(R.string.URL)}${getString(R.string.URLversion)}$versionS"
+        AsyncTaskHandleJSON5(this@PrincipalActivity).execute(urlversion)
         //Animaciones
         show_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_show)
         hide_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_hide)
@@ -309,5 +314,57 @@ class PrincipalActivity : AppCompatActivity() {
             tab!!.customView = pagerAdapter.getTabView(i)
         }
     }
+
+    inner class AsyncTaskHandleJSON5(context: Context): AsyncTask<String, String, String>() {
+        var context1 = context
+
+        override fun doInBackground(vararg url: String): String {
+            val text: String
+            val connection = URL(url[0]).openConnection() as HttpURLConnection
+            try {
+                connection.connect()
+                text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
+            } finally {
+                connection.disconnect()
+            }
+            return text
+
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            handleJson(result,context1)
+        }
+    }
+
+    private fun handleJson(jsonString: String?,context: Context) {
+        val jsonarray = JSONArray(jsonString)
+        val jsonobject = jsonarray.getJSONObject(0)
+        val codigo = jsonobject.getInt("code")
+        val mensaje = jsonobject.getString("message")
+        val ruta = jsonobject.getString("ruta")
+
+
+        if(codigo == 1){
+            val builder = AlertDialog.Builder(this@PrincipalActivity)
+            builder.setTitle(getString(R.string.nuevaV))
+            builder.setMessage(mensaje)
+            builder.setPositiveButton(getString(R.string.aceptar)) {
+                _, _ ->
+                val ftp = MyFTPClientFunctions()
+                ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.terminalesemproacsa", "fTlmPjiSByQ4o", 21, context)
+                ftp.ftpDownload(ruta,"/")
+            }
+            builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog =builder.create()
+            dialog.show()
+        }else{
+            Toast.makeText(this@PrincipalActivity,mensaje,Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }
 
