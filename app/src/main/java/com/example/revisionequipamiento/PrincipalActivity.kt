@@ -8,6 +8,8 @@ import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.os.StrictMode
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -41,6 +43,7 @@ class PrincipalActivity : AppCompatActivity() {
     var hide_fab_3 : Animation? = null
     var username :String=""
     var contrasena :String=""
+    val directorioexterno = Environment.getExternalStorageDirectory()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,11 @@ class PrincipalActivity : AppCompatActivity() {
             val tab = tab_layout.getTabAt(i)
             tab!!.customView = pagerAdapter.getTabView(i)
         }
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
         val pInfo: PackageInfo? = packageManager.getPackageInfo(packageName, 0)
         val versionS = pInfo!!.versionName
         val urlversion = "${getString(R.string.URL)}${getString(R.string.URLversion)}$versionS"
@@ -343,6 +351,7 @@ class PrincipalActivity : AppCompatActivity() {
         val codigo = jsonobject.getInt("code")
         val mensaje = jsonobject.getString("message")
         val ruta = jsonobject.getString("ruta")
+        val version = jsonobject.getString("version")
 
 
         if(codigo == 1){
@@ -353,7 +362,7 @@ class PrincipalActivity : AppCompatActivity() {
                 _, _ ->
                 val ftp = MyFTPClientFunctions()
                 ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.terminalesemproacsa", "fTlmPjiSByQ4o", 21, context)
-                ftp.ftpDownload(ruta,"/")
+                ftp.ftpDownload(ruta,"$directorioexterno/Download/Equipamineto-$version.apk",this@PrincipalActivity)
             }
             builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
                 dialog.dismiss()

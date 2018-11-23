@@ -176,15 +176,16 @@ public class MyFTPClientFunctions {
      * the destination file to be saved in sdcard
      */
 
-    public boolean ftpDownload(String srcFilePath, String desFilePath) {
+    public boolean ftpDownload(String srcFilePath, String desFilePath, Context context) {
         boolean status = false;
         try {
             FileOutputStream desFileStream = new FileOutputStream(desFilePath);
             status = mFTPClient.retrieveFile(srcFilePath, desFileStream);
             desFileStream.close();
-
+            Toast.makeText(context, "Descarga realizada", Toast.LENGTH_LONG).show();
             return status;
         } catch (Exception e) {
+            Toast.makeText(context, "Error: no se descargar ("+e+")", Toast.LENGTH_LONG).show();
         }
 
         return status;
