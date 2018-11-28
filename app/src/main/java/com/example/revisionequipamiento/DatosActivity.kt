@@ -309,6 +309,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                     id = cusrsor.getInt(cusrsor.getColumnIndex("id"))
                 }
             }
+            cusrsor.close()
         }
         db.close()
         return id
@@ -653,6 +654,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
             if (cusrsor.count > 0) {
                 login= true
             }
+            cusrsor.close()
         }
         db.close()
         return login

@@ -44,7 +44,7 @@ class NoEnviado : Fragment() {
                         equipos.add(EquipamientoItem(id_equipamiento,familia,ubicacion,fecha,trabajador,color))
                     }
                 }while (cusrsor.moveToNext())
-                db.close()
+
 
                 val adapter = MyAdapterCards(requireContext(),equipos!!)
                 rv.adapter = adapter
@@ -58,9 +58,9 @@ class NoEnviado : Fragment() {
                 val llm = LinearLayoutManager(activity)
                 rv.layoutManager = llm
             }
-        }else{
-
+            cusrsor.close()
         }
+        db.close()
 
         return rootView
     }

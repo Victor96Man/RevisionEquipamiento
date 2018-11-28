@@ -60,19 +60,15 @@ private fun CogerRevision(n_serie :String,url:String,context: Context) {
                         devuelveFotosRevision(cusrsor.getInt(cusrsor.getColumnIndex("id")),context))
 
                 val idRevi = cusrsor.getInt(cusrsor.getColumnIndex("id"))
-                db.close()
+
 
 
                 AsyncTaskHandleJSON(newRevision, n_serie,idRevi, context).execute(url)
-            }else{
-
             }
-        }else{
-
         }
-    }else{
-
+        cusrsor.close()
     }
+    db.close()
 }
 
 
@@ -98,15 +94,11 @@ private fun devuelveFotosRevision(idRevision:Int, context:Context):ArrayList<Fot
                 println(foto)
                 fotos.add(foto)
             }while (cusrsor.moveToNext())
-            db.close()
-
-
-        }else{
 
         }
-    }else{
-
+        cusrsor.close()
     }
+    db.close()
     return fotos
 }
 

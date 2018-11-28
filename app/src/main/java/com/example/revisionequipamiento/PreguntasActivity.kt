@@ -29,7 +29,7 @@ class PreguntasActivity : AppCompatActivity() {
         familia = intent.getStringExtra("familia")
         MODO = intent.getStringExtra("MODO")
         n_serie = intent.getStringExtra("n_serie")
-        Nfamilias(familia,View(this@PreguntasActivity))
+        Nfamilias(familia)
         if(MODO=="3"){
             MostrarDatos()
         }
@@ -91,6 +91,7 @@ class PreguntasActivity : AppCompatActivity() {
                     or.fotos = devuelveFotosRevision(or.id,this)
                 }
             }
+            cusrsor.close()
         }
     }
 
@@ -118,6 +119,7 @@ class PreguntasActivity : AppCompatActivity() {
             }else{
 
             }
+            cusrsor.close()
         }else{
 
         }
@@ -213,7 +215,7 @@ class PreguntasActivity : AppCompatActivity() {
         return true
     }
 
-    fun Nfamilias(familia :String, view : View) {
+    fun Nfamilias(familia :String) {
         val bbddsqlite = BBDDSQLite(this@PreguntasActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
@@ -331,6 +333,7 @@ class PreguntasActivity : AppCompatActivity() {
 
             }
         }
+        cusrsor.close()
         db.close()
     }
 

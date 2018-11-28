@@ -291,7 +291,7 @@ class EquipamientoActivity : AppCompatActivity() {
                     trabajador = cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador"))
                     bitacora = cusrsor.getString(cusrsor.getColumnIndex("bitacora"))
                     situacion = cusrsor.getString(cusrsor.getColumnIndex("situacion"))
-                    db.close()
+
                 }else{
                     Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
                     finish()
@@ -300,10 +300,12 @@ class EquipamientoActivity : AppCompatActivity() {
                 Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
                 finish()
             }
+            cusrsor.close()
         }else{
             Toast.makeText(this@EquipamientoActivity,getString(R.string.errorBD),Toast.LENGTH_SHORT).show()
             finish()
         }
+        db.close()
     }
 
     override fun onBackPressed() {
@@ -327,6 +329,7 @@ class EquipamientoActivity : AppCompatActivity() {
             if (cusrsor.count > 0) {
                 login= true
             }
+            cusrsor.close()
         }
         db.close()
         return login

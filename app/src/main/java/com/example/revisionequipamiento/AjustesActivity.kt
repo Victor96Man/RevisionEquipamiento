@@ -56,7 +56,6 @@ class AjustesActivity : AppCompatActivity() {
                         if (contrasenaN != "") {
                             if (contrasenaNR != "") {
                                 if (contrasenaNR == contrasenaN) {
-                                    var resultexp = Password_patter.matcher(contrasenaN).matches()
                                     if (Password_patter.matcher(contrasenaN).matches()) {
                                         val urlInicio = "${getString(R.string.URL)}${getString(R.string.URLcontraseña)}"
                                         AsyncTaskHandleJSON(username, contrasenaA, contrasenaN).execute(urlInicio)
@@ -146,6 +145,7 @@ class AjustesActivity : AppCompatActivity() {
                      username = cusrsor.getString(cusrsor.getColumnIndex("username"))
                 }
             }
+            cusrsor.close()
         }
         db.close()
         return username

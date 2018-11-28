@@ -5,9 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.database.Cursor
 import android.net.ConnectivityManager
-import android.net.Uri
 import android.os.AsyncTask
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -15,6 +13,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -31,7 +30,6 @@ import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
 import kotlinx.android.synthetic.main.progressbar.*
 import org.json.JSONArray
-import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -361,10 +359,42 @@ class PrincipalActivity : AppCompatActivity() {
             builder.setPositiveButton(getString(R.string.aceptar)) {
                 _, _ ->
                 val ftp = MyFTPClientFunctions()
-                val nombreApk :String = "Equipamiento-${version}v.apk"
-                val nombreRuta :String = "${Environment.getExternalStorageDirectory()}/Download/$nombreApk"
+                val nombreApk = "Equipamiento-${version}v.apk"
+                val nombreRuta = "${Environment.getExternalStorageDirectory()}/Download/$nombreApk"
                 ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.descargas", "385aaO0w3CPK7xOI8p", 21, context)
                 ftp.ftpDownload(nombreApk,nombreRuta,this@PrincipalActivity)
+
+                /*val file = File(nombreRuta)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    val apkUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
+                    val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+                    intent.setData(apkUri)
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    startActivity(intent)
+                } else {
+                    val apkUri = Uri.fromFile(file)
+                    intent = Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(apkUri, "application/vnd.android.package-archive")
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }*/
+
+                /* val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
+                intent.putExtra("CONTENT_TYPE", "*")
+                startActivity(intent)
+                */
+
+                /*val intent = Intent(Intent.ACTION_GET_CONTENT)
+                val uri = Uri.parse(Environment.getExternalStorageDirectory().path + "/Download/")
+                intent.setDataAndType(uri, "text/csv")
+                startActivity(Intent.createChooser(intent, "Open folder"))*/
+
+                /* val file = File(nombreRuta)
+                val intent =  Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // without this flag android returned a intent error!
+                startActivity(intent) */
+
                /* val file :File = File(nombreRuta)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");

@@ -152,15 +152,17 @@ class BusquedaActivity : AppCompatActivity() {
                     list.add(cusrsor.getString(cusrsor.getColumnIndex("nombremarca")))
                 } while (cusrsor.moveToNext())
 
-                db.close()
+
             }
+            cusrsor.close()
         }
+        db.close()
 
         return  list
     }
 
     private fun BuscarTrabajadores(ubicacion: String):ArrayList<String> {
-        var filtroUbicacion :String=""
+        var filtroUbicacion =""
         val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
@@ -178,15 +180,17 @@ class BusquedaActivity : AppCompatActivity() {
                     list.add(cusrsor.getString(cusrsor.getColumnIndex("nombretrabajador")))
                 } while (cusrsor.moveToNext())
 
-                db.close()
+
             }
+            cusrsor.close()
         }
+        db.close()
 
         return  list
     }
 
     private fun BuscarUbicaciones(zona :String):ArrayList<String> {
-        var filtroZonas :String=""
+        var filtroZonas =""
         val bbddsqlite = BBDDSQLite(this@BusquedaActivity)
         val db = bbddsqlite.writableDatabase
         val cusrsor: Cursor
@@ -205,9 +209,11 @@ class BusquedaActivity : AppCompatActivity() {
                     list.add(cusrsor.getString(cusrsor.getColumnIndex("nombreubicacion")))
                 } while (cusrsor.moveToNext())
 
-                db.close()
+
             }
+            cusrsor.close()
         }
+        db.close()
         return  list
     }
 
@@ -227,10 +233,11 @@ class BusquedaActivity : AppCompatActivity() {
                     list.add(cusrsor.getString(cusrsor.getColumnIndex("nombrezona")))
                 } while (cusrsor.moveToNext())
 
-                db.close()
-            }
-        }
 
+            }
+            cusrsor.close()
+        }
+        db.close()
         return  list
     }
 
@@ -250,10 +257,11 @@ class BusquedaActivity : AppCompatActivity() {
                     list.add(cusrsor.getString(cusrsor.getColumnIndex("nombrefamilia")))
                 } while (cusrsor.moveToNext())
 
-                db.close()
-            }
-        }
 
+            }
+            cusrsor.close()
+        }
+        db.close()
         return  list
     }
 
@@ -272,9 +280,10 @@ class BusquedaActivity : AppCompatActivity() {
                     zona+= "'"+cusrsor.getString(cusrsor.getColumnIndex("nombrezona"))+"'"+", "
                 }while (cusrsor.moveToNext())
             }
-            db.close()
+            cusrsor.close()
             zona = zona!!.substring(0,zona!!.length-2)
         }
+        db.close()
     }
 
     private fun BuscarEquipamiento() {
@@ -330,7 +339,7 @@ class BusquedaActivity : AppCompatActivity() {
                     equipos.add(EquipamientoItem(id_equipamiento, familia, ubicacion, fecha, trabajador,color))
                 } while (cusrsor.moveToNext())
 
-                db.close()
+
                 rv_recycler_view2.adapter=MyAdapterCards(this@BusquedaActivity, equipos)
             }else{
                 rv_recycler_view2.adapter=MyAdapterEmpty(getString(R.string.nofiltros))
@@ -342,7 +351,9 @@ class BusquedaActivity : AppCompatActivity() {
             whereTrabajador=""
             whereMarca=""
             whereFecha=""
+            cusrsor.close()
         }
+        db.close()
     }
 
 

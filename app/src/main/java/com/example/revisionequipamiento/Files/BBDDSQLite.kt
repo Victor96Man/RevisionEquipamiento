@@ -415,6 +415,7 @@ val VERSIONBBDD = 4
                     }
                     fotoS = true
                 }
+                cusrsor.close()
             }
 
             db.close()
@@ -433,7 +434,9 @@ val VERSIONBBDD = 4
                     }
                     miEquipo = true
                 }
+                cusrsor.close()
             }
+            db.close()
             return miEquipo
         }
 
@@ -448,7 +451,9 @@ val VERSIONBBDD = 4
                     }
                     revision = true
                 }
+                cusrsor.close()
             }
+            db.close()
             return revision
         }
 
@@ -463,29 +468,35 @@ val VERSIONBBDD = 4
                     }
                     color = 0 //Color Negro
                 } else {
+                    val db1 = this.writableDatabase
                     val cursor: Cursor
-                    cursor = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision >= date('now') AND fecha_proxima_revision <= date('now','+10 days')", null)
+                    cursor = db1.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision >= date('now') AND fecha_proxima_revision <= date('now','+10 days')", null)
                     if (cursor != null) {
                         if (cursor.count > 0) {
                             if (cursor.moveToFirst()) {
                             }
                             color = 2 //Color Naranja
                         } else {
+                            val db2 = this.writableDatabase
                             val cursor1: Cursor
-                            cursor1 = db.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision < date('now')", null)
+                            cursor1 = db2.rawQuery("Select estado FROM equipamientos WHERE n_serie= '${n_serie}' AND fecha_proxima_revision < date('now')", null)
                             if (cursor1 != null) {
                                 if (cursor1.count > 0) {
                                     if (cursor1.moveToFirst()) {
                                     }
                                     color = 1 //Color Rojo
                                 }
-                            } else {
-
+                                cursor1.close()
                             }
+                            db2.close()
                         }
+                        cursor.close()
                     }
+                    db1.close()
                 }
+                cusrsor.close()
             }
+            db.close()
             return color
         }
 }

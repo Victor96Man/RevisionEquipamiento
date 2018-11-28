@@ -4,11 +4,9 @@ import android.Manifest.permission.*
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -16,15 +14,10 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
 import com.example.revisionequipamiento.Files.BBDDSQLite
 import com.onesignal.OSNotification
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_splash_screen.*
-import org.json.JSONArray
-import org.json.JSONObject
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
 
 
@@ -148,6 +141,7 @@ class SplashScreenActivity : AppCompatActivity() {
             if (cusrsor.count > 0) {
                 login= true
             }
+            cusrsor.close()
         }
         db.close()
         return login

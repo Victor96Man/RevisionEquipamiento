@@ -46,7 +46,7 @@ class PmaRevisiones : Fragment() {
                     }
                 }while (cusrsor.moveToNext())
 
-                db.close()
+
 
                 val adapter = MyAdapterCards(requireContext(),equipos!!)
                 rv.adapter = adapter
@@ -61,10 +61,9 @@ class PmaRevisiones : Fragment() {
                 val llm = LinearLayoutManager(activity)
                 rv.layoutManager = llm
             }
-        }else{
-
+            cusrsor.close()
         }
-
+        db.close()
 
         return rootView
     }
