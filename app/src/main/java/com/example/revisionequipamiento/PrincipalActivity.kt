@@ -2,13 +2,10 @@ package com.example.revisionequipamiento
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.Environment
-import android.os.StrictMode
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -29,7 +26,6 @@ import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_principal.*
 import kotlinx.android.synthetic.main.frame_fab.*
 import kotlinx.android.synthetic.main.progressbar.*
-import org.json.JSONArray
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -57,15 +53,19 @@ class PrincipalActivity : AppCompatActivity() {
             val tab = tab_layout.getTabAt(i)
             tab!!.customView = pagerAdapter.getTabView(i)
         }
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
 
+        //*************DESCARGA INTERNA DE LA ULTIMA VERSION*************
+
+        /*val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val pInfo: PackageInfo? = packageManager.getPackageInfo(packageName, 0)
         val versionS = pInfo!!.versionName
         val urlversion = "${getString(R.string.URL)}${getString(R.string.URLversion)}$versionS"
         AsyncTaskHandleJSON5(this@PrincipalActivity).execute(urlversion)
+        */
+
         //Animaciones
         show_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_show)
         hide_fab_1 = AnimationUtils.loadAnimation(application, R.anim.fab1_hide)
@@ -322,7 +322,7 @@ class PrincipalActivity : AppCompatActivity() {
         }
     }
 
-    inner class AsyncTaskHandleJSON5(context: Context): AsyncTask<String, String, String>() {
+   /* inner class AsyncTaskHandleJSON5(context: Context): AsyncTask<String, String, String>() {
         var context1 = context
 
         override fun doInBackground(vararg url: String): String {
@@ -363,7 +363,7 @@ class PrincipalActivity : AppCompatActivity() {
                 val nombreRuta = "${Environment.getExternalStorageDirectory()}/Download/$nombreApk"
                 ftp.ftpConnect("ftp.emproacsa-revisionequipamientos.com","u482455045.descargas", "385aaO0w3CPK7xOI8p", 21, context)
                 ftp.ftpDownload(nombreApk,nombreRuta,this@PrincipalActivity)
-
+*/
                 /*val file = File(nombreRuta)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val apkUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file)
@@ -398,7 +398,7 @@ class PrincipalActivity : AppCompatActivity() {
                /* val file :File = File(nombreRuta)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                startActivity(intent)*/
+                startActivity(intent)
             }
             builder.setNegativeButton(getString(R.string.cancelar)) { dialog, _ ->
                 dialog.dismiss()
@@ -409,7 +409,7 @@ class PrincipalActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this@PrincipalActivity,mensaje,Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
 }
 
