@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -15,9 +17,12 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.revisionequipamiento.Files.BBDDSQLite
+import com.example.revisionequipamiento.Files.ParseoFile
 import com.onesignal.OSNotification
 import com.onesignal.OneSignal
 import kotlinx.android.synthetic.main.activity_splash_screen.*
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
 
 
@@ -34,6 +39,9 @@ class SplashScreenActivity : AppCompatActivity() {
                 .init()
 
         if (mayRequestStoragePermission()) {
+            if(logeado()){
+                actualizarBD()
+            }
             Timer().schedule(object : TimerTask() {
                 override fun run() {
                         if(logeado()){
@@ -54,6 +62,55 @@ class SplashScreenActivity : AppCompatActivity() {
                 }, 2000)
         }else{
 
+        }
+    }
+
+    fun actualizarBD() {
+        val cm = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = cm.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected) {
+            val bbddsqlite = BBDDSQLite(this)
+            val db = bbddsqlite.writableDatabase
+            val cusrsor: Cursor
+            var username: String = ""
+            var contrasena: String = ""
+            cusrsor = db.rawQuery("SELECT * FROM usuarios", null)
+            if (cusrsor != null) {
+                if (cusrsor.count > 0) {
+                    if (cusrsor.moveToFirst()) {
+                        username = cusrsor.getString(cusrsor.getColumnIndex("username"))
+                        contrasena = cusrsor.getString(cusrsor.getColumnIndex("password"))
+                    }
+                }
+                cusrsor.close()
+            }
+            val tables = arrayOf<String>("marcas", "zonas", "trabajadores", "usuariosZonas", "familias", "equipamientos", "ubicaciones")
+            for (table in tables) {
+                db.delete(table, null, null)
+            }
+            db.close()
+            AsyncTaskHandleJSON2().execute("${getString(R.string.URL)}${getString(R.string.URLtodo)}$username/$contrasena")
+        }
+    }
+
+    inner class AsyncTaskHandleJSON2(): AsyncTask<String, String, String>() {
+
+
+        override fun doInBackground(vararg url: String?): String {
+            val text: String
+            val connection = URL(url[0]).openConnection() as HttpURLConnection
+            try {
+                connection.connect()
+                text = connection.inputStream.use { it.reader().use { reader -> reader.readText() } }
+            } finally {
+                connection.disconnect()
+            }
+            return text
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            ParseoFile(result, this@SplashScreenActivity,1)
         }
     }
 
@@ -84,13 +141,16 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode === 103) {
             if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED && grantResults[1] === PackageManager.PERMISSION_GRANTED && grantResults[2] === PackageManager.PERMISSION_GRANTED && grantResults[3] === PackageManager.PERMISSION_GRANTED) {
-
+                if(logeado()){
+                    actualizarBD()
+                }
                 Timer().schedule(object : TimerTask() {
                     override fun run() {
                             if(logeado()){
                                 val bbddsqlite = BBDDSQLite(this@SplashScreenActivity)
                                 val bd = bbddsqlite.writableDatabase
                                 bd.close()
+                                actualizarBD()
                                 startActivity(Intent(applicationContext, PrincipalActivity::class.java))
                                 finish()
                             }else{
