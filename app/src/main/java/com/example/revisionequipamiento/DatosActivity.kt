@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.LinearSnapHelper
@@ -69,7 +70,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
     var tv4: String = ""
 
     var fotos: ArrayList<Foto> = ArrayList()
-    var mCurrentPhotoPath:String =""
+    var mCurrentPhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -362,26 +363,7 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         pictureDialog.show()
     }
 
-    @SuppressLint("SimpleDateFormat")
-    @Throws(IOException::class)
-    private fun createImageFile(): File? {
-        // Create an image file name
-        val timeStamp: String
-        val imageFileName: String
-        val storageDir: File
 
-        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        imageFileName = "JPEG_" + timeStamp + "_"
-        storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES)
-        val image = File.createTempFile(
-                imageFileName, // prefix
-                ".jpg", // suffix
-                storageDir      // directory
-        )
-        //mCurrentPhotoPath = "file:" + image!!.absolutePath
-        return image
-    }
 
     fun choosePhotoFromGallary(position:Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -389,24 +371,30 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         startActivityForResult(galleryIntent, GALLERY)
     }
     fun takePhotoFromCamera(position:Int) {
-        var photoFile: File? = null
-        try {
-            photoFile = createImageFile()
-        }catch (ioe:IOException){
-            ioe.stackTrace
-        }
-        //Toast.makeText(this@DatosActivity, "Camera"+position, Toast.LENGTH_SHORT).show()
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile))
+        val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val file: File = createImageFile()
+
+        val uri: Uri = FileProvider.getUriForFile(
+                this,
+                "com.example.android.fileprovider",
+                file
+        )
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
         intent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION,1)
         positionCameraElement = position
         startActivityForResult(intent, CAMERA)
-
-        mCurrentPhotoPath = "file:" + photoFile!!.getAbsolutePath()
+    }
+    private fun galleryAddPic() {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(mCurrentPhotoPath)
+            mediaScanIntent.data = Uri.fromFile(f)
+            sendBroadcast(mediaScanIntent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == GALLERY) {
+
             if (data != null) {
                 val contentURI = data.data
 
@@ -467,13 +455,17 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
                 }
 
             } else if (requestCode == CAMERA) {
+                galleryAddPic()
+                val auxFile = File(mCurrentPhotoPath)
 
                 val bmp: Bitmap
                 val resizeBitmap: Bitmap
                 try {
                     if (mCurrentPhotoPath != null) {
 
-                        bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath))
+                        //bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath))
+                        bmp = BitmapFactory.decodeFile(mCurrentPhotoPath)
+
                         resizeBitmap = redimensionarImagenMaximo(bmp, bmp.getWidth() / 3f, bmp.getHeight() / 3f)
                         val path = saveImage(resizeBitmap)
 
@@ -530,9 +522,12 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
 
                     }
                 } catch (e: Exception) {
+                    println("**************************************************************ERROR"+e)
                 }
             }
         }
+
+
 
     fun redimensionarImagenMaximo(mBitmap: Bitmap, newWidth: Float, newHeigth: Float): Bitmap {
         //Redimensionamos
@@ -546,6 +541,41 @@ class DatosActivity : AppCompatActivity(), PostsAdapter.CallbackInterface{
         matrix.postScale(scaleWidth, scaleHeight)
         // recreate the new Bitmap
         return Bitmap.createBitmap(mBitmap, 0, 0, width, height, matrix, false)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    /*@Throws(IOException::class)
+    private fun createImageFile(): File? {
+        // Create an image file name
+        val timeStamp: String
+        val imageFileName: String
+        val storageDir: File
+
+        timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        imageFileName = "JPEG_" + timeStamp + "_"
+        storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES)
+        val image = File.createTempFile(
+                imageFileName, // prefix
+                ".jpg", // suffix
+                storageDir      // directory
+        )
+        //mCurrentPhotoPath = "file:" + image!!.absolutePath
+        return image
+    }*/
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                "JPEG_${timeStamp}_", /* prefix */
+                ".jpg", /* suffix */
+                storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            mCurrentPhotoPath = absolutePath
+        }
     }
 
 

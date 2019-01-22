@@ -56,7 +56,7 @@
     <string name="estadoBien">Aceptable</string>
     <string name="estadoReparacion">En reparación</string>
     <string name="estadoBaja">De baja</string>
-    <string name="noTrabajador">No asiganado</string>
+    <string name="noTrabajador">No asignado</string>
 
     <!-- Pantalla Busqueda -->
     <string name="filtro">Filtros</string>

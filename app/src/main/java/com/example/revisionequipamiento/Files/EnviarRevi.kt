@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.revisionequipamiento.Clases.Foto
 import com.example.revisionequipamiento.Clases.RevisionObjeto
 import com.example.revisionequipamiento.MyFTPClientFunctions
+import okhttp3.*
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import org.apache.http.impl.client.DefaultHttpClient
@@ -110,7 +111,7 @@ private class AsyncTaskHandleJSON(revision: RevisionObjeto,n_serie: String,idRev
 
     override fun doInBackground(vararg url: String): String {
 
-        return POST(url[0], rev)
+        return postok(url[0], rev)
     }
 
     override fun onPostExecute(result: String?) {
@@ -162,6 +163,21 @@ private fun POST(url: String, revision: RevisionObjeto): String {
     }else{
         return "{\"message\": \"Algo salió mal.\", \"code\": -9}"
     }
+}
+
+fun postok(url: String, revision: RevisionObjeto): String{
+    val mediaType: MediaType? = MediaType.parse("application/json; charset=utf-8")
+    val client: OkHttpClient = OkHttpClient()
+    val json = revision.toString().replace("'","\"")
+    val body: RequestBody = RequestBody.create(mediaType, json)
+
+    val request: Request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+    val response: Response = client.newCall(request).execute()
+    return response.body()!!.string()
 }
 
 private fun convertInputStreamToString(inputStream: InputStream): String {
